@@ -30,21 +30,7 @@
  * class should be extended with interfaces annotating the VCS features beside
  * basic file iteration.
  */
-abstract class vcsFile implements Iterator
+abstract class vcsFile extends vcsResource
 {
-    /**
-     * Local repository path
-     * 
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * Construct file from local repository path
-     * 
-     * @param mixed $path 
-     * @return void
-     */
-    abstract public function __construct( $path );
 }
-string
+

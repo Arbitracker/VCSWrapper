@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper abstract directory base class
+ * PHP VCS wrapper authored interface
  *
  * This file is part of vcs-wrapper.
  *
@@ -23,14 +23,22 @@
  */
 
 /*
- * Base class for directories in the VCS wrapper.
+ * Interface for resources with available user information
  *
- * This class should be extended by the various wrappers to represent
- * directories in the respective VCS. In the wrapper implementations this base
- * class should be extended with interfaces annotating the VCS features beside
- * basic directory iteration.
+ * This interface should be implemented by resources which have information
+ * about the authors which changed / created the contents available.
  */
-abstract class vcsDirectory extends vcsResource implements Iterator
+interface vcsAuthored extends vcsVersioned
 {
+    /**
+     * Get author 
+     *
+     * Return author information for the resource. Optionally the $version
+     * parameter may be passed to the method to specify a version the author
+     * information should be returned for.
+     *
+     * @return string
+     */
+    public function getAuthor( $version = null );
 }
 

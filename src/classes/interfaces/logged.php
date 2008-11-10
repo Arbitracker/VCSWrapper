@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper abstract directory base class
+ * PHP VCS wrapper logged interface
  *
  * This file is part of vcs-wrapper.
  *
@@ -23,14 +23,32 @@
  */
 
 /*
- * Base class for directories in the VCS wrapper.
+ * Interface for resources with a log available.
  *
- * This class should be extended by the various wrappers to represent
- * directories in the respective VCS. In the wrapper implementations this base
- * class should be extended with interfaces annotating the VCS features beside
- * basic directory iteration.
+ * This interface should be implemented by resources which are versioned in
+ * the version control system. It allows access to the current version of a
+ * resource and also to contents in later versions of a resource.
  */
-abstract class vcsDirectory extends vcsResource implements Iterator
+interface vcsLogged extends vcsVersioned
 {
+    /**
+     * Get full revision log
+     *
+     * Return the full revision log for the given resource. The revision log
+     * should be returned as an array of vcsLogEntry objects.
+     *
+     * @return array
+     */
+    public function getLog();
+
+    /**
+     * Get revision log entry
+     *
+     * Get the revision log entry for the spcified version.
+     * 
+     * @param string $version
+     * @return vcsLogEntry
+     */
+    public function getLogEntry( $version );
 }
 

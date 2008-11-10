@@ -29,7 +29,11 @@
  * # scripts/gen_autoload_files.php
  */
 return array(
+    'vcsResource'  => 'classes/resource.php',
     'vcsDirectory' => 'classes/directory.php',
     'vcsFile'      => 'classes/file.php',
+    'vcsVersioned' => 'classes/interfaces/versioned.php',
+    'vcsVersioned' => 'classes/interfaces/versioned.php',
+    'vcsResource'  => 'classes/resource.php',
 );
 

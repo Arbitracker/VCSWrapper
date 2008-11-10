@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper abstract directory base class
+ * PHP VCS wrapper abstract file base class
  *
  * This file is part of vcs-wrapper.
  *
@@ -23,14 +23,39 @@
  */
 
 /*
- * Base class for directories in the VCS wrapper.
+ * Base class for resources in the VCS wrapper.
  *
- * This class should be extended by the various wrappers to represent
- * directories in the respective VCS. In the wrapper implementations this base
- * class should be extended with interfaces annotating the VCS features beside
- * basic directory iteration.
+ * This class works as a base class for file and directory resources in the
+ * wrapper implementations.
  */
-abstract class vcsDirectory extends vcsResource implements Iterator
+abstract class vcsResource
 {
+    /**
+     * Local repository path
+     * 
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * Construct file from local repository path
+     * 
+     * @param mixed $path 
+     * @return void
+     */
+    abstract public function __construct( $path );
+
+    /**
+     * String conversion method
+     *
+     * When a resources is casted to a string, return the local repository path
+     * of the resource.
+     * 
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->path;
+    }
 }
 
