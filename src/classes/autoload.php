@@ -33,6 +33,9 @@ return array(
     'vcsDirectory' => 'classes/directory.php',
     'vcsFile'      => 'classes/file.php',
     'vcsVersioned' => 'classes/interfaces/versioned.php',
+    'vcsAuthored'  => 'classes/interfaces/authored.php',
+    'vcsBlameable' => 'classes/interfaces/blameable.php',
+    'vcsLogged'    => 'classes/interfaces/logged.php',
     'vcsVersioned' => 'classes/interfaces/versioned.php',
     'vcsResource'  => 'classes/resource.php',
 );
