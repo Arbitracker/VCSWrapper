@@ -31,6 +31,13 @@
 abstract class vcsResource
 {
     /**
+     * Path to the repository root / checkout.
+     * 
+     * @var string
+     */
+    protected $root;
+
+    /**
      * Local repository path
      * 
      * @var string
@@ -38,12 +45,21 @@ abstract class vcsResource
     protected $path;
 
     /**
-     * Construct file from local repository path
+     * Construct file from local repository path and repository root
+     *
+     * Construct the resource from the repository root, which is used to store
+     * the actual repository contents, and the local paht inside the
+     * repository.
      * 
-     * @param mixed $path 
+     * @param string $root 
+     * @param string $path 
      * @return void
      */
-    abstract public function __construct( $path );
+    public function __construct( $root, $path )
+    {
+        $this->root = $root;
+        $this->path = $path;
+    }
 
     /**
      * String conversion method
