@@ -29,6 +29,41 @@
 class vcsCacheSqliteMetaData extends vcsCacheMetaData
 {
     /**
+     * Database connection
+     * 
+     * @var SQLite3
+     */
+    protected $db;
+
+    /**
+     * Construct cache from cache storage root
+     * 
+     * @param string $root 
+     * @return void
+     */
+    public function __construct( $root )
+    {
+        parent::__construct( $root );
+
+        // Check for existance of meta data storage file
+        if ( !file_exists( $dbFile = ( $this->root . '/metadata.db' ) ) )
+        {
+            // Create the table with appropriate indexes, if the table does not
+            // yet exist
+            $db = new SQLite3( $dbFile );
+            $db->query( 'CREATE TABLE metadata (
+                path TEXT PRIMARY KEY,
+                size NUMERIC,
+                accessed NUMERIC
+            )' );
+            $db->query( 'CREATE INDEX size ON metadata ( size )' );
+            $db->query( 'CREATE INDEX accessed ON metadata ( accessed )' );
+        }
+
+        $this->db = new SQLite3( $dbFile );
+    }
+
+    /**
      * A cache file has been
      *
      * Method called, when a cache file has been created. The size can be used
@@ -46,7 +81,15 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
      */
     public function created( $path, $size, $time = null )
     {
+        // If no time has been given, default to current time.
+        $time = ( $time === null ) ? time() : $time;
 
+        // Insert new cached item into meta data storage
+        $query = $this->db->prepare( 'INSERT INTO metadata ( path, size, accessed ) VALUES ( :path, :size, :accessed )' );
+        $query->bindValue( ':path',     $path );
+        $query->bindValue( ':size',     $size );
+        $query->bindValue( ':accessed', $time );
+        $query->execute();
     }
 
     /**
@@ -61,7 +104,14 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
      */
     public function accessed( $path, $time = null )
     {
+        // If no time has been given, default to current time.
+        $time = ( $time === null ) ? time() : $time;
 
+        // Insert new cached item into meta data storage
+        $query = $this->db->prepare( 'UPDATE metadata SET accessed = :accessed WHERE path = :path' );
+        $query->bindValue( ':path',     $path );
+        $query->bindValue( ':accessed', $time );
+        $query->execute();
     }
 
     /**
@@ -77,7 +127,36 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
      */
     public function cleanup( $size, $rate )
     {
+        // Check if overall cache size exceeds cache limit
+        $result = $this->db->query( 'SELECT SUM( size ) as size FROM metadata' );
+        $cacheSize = $result->fetchArray( SQLITE3_NUM );
+        $cacheSize = $cacheSize[0];
+        $result->finalize();
 
+        if ( $cacheSize <= $size )
+        {
+            // Cache size does not exceed cache value, so we can exit
+            // immediately.
+            return false;
+        }
+
+        // Otherwise clear cache values, until we pass the lower size border
+        $maxSize = $size * $rate;
+        $result  = $this->db->query( 'SELECT path, size FROM metadata ORDER BY accessed ASC' );
+        $removed = array();
+        do {
+            $row = $result->fetchArray( SQLITE3_ASSOC );
+            $cacheSize -= $row['size'];
+            unlink( $this->root . ( $removed[] = $row['path'] ) );
+        } while ( $cacheSize > $maxSize );
+        $result->finalize();
+
+        // Remove entries from database
+        foreach ( $removed as $nr => $value );
+        {
+            $removed[$nr] = "'" . $this->db->escapeString( $value ) . "'";
+        }
+        $this->db->query( 'DELETE FROM metadata WHERE path IN ( ' . implode( ', ', $removed ) . ' )' );
     }
 }
 
