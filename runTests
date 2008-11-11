@@ -4,7 +4,8 @@
 // List of special test modules.
 $modules = array(
 	// No modules yet...
-	// 'module' => array( 'vcsModuleTestSuite', 'tests/module_suite.php' ),
+	'cache'   => array( 'vcsCacheTestSuite', 'tests/cache_suite.php' ),
+	'svn_cli' => array( 'vcsSvnCliTestSuite', 'tests/svn_cli_suite.php' ),
 );
 
 // Check if the test should only be run for a specified module.

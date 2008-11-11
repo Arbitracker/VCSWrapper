@@ -9,6 +9,7 @@
 /*
  * Set file whitelist for phpunit
  */
+define( 'VCS_TEST', __FILE__ );
 $files = include ( $base = dirname(  __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
 foreach ( $files as $class => $file )
 {
@@ -19,9 +20,7 @@ foreach ( $files as $class => $file )
 /**
  * Couchdb backend tests
  */
-require 'cache/cache.php';
-require 'cache/sqlite_metadata.php';
-require 'cache/filesystem_metadata.php';
+require 'cache_suite.php';
 
 /**
 * Test suite for vcs
@@ -38,9 +37,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
         parent::__construct();
         $this->setName( 'vcsWrapper - A PHP VCS wrapper' );
 
-        $this->addTest( vcsSqliteCacheMetaDataTests::suite() );
-        $this->addTest( vcsFileSystemCacheMetaDataTests::suite() );
-        $this->addTest( vcsCacheTests::suite() );
+        $this->addTestSuite( vcsCacheTestSuite::suite() );
     }
 
     /**
@@ -50,6 +47,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
      */
     public static function suite()
     {
-        return new vcsTestSuite( __CLASS__ );
+        return new static( __CLASS__ );
     }
 }
+
