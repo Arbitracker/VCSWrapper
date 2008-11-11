@@ -17,10 +17,13 @@ foreach ( $files as $class => $file )
     PHPUnit_Util_Filter::addFileToWhitelist( $base . $file );
 }
 
+require 'base_test.php';
+
 /**
- * Couchdb backend tests
+ * Test suites
  */
 require 'cache_suite.php';
+require 'svn_cli_suite.php';
 
 /**
 * Test suite for vcs
@@ -38,6 +41,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
         $this->setName( 'vcsWrapper - A PHP VCS wrapper' );
 
         $this->addTestSuite( vcsCacheTestSuite::suite() );
+        $this->addTestSuite( vcsSvnCliTestSuite::suite() );
     }
 
     /**

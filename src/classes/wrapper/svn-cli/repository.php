@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper abstract directory base class
+ * PHP VCS wrapper SVN-Cli based repository wrapper
  *
  * This file is part of vcs-wrapper.
  *
@@ -19,34 +19,15 @@
  *
  * @package VCSWrapper
  * @subpackage Core
- * @version $Revision$
+ * @version $Revision: 10 $
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
 /*
- * Base class for directories in the VCS wrapper.
- *
- * This class should be extended by the various wrappers to represent
- * directories in the respective VCS. In the wrapper implementations this base
- * class should be extended with interfaces annotating the VCS features beside
- * basic directory iteration.
+ * Handler for SVN repositories
  */
-abstract class vcsRepository extends vcsDirectory
+class vcsSvnCliRepository extends vcsRepository // implements vcsVersioned, vcsAuthored, vcsLogged
 {
-    /**
-     * Construct repository with repository root path
-     *
-     * Construct the repository with the repository root path, which will be
-     * used to store the repository contents.
-     *
-     * @param string $root 
-     * @return void
-     */
-    public function __construct( $root )
-    {
-        parent::__construct( $root, '/' );
-    }
-
     /**
      * Initialize repository
      *
@@ -58,7 +39,10 @@ abstract class vcsRepository extends vcsDirectory
      * @param string $password 
      * @return void
      */
-    abstract public function initialize( $url, $user = null, $password = null );
+    public function initialize( $url, $user = null, $password = null )
+    {
+
+    }
 
     /**
      * Check if there are updates available
@@ -68,7 +52,10 @@ abstract class vcsRepository extends vcsDirectory
      * 
      * @return bool
      */
-    abstract public function hasUpdates();
+    public function hasUpdates()
+    {
+
+    }
 
     /**
      * Update repository
@@ -78,6 +65,9 @@ abstract class vcsRepository extends vcsDirectory
      * 
      * @return void
      */
-    abstract public function update();
+    public function update()
+    {
+        
+    }
 }
 

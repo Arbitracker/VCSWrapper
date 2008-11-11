@@ -10,7 +10,7 @@
  * Base test case for cache tests, handling the creation and removel of
  * temporary test directories.
  */
-class vcsCacheTestCase extends PHPUnit_Framework_TestCase
+class vcsTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Temporary directory for cache contents

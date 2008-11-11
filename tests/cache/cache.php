@@ -6,8 +6,6 @@
  * @license GPLv3
  */
 
-require_once __DIR__ . '/base_test.php';
-
 class vcsTestCacheableObject implements vcsCacheable
 {
     public $foo = null;
@@ -24,7 +22,7 @@ class vcsTestCacheableObject implements vcsCacheable
 /**
  * Tests for the SQLite cache meta data handler
  */
-class vcsCacheTests extends vcsCacheTestCase
+class vcsCacheTests extends vcsTestCase
 {
     /**
      * Return test suite

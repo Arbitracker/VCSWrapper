@@ -6,12 +6,10 @@
  * @license GPLv3
  */
 
-require_once __DIR__ . '/base_test.php';
-
 /**
  * Tests for the SQLite cache meta data handler
  */
-class vcsSqliteCacheMetaDataTests extends vcsCacheTestCase
+class vcsSqliteCacheMetaDataTests extends vcsTestCase
 {
     /**
      * Return test suite

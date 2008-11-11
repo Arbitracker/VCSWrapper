@@ -24,14 +24,12 @@ if ( !defined( 'VCS_TEST' ) )
 /**
  * Couchdb backend tests
  */
-require 'cache/cache.php';
-require 'cache/sqlite_metadata.php';
-require 'cache/filesystem_metadata.php';
+require 'svn-cli/repository.php';
 
 /**
 * Test suite for vcs
 */
-class vcsCacheTestSuite extends PHPUnit_Framework_TestSuite
+class vcsSvnCliTestSuite extends PHPUnit_Framework_TestSuite
 {
     /**
      * Basic constructor for test suite
@@ -41,11 +39,9 @@ class vcsCacheTestSuite extends PHPUnit_Framework_TestSuite
     public function __construct()
     {
         parent::__construct();
-        $this->setName( 'Cache suite' );
+        $this->setName( 'SVN cli wrapper suite' );
 
-        $this->addTest( vcsSqliteCacheMetaDataTests::suite() );
-        $this->addTest( vcsFileSystemCacheMetaDataTests::suite() );
-        $this->addTest( vcsCacheTests::suite() );
+        $this->addTest( vcsSvnCliRepositoryTests::suite() );
     }
 
     /**
