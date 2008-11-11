@@ -62,9 +62,10 @@ abstract class vcsCacheMetaData
      * 
      * @param string $path 
      * @param int $size 
+     * @param int $time
      * @return void
      */
-    abstract public function created( $path, $size );
+    abstract public function created( $path, $size, $time = null );
 
     /**
      * A cache file has been accessed
@@ -73,9 +74,10 @@ abstract class vcsCacheMetaData
      * basically update the LRU information of cache entries.
      * 
      * @param string $path 
+     * @param int $time
      * @return void
      */
-    abstract public function accessed( $path );
+    abstract public function accessed( $path, $time = null );
 
     /**
      * Cleanup cache

@@ -41,9 +41,10 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
      * 
      * @param string $path 
      * @param int $size 
+     * @param int $time
      * @return void
      */
-    public function created( $path, $size )
+    public function created( $path, $size, $time = null )
     {
 
     }
@@ -55,9 +56,10 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
      * basically update the LRU information of cache entries.
      * 
      * @param string $path 
+     * @param int $time
      * @return void
      */
-    public function accessed( $path )
+    public function accessed( $path, $time = null )
     {
 
     }

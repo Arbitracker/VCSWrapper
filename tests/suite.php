@@ -15,13 +15,14 @@
 $files = include ( $base = dirname(  __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
 foreach ( $files as $class => $file )
 {
+    require $base . $file;
     PHPUnit_Util_Filter::addFileToWhitelist( $base . $file );
 }
 
 /**
  * Couchdb backend tests
  */
-// require 'vcs/foo_test.php';
+require 'cache/sqlite_metadata.php';
 
 /**
 * Test suite for vcs
@@ -38,7 +39,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
         parent::__construct();
         $this->setName( 'vcsWrapper - A PHP VCS wrapper' );
 
-//        $this->addTest( vcsConnectionTests::suite() );
+        $this->addTest( vcsSqliteCacheMetaDataTests::suite() );
     }
 
     /**
