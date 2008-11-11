@@ -19,7 +19,7 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Scripts
- * @version $Revision: 4 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
@@ -34,7 +34,7 @@ $searchPaths = array(
 * CycleDetection
 *
  * @package Scripts
- * @version $Revision: 4 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
 */
 class arbitTopoLogicalSorting
@@ -452,7 +452,7 @@ foreach ( $searchPaths as $path )
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @version \$Revision: 4 $
+ * @version \$Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
