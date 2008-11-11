@@ -41,18 +41,11 @@
 class vcsCache
 {
     /**
-     * Cache handler instance
-     *
-     * @var vcsMetaDataCache
-     */
-    protected static $instance = null;
-
-    /**
      * Cache path, used to store the actual cache contents
      *
      * @var string
      */
-    protected static $path;
+    protected static $path = null;
 
     /**
      * Cache size in bytes. A cache size lower or equal 0 is used to
@@ -60,7 +53,7 @@ class vcsCache
      *
      * @var int
      */
-    protected static $size;
+    protected static $size = null;
 
     /**
      * Cache cleanup rate.
@@ -72,7 +65,7 @@ class vcsCache
      *
      * @var float
      */
-    protected static $cleanupRate;
+    protected static $cleanupRate = null;
 
     /**
      * Cache meta data handler
@@ -82,28 +75,20 @@ class vcsCache
      *
      * @var vcsCacheMetaData
      */
-    protected static $metaDataHandler;
+    protected static $metaDataHandler = null;
 
     /**
      * Private constructor
      *
      * The cache is only accessed statically and should be configured using the
      * static initialize method. Therefore this constructor is protected to not
-     * be called from the outside.a
+     * be called from the outside.
      *
-     * To disable caching completely, you may set the size to a value lower or
-     * equal 0.
-     *
-     * @param string $path 
-     * @param int $size 
-     * @param float $cleanupRate 
      * @return void
      */
-    protected function __construct( $path, $size = 1048576, $cleanupRate = .8 )
+    protected function __construct()
     {
-        self::$path        = (string) $path;
-        self::$size        = (int)    $size;
-        self::$cleanupRate = (float)  $cleanupRate;
+        // Empty, just preventing from construction.
     }
 
     /**
@@ -126,7 +111,9 @@ class vcsCache
      */
     public static function initialize( $path, $size = 1048576, $cleanupRate = .8 )
     {
-        self::$instance = self::__construct( $path, $size, $cleanupRate );
+        self::$path        = (string) $path;
+        self::$size        = (int)    $size;
+        self::$cleanupRate = (float)  $cleanupRate;
 
         // Determine meta data handler to use for caching the cache metadata.
         if ( extension_loaded( 'sqlite3' ) )
@@ -137,6 +124,22 @@ class vcsCache
         {
             self::$metaDataHandler = new vcsCacheFileSystemMetaData( self::$path );
         }
+    }
+
+    /**
+     * Get cache file file name
+     *
+     * Create the file name for the cache item based on the three cache item
+     * characteristica.
+     * 
+     * @param string $resource 
+     * @param string $version 
+     * @param string $key 
+     * @return string
+     */
+    protected static function getFileName( $resource, $version, $key )
+    {
+        return "/$version/$resource/$key";
     }
 
     /**
@@ -155,7 +158,19 @@ class vcsCache
      */
     public static function get( $resource, $version, $key )
     {
+        if ( self::$path === null )
+        {
+            throw new vcsCacheNotInitializedException();
+        }
 
+        $cacheFile = self::getFileName( $resource, $version, $key );
+        if ( !is_file( self::$path . $cacheFile ) )
+        {
+            return false;
+        }
+
+        self::$metaDataHandler->accessed( $cacheFile );
+        return include self::$path . $cacheFile;
     }
 
     /**
@@ -173,7 +188,22 @@ class vcsCache
      */
     public static function cache( $resource, $version, $key, $value )
     {
+        if ( self::$path === null )
+        {
+            throw new vcsCacheNotInitializedException();
+        }
 
+        if ( !is_scalar( $value ) &&
+             !is_array( $value ) &&
+             ( !$value instanceof vcsCacheable ) )
+        {
+            throw new vcsNotCacheableException( $value );
+        }
+
+        $cacheFile = self::getFileName( $resource, $version, $key );
+        mkdir( dirname( self::$path . $cacheFile ), 0770, true );
+        file_put_contents( self::$path . $cacheFile, sprintf( "<?php\n\nreturn %s;\n\n", var_export( $value, true ) ) );
+        self::$metaDataHandler->created( $cacheFile, filesize( self::$path . $cacheFile ) );
     }
 
     /**
@@ -189,7 +219,12 @@ class vcsCache
      */
     public static function forceCleanup()
     {
+        if ( self::$path === null )
+        {
+            throw new vcsCacheNotInitializedException();
+        }
 
+        self::$metaDataHandler->cleanup( self::$size, self::$cleanupRate );
     }
 }
 

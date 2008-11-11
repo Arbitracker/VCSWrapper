@@ -12,13 +12,14 @@
 $files = include ( $base = dirname(  __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
 foreach ( $files as $class => $file )
 {
-    require $base . $file;
+    require_once $base . $file;
     PHPUnit_Util_Filter::addFileToWhitelist( $base . $file );
 }
 
 /**
  * Couchdb backend tests
  */
+require 'cache/cache.php';
 require 'cache/sqlite_metadata.php';
 require 'cache/filesystem_metadata.php';
 
@@ -39,6 +40,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
 
         $this->addTest( vcsSqliteCacheMetaDataTests::suite() );
         $this->addTest( vcsFileSystemCacheMetaDataTests::suite() );
+        $this->addTest( vcsCacheTests::suite() );
     }
 
     /**

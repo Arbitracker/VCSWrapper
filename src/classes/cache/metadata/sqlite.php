@@ -152,7 +152,7 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
         $result->finalize();
 
         // Remove entries from database
-        foreach ( $removed as $nr => $value );
+        foreach ( $removed as $nr => $value )
         {
             $removed[$nr] = "'" . $this->db->escapeString( $value ) . "'";
         }
