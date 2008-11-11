@@ -17,7 +17,8 @@
  * along with vcs-wrapper; if not, write to the Free Software Foundation, Inc., 51
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @package Core
+ * @package VCSWrapper
+ * @subpackage Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */

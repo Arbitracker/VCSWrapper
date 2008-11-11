@@ -18,7 +18,8 @@
  * along with vcs-wrapper; if not, write to the Free Software Foundation, Inc., 51
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @package Scripts
+ * @package VCSWrapper
+ * @subpackage Scripts
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
@@ -32,10 +33,6 @@ $searchPaths = array(
 
 /**
 * CycleDetection
-*
- * @package Scripts
- * @version $Revision$
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
 */
 class arbitTopoLogicalSorting
 {
