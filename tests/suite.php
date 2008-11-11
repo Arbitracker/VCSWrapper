@@ -6,9 +6,6 @@
  * @license LGPLv3
  */
 
-// Set up environment
-// require __DIR__ . '/test_environment.php';
-
 /*
  * Set file whitelist for phpunit
  */
@@ -23,6 +20,7 @@ foreach ( $files as $class => $file )
  * Couchdb backend tests
  */
 require 'cache/sqlite_metadata.php';
+require 'cache/filesystem_metadata.php';
 
 /**
 * Test suite for vcs
@@ -40,6 +38,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
         $this->setName( 'vcsWrapper - A PHP VCS wrapper' );
 
         $this->addTest( vcsSqliteCacheMetaDataTests::suite() );
+        $this->addTest( vcsFileSystemCacheMetaDataTests::suite() );
     }
 
     /**
