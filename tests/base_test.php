@@ -27,7 +27,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         do {
-            $path = __DIR__ . '/../tmp/cache_' . substr( md5( microtime() ), 0, 8 );
+            $path = __DIR__ . '/tmp/cache_' . substr( md5( microtime() ), 0, 8 );
         } while ( is_dir( $path ) || file_exists( $path ) );
 
         mkdir( $this->tempDir = $path, 0777, true );
@@ -43,8 +43,16 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
      */
     protected function removeRecusrively( $dir )
     {
-        foreach ( glob( $dir . '/*' ) as $path )
+        $directory = dir( $dir );
+        while ( ( $path = $directory->read() ) !== false )
         {
+            if ( ( $path === '.' ) ||
+                 ( $path === '..' ) )
+            {
+                continue;
+            }
+            $path = $dir . '/' . $path;
+
             if ( is_dir( $path ) )
             {
                 $this->removeRecusrively( $path );

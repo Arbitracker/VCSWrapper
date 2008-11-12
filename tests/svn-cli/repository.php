@@ -24,7 +24,14 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
     public function testInitializeInvalidRepository()
     {
         $repository = new vcsSvnCliRepository( $this->tempDir );
-        $repository->initialize( 'svn://example.org/noSvnRepo' );
+
+        try
+        {
+            $repository->initialize( 'file:///hopefully/not/existing/svn/repo' );
+            $this->fail( 'vcsRpositoryInitialisationFailedException' );
+        } catch ( vcsRpositoryInitialisationFailedException $e )
+        { /* Expected */ }
+
     }
 
     public function testInitializeRepositoryCheckout()

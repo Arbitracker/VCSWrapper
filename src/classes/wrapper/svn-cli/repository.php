@@ -41,7 +41,25 @@ class vcsSvnCliRepository extends vcsRepository // implements vcsVersioned, vcsA
      */
     public function initialize( $url, $user = null, $password = null )
     {
+        $process = new pbsSystemProcess( 'svn' );
+        $process->argument( '--non-interactive' );
 
+        if ( $user !== null )
+        {
+            $process->argument( '--username' )->argument( $user );
+
+            if ( $password !== null )
+            {
+                $process->argument( '--password' )->argument( $password );
+            }
+        }
+
+        $return = $process->argument( 'checkout' )->argument( $url )->argument( $this->root )->execute();
+
+        if ( $return !== 0 )
+        {
+            throw new vcsRpositoryInitialisationFailedException( $process->stdoutOutput );
+        }
     }
 
     /**

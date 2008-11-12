@@ -64,3 +64,20 @@ class vcsNotCacheableException extends vcsException
     }
 }
 
+/**
+ * Exception thrown when the initialization of a repository failed.
+ */
+class vcsRpositoryInitialisationFailedException extends vcsException
+{
+    /**
+     * Construct exception
+     * 
+     * @param mixed $value
+     * @return void
+     */
+    public function __construct( $message )
+    {
+        parent::__construct( 'Repository initialization failed with message: ' . $message );
+    }
+}
+
