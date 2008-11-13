@@ -62,8 +62,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      */
     public function initialize( $url, $user = null, $password = null )
     {
-        $process = new pbsSystemProcess( 'svn' );
-        $process->argument( '--non-interactive' );
+        $process = new vcsSvnCliProcess();
 
         if ( $user !== null )
         {
@@ -76,11 +75,6 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         }
 
         $return = $process->argument( 'checkout' )->argument( $url )->argument( $this->root )->execute();
-
-        if ( $return !== 0 )
-        {
-            throw new vcsRpositoryInitialisationFailedException( $process->stdoutOutput );
-        }
 
         // Cache basic revision information for checkout and update
         // currentVersion property.
@@ -100,8 +94,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      */
     public function update( $version = null )
     {
-        $process = new pbsSystemProcess( 'svn' );
-        $process->argument( '--non-interactive' );
+        $process = new vcsSvnCliProcess();
 
         if ( $version !== null )
         {
@@ -109,11 +102,6 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         }
 
         $return = $process->argument( 'update' )->argument( $this->root )->execute();
-
-        if ( $return !== 0 )
-        {
-            throw new vcsRpositoryUpdateFailedException( $process->stdoutOutput );
-        }
 
         // Cache basic revision information for checkout and update
         // currentVersion property.

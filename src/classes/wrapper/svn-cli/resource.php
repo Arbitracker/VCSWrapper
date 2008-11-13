@@ -49,8 +49,8 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
              ( ( $info = vcsCache::get( $this->path, $this->currentVersion, 'info' ) ) === false ) )
         {
             // Refetch the basic information, and cache it.
-            $process = new pbsSystemProcess( 'svn' );
-            $process->argument( '--non-interactive' )->argument( '--xml' );
+            $process = new vcsSvnCliProcess();
+            $process->argument( '--xml' );
 
             // Fecth for specified version, if set
             if ( $this->currentVersion !== null )
@@ -80,8 +80,8 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
         if ( ( $log = vcsCache::get( $this->path, $this->currentVersion, 'log' ) ) === false )
         {
             // Refetch the basic logrmation, and cache it.
-            $process = new pbsSystemProcess( 'svn' );
-            $process->argument( '--non-interactive' )->argument( '--xml' );
+            $process = new vcsSvnCliProcess();
+            $process->argument( '--xml' );
 
             // Fecth for specified version, if set
             if ( $this->currentVersion !== null )
@@ -111,8 +111,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
         if ( ( $mimeType = vcsCache::get( $this->path, $this->currentVersion, $property ) ) === false )
         {
             // Refetch the basic mimeTypermation, and cache it.
-            $process = new pbsSystemProcess( 'svn' );
-            $process->argument( '--non-interactive' );
+            $process = new vcsSvnCliProcess();
 
             // Fecth for specified version, if set
             if ( $this->currentVersion !== null )

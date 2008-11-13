@@ -67,8 +67,8 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
         if ( ( $blame = vcsCache::get( $this->path, $version, 'blame' ) ) === false )
         {
             // Refetch the basic blamermation, and cache it.
-            $process = new pbsSystemProcess( 'svn' );
-            $process->argument( '--non-interactive' )->argument( '--xml' )->argument( '-r' . $version );
+            $process = new vcsSvnCliProcess();
+            $process->argument( '--xml' );
 
             // Execute command
             $return = $process->argument( 'blame' )->argument( $this->root . $this->path )->execute();
@@ -105,8 +105,8 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
         if ( ( $content = vcsCache::get( $this->path, $version, 'content' ) ) === false )
         {
             // Refetch the basic contentrmation, and cache it.
-            $process = new pbsSystemProcess( 'svn' );
-            $process->argument( '--non-interactive' )->argument( '-r' . $version );
+            $process = new vcsSvnCliProcess();
+            $process->argument( '-r' . $version );
 
             // Execute command
             $return = $process->argument( 'cat' )->argument( $this->root . $this->path )->execute();
