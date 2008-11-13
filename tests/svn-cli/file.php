@@ -37,7 +37,7 @@ class vcsSvnCliFileTests extends vcsTestCase
         $file = new vcsSvnCliDirectory( $this->tempDir, '/file' );
 
         $this->assertSame(
-            "4",
+            "5",
             $file->getVersionString()
         );
     }
@@ -49,7 +49,7 @@ class vcsSvnCliFileTests extends vcsTestCase
         $file = new vcsSvnCliDirectory( $this->tempDir, '/file' );
 
         $this->assertSame(
-            array( "1" ),
+            array( "1", "5" ),
             $file->getVersions()
         );
     }
@@ -79,6 +79,12 @@ class vcsSvnCliFileTests extends vcsTestCase
                     'kore',
                     "- Added test file\n",
                     1226412609
+                ),
+                5 => new vcsLogEntry(
+                    '5',
+                    'kore',
+                    "- Added another line to file\n",
+                    1226595170
                 ),
             ),
             $file->getLog()

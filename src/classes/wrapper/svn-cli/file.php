@@ -33,6 +33,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      */
     public function getContents()
     {
+        
     }
 
     /**

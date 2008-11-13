@@ -123,6 +123,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
         {
             $versions[] = (string) $entry['revision'];
         }
+        usort( $versions, array( $this, 'compareVersions' ) );
         return $versions;
     }
 
@@ -159,6 +160,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
                 strtotime( $entry->date )
             );
         }
+        uksort( $versions, array( $this, 'compareVersions' ) );
         return $versions;
     }
 
