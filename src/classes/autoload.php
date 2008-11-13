@@ -34,11 +34,11 @@ return array(
     'vcsCacheFileSystemMetaData'                => 'classes/cache/metadata/filesystem.php',
     'vcsCacheSqliteMetaData'                    => 'classes/cache/metadata/sqlite.php',
     'vcsException'                              => 'classes/exceptions.php',
+    'vcsNoSuchFileException'                    => 'classes/exceptions.php',
     'vcsCacheNotInitializedException'           => 'classes/exceptions.php',
     'vcsNotCacheableException'                  => 'classes/exceptions.php',
     'vcsRpositoryInitialisationFailedException' => 'classes/exceptions.php',
     'vcsRpositoryUpdateFailedException'         => 'classes/exceptions.php',
-    'vcsCacheable'                              => 'classes/interfaces/cacheable.php',
     'pbsSystemProcess'                          => 'classes/systemProcess.php',
     'vcsResource'                               => 'classes/resource.php',
     'vcsVersioned'                              => 'classes/interfaces/versioned.php',
@@ -52,5 +52,9 @@ return array(
     'vcsSvnCliDirectory'                        => 'classes/wrapper/svn-cli/directory.php',
     'vcsRepository'                             => 'classes/interfaces/repository.php',
     'vcsSvnCliRepository'                       => 'classes/wrapper/svn-cli/repository.php',
+    'vcsXmlNode'                                => 'classes/xml/node.php',
+    'vcsCacheable'                              => 'classes/interfaces/cacheable.php',
+    'vcsXml'                                    => 'classes/xml/document.php',
+    'vcsXmlNodeList'                            => 'classes/xml/node_list.php',
 );
 

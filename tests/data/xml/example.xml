@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <general>
+        <password>root</password>
+    </general>
+    <section>
+        <module type="feed" id="it_news" name="IT News">
+            <feeds>
+                <feed id="Heise">http://www.heise.de/newsticker/heise-atom.xml</feed>
+                <feed id="Golem">http://www.golem.de/rss.php?feed</feed>
+                <feed id="Slashdot" priority="low">http://rss.slashdot.org/Slashdot/slashdot</feed>
+                <feed id="PHP" priority="high">http://planet-php.org/rdf/</feed>
+            </feeds>
+            <count>40</count>
+        </module>
+    </section>
+    <section>
+        <module type="weather" id="weather" name="Wetter">
+            <partner>partner ID</partner>
+            <key>key</key>
+            <unit>m</unit>
+            <location>GMXX0024</location>
+            <forecast>4</forecast>
+        </module>
+        <module type="feed" id="news" name="Nachrichten">
+            <feeds>
+                <feed id="SZ">http://www.sueddeutsche.de/app/service/rss/tt/tt.xml</feed>
+                <feed id="FR">http://www.f-r.de/rss/nachrichten/index.xml</feed>
+                <feed id="SPON" priority="low">http://www.spiegel.de/schlagzeilen/rss/index.xml</feed>
+            </feeds>
+            <count>30</count>
+        </module>
+        <module type="anysms" id="anysms" name="Send SMS">
+            <customer>id</customer>
+            <password>password</password>
+            <gateway>31</gateway>
+            <originator>0049...</originator>
+        </module>
+      <module type="podcast" id="podcast" name="Podcasts" refresh="40">
+        <feeds>
+          <feed id="php|architect's Pro PHP Podcast">http://podcast.phparch.com/podcast/rss/index.xml</feed>
+          <feed id="Zend PHP Abstract">http://feeds.feedburner.com/phpabstract?format=xml</feed>
+        </feeds>ls
+        <keep>-1</keep>
+        <count>40</count>
+      </module>
+    </section>
+    <section>
+        <module type="sysinfo" id="sysinfo" name="System Information for busimess.org" />
+        <module type="watch" id="watch" name="Uhrzeit">
+            <watches>
+                <timezone>Europe/Berlin</timezone>
+                <timezone>Europe/Oslo</timezone>
+                <timezone>America/Vancouver</timezone>
+            </watches>
+        </module>
+        <module type="soccer" id="soccer" name="1. Bundesliga">
+            <url>http://www.kicker.de/fussball/bundesliga/spieltag/tabelle/</url>
+        </module>
+        <module type="watchdog" id="watchdog" name="Watchdogs">
+            <url>http://report.example.com/</url>
+            <outdated>300</outdated>
+        </module>
+		<!--
+		<module type="potd" id="potd" name="Wikimedia picture of the day" />
+		-->
+        <module type="hellanzb" id="hellanzb" name="HellaNZB status">
+			<!-- The XML-RPC URL of your Hella daemon -->
+            <rpcurl>http://[rpc_user]:[rpc_pass]@[hella_host]:[rpc_port]/</rpcurl>
+			<!-- Works like feed module: -->
+            <feeds>
+                <feed id="NZBSeries">http://[http_user]:[http_pass]@[newzbin_rss_host]/nzb/rss.php?c=tv</feed>
+                <feed id="NZBSeries">http://[http_user]:[http_pass]@[newzbin_rss_host]/nzb/rss.php?c=movies</feed>
+            </feeds>
+            <count>50</count>
+        </module>
+    </section>
+</root>
