@@ -53,17 +53,6 @@ interface vcsVersioned
     public function getVersions();
 
     /**
-     * Get version of resource
-     *
-     * Get the current resource in the given version. Will throw an exception
-     * if the resource is not available in the given version.
-     *
-     * @param string $version 
-     * @return vcsResource
-     */
-    public function getVersion( $version );
-
-    /**
      * Compare two version strings
      *
      * If $version1 is lower then $version2, an integer < 0, will be returned.

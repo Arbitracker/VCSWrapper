@@ -26,12 +26,19 @@
 /*
  * File implementation vor SVN Cli wrapper
  */
-class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable
+class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, vcsFetchable, vcsDiffable
 {
     /**
      * @inheritdoc
      */
-    public function getVersion( $version )
+    public function getContents()
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMimeType()
     {
     }
 
@@ -39,6 +46,20 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable
      * @inheritdoc
      */
     public function blame( $version = null )
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getVersionedContent( $version )
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDiff( $version, $current = null )
     {
     }
 }

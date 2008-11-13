@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper abstract file base class
+ * PHP VCS wrapper fetchable interface
  *
  * This file is part of vcs-wrapper.
  *
@@ -19,37 +19,26 @@
  *
  * @package VCSWrapper
  * @subpackage Core
- * @version $Revision$
+ * @version $Revision: 10 $
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
 /*
- * Base class for files in the VCS wrapper.
+ * Interface for versioned resources which can be fetched from earlier versions
  *
- * This class should be extended by the various wrappers to represent
- * files in the respective VCS. In the wrapper implementations this base
- * class should be extended with interfaces annotating the VCS features beside
- * basic file iteration.
+ * This implemented should be implemented by VCS for resources, which can be
+ * fetched in earlier revisions then the current revision.
  */
-interface vcsFile
+interface vcsFetchable extends vcsVersioned
 {
     /**
-     * Get file contents
-     * 
-     * Get the contents of the current file.
-     * 
+     * Get content for version
+     *
+     * Get the contents of the current resource in the specified version.
+     *
+     * @param string $version 
      * @return string
      */
-    public function getContents();
-
-    /**
-     * Get mime type
-     * 
-     * Get the mime type of the current file. If this information is not
-     * available, just return 'application/octet-stream'.
-     * 
-     * @return string
-     */
-    public function getMimeType();
+    public function getVersionedContent( $version );
 }
 

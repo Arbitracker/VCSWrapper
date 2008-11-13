@@ -52,6 +52,8 @@ return array(
     'vcsSvnCliResource'                         => 'classes/wrapper/svn-cli/resource.php',
     'vcsFile'                                   => 'classes/interfaces/file.php',
     'vcsBlameable'                              => 'classes/interfaces/blameable.php',
+    'vcsFetchable'                              => 'classes/interfaces/fetchable.php',
+    'vcsDiffable'                               => 'classes/interfaces/diffable.php',
     'vcsSvnCliFile'                             => 'classes/wrapper/svn-cli/file.php',
     'vcsDirectory'                              => 'classes/interfaces/directory.php',
     'vcsSvnCliDirectory'                        => 'classes/wrapper/svn-cli/directory.php',

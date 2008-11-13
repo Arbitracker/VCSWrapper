@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper abstract file base class
+ * PHP VCS wrapper diffable interface
  *
  * This file is part of vcs-wrapper.
  *
@@ -19,37 +19,29 @@
  *
  * @package VCSWrapper
  * @subpackage Core
- * @version $Revision$
+ * @version $Revision: 10 $
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
 /*
- * Base class for files in the VCS wrapper.
+ * Interface for versioned resources which can be diffed with other versions
  *
- * This class should be extended by the various wrappers to represent
- * files in the respective VCS. In the wrapper implementations this base
- * class should be extended with interfaces annotating the VCS features beside
- * basic file iteration.
+ * This interface should be implemented for VCS by resources which can compute
+ * a diff between different versions of the given VCS.
  */
-interface vcsFile
+interface vcsDiffable extends vcsVersioned
 {
     /**
-     * Get file contents
-     * 
-     * Get the contents of the current file.
-     * 
-     * @return string
+     * Get diff
+     *
+     * Get the diff between the current version and the given version.
+     * Optionally you may specify another version then the current one as the
+     * diff base as the second parameter.
+     *
+     * @param string $version 
+     * @param string $current 
+     * @return vcsResource
      */
-    public function getContents();
-
-    /**
-     * Get mime type
-     * 
-     * Get the mime type of the current file. If this information is not
-     * available, just return 'application/octet-stream'.
-     * 
-     * @return string
-     */
-    public function getMimeType();
+    public function getDiff( $version, $current = null );
 }
 
