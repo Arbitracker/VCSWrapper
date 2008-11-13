@@ -38,6 +38,13 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
     /**
      * @inheritdoc
      */
+    public function getVersion( $version )
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function current()
     {
         return current( $this->ressources );

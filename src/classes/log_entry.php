@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper SVN Cli file wrapper
+ * PHP VCS wrapper log entry
  *
  * This file is part of vcs-wrapper.
  *
@@ -18,28 +18,43 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package VCSWrapper
- * @subpackage SvnCliWrapper
- * @version $Revision: 10 $
+ * @subpackage Core
+ * @version $Revision: 14 $
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
 /*
- * File implementation vor SVN Cli wrapper
+ * VCS wrapper abstracted log entry
  */
-class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable
+class vcsLogEntry extends vcsBaseStruct
 {
     /**
-     * @inheritdoc
+     * Array containing the structs properties.
+     * 
+     * @var array
      */
-    public function getVersion( $version )
-    {
-    }
+    protected $properties = array(
+        'version' => null,
+        'author'  => null,
+        'message' => null,
+        'date'    => null,
+    );
 
     /**
-     * @inheritdoc
+     * Construct struct from given values
+     * 
+     * @param string $version 
+     * @param string $author 
+     * @param string $message 
+     * @param int $date 
+     * @return void
      */
-    public function blame( $version = null )
+    public function __construct( $version = null, $author = null, $message = null, $date = null )
     {
+        $this->version = (string) $version;
+        $this->author  = (string) $author;
+        $this->message = (string) $message;
+        $this->date    = (int) $date;
     }
 }
 

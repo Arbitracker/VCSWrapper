@@ -156,3 +156,22 @@ class vcsRpositoryUpdateFailedException extends vcsException
     }
 }
 
+/**
+ * Exception thrown when a version is requested from a repository, which does
+ * not exist.
+ */
+class vcsNoSuchVersionException extends vcsException
+{
+    /**
+     * Construct exception
+     * 
+     * @param string $path
+     * @param string $version
+     * @return void
+     */
+    public function __construct( $path, $version )
+    {
+        parent::__construct( "There is no version '$version' of resource '$path'." );
+    }
+}
+

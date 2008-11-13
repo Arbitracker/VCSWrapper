@@ -26,7 +26,7 @@
 /*
  * Resource implementation vor SVN Cli wrapper
  */
-class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged
+abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged
 {
     /**
      * Current version of the given resource
@@ -77,8 +77,7 @@ class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored
      */
     protected function getResourceLog()
     {
-        if ( ( $this->currentVersion === null ) ||
-             ( ( $log = vcsCache::get( $this->path, $this->currentVersion, 'log' ) ) === false ) )
+        if ( ( $log = vcsCache::get( $this->path, $this->currentVersion, 'log' ) ) === false )
         {
             // Refetch the basic logrmation, and cache it.
             $process = new pbsSystemProcess( 'svn' );
@@ -125,15 +124,9 @@ class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored
     /**
      * @inheritdoc
      */
-    public function getVersion( $version )
-    {
-    }
-
-    /**
-     * @inheritdoc
-     */
     public static function compareVersions( $version1, $version2 )
     {
+        return $version1 - $version2;
     }
 
     /**
@@ -141,6 +134,8 @@ class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored
      */
     public function getAuthor( $version = null )
     {
+        $info = $this->getResourceInfo();
+        return (string) $info->entry[0]->commit[0]->author;
     }
 
     /**
@@ -148,6 +143,18 @@ class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored
      */
     public function getLog()
     {
+        $versions = array();
+        $log      = $this->getResourceLog();
+        foreach ( $log->logentry as $entry )
+        {
+            $versions[(string) $entry['revision']] = new vcsLogEntry(
+                $entry['revision'],
+                $entry->author,
+                $entry->msg,
+                strtotime( $entry->date )
+            );
+        }
+        return $versions;
     }
 
     /**
@@ -155,6 +162,14 @@ class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored
      */
     public function getLogEntry( $version )
     {
+        $log = $this->getLog();
+
+        if ( !isset( $log[$version] ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        return $log[$version];
     }
 }
 

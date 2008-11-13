@@ -47,12 +47,6 @@ class vcsSvnCliRepository extends vcsSvnCliDirectory implements vcsRepository
     public function __construct( $root )
     {
         parent::__construct( $root, '/' );
-
-        // Since PHP does not allow multiple inheritance, so we can't extend
-        // from vcsSvnCliDirectory and vcsRepository, we aggregate the
-        // vcsSvnCliDirectory object and dispatch all calls to methods not
-        // special to vcsRepository to this object.
-        $this->directory = new vcsSvnCliDirectory( $root, '/' );
     }
 
     /**

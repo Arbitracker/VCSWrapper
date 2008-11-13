@@ -87,5 +87,92 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
             $repository->getVersions()
         );
     }
+
+    public function testCompareVersions()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        $this->assertTrue(
+            $repository->compareVersions( "1", "2" ) < 0
+        );
+
+        $this->assertTrue(
+            $repository->compareVersions( "2", "2" ) == 0
+        );
+
+        $this->assertTrue(
+            $repository->compareVersions( "3", "2" ) > 0
+        );
+    }
+
+    public function testGetAuthor()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        $this->assertEquals(
+            'kore',
+            $repository->getAuthor()
+        );
+    }
+
+    public function testGetLog()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        $this->assertEquals(
+            array(
+                1 => new vcsLogEntry(
+                    '1',
+                    'kore',
+                    "- Added test file\n",
+                    1226412609
+                ),
+                2 => new vcsLogEntry(
+                    '2',
+                    'kore',
+                    "- Added some test directories\n",
+                    1226412647
+                ),
+                3 => new vcsLogEntry(
+                    '3',
+                    'kore',
+                    "- Renamed directory\n",
+                    1226412664
+                ),
+            ),
+            $repository->getLog()
+        );
+    }
+
+    public function testGetLogEntry()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        $this->assertEquals(
+            new vcsLogEntry(
+                '2',
+                'kore',
+                "- Added some test directories\n",
+                1226412647
+            ),
+            $repository->getLogEntry( "2" )
+        );
+    }
+
+    public function testGetUnknownLogEntry()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        try {
+            $repository->getLogEntry( "no_such_version" );
+            $this->fail( 'Expected vcsNoSuchVersionException.' );
+        } catch ( vcsNoSuchVersionException $e )
+        { /* Expected */ }
+    }
 }
 
