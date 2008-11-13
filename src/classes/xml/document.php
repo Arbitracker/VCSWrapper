@@ -35,7 +35,8 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
     /**
      * Create XML document from file
      * 
-     * @return void
+     * @param string $xmlFile
+     * @return vcsXml
      */
     public static function loadFile( $xmlFile )
     {
@@ -47,6 +48,21 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
         }
 
         return self::parseXml( $xmlFile );
+    }
+
+    /**
+     * Create XML document from string
+     * 
+     * @param string $xmlString
+     * @return vcsXml
+     */
+    public static function loadString( $xmlString )
+    {
+        $xmlFile = tempnam( sys_get_temp_dir(), 'xml_' );
+        file_put_contents( $xmlFile, $xmlString );
+        $xml = self::parseXml( $xmlFile );
+        unlink( $xmlFile );
+        return $xml;
     }
 
     /**

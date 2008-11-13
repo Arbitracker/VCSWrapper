@@ -26,7 +26,7 @@ class vcsXmlTests extends vcsTestCase
      * 
      * @return void
      */
-    public function testUnknownConfigFile()
+    public function testUnknownXmlFile()
     {
         try
         {
@@ -90,9 +90,23 @@ class vcsXmlTests extends vcsTestCase
      * 
      * @return void
      */
-    public function testMinimalConfigFile()
+    public function testMinimalXmlFile()
     {
         $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/minimal.xml' );
+
+        $this->assertTrue(
+            $xml instanceof vcsXml
+        );
+    }
+
+    /**
+     * Test minimal valid XML file
+     * 
+     * @return void
+     */
+    public function testMinimalXmlString()
+    {
+        $xml = vcsXml::loadString( file_get_contents( __DIR__ . '/../data/xml/minimal.xml' ) );
 
         $this->assertTrue(
             $xml instanceof vcsXml
@@ -128,7 +142,7 @@ class vcsXmlTests extends vcsTestCase
      * 
      * @return void
      */
-    public function testConfigurationWithAttributes()
+    public function testXmlWithAttributes()
     {
         $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/attributes.xml' );
 
