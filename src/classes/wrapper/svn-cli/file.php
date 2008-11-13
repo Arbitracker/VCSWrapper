@@ -33,7 +33,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      */
     public function getContents()
     {
-        
+        return file_get_contents( $this->root . $this->path );
     }
 
     /**
@@ -41,6 +41,15 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      */
     public function getMimeType()
     {
+        $mimeType = $this->getResourceProperty( 'mime-type' );
+
+        if ( !empty( $mimeType ) )
+        {
+            return $mimeType;
+        }
+
+        // If not set, fall back to application/octet-stream
+        return 'application/octet-stream';
     }
 
     /**

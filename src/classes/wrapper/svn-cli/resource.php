@@ -100,6 +100,37 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
+     * Get resource property
+     *
+     * Get the value of an SVN property
+     *
+     * @return string
+     */
+    protected function getResourceProperty( $property )
+    {
+        if ( ( $mimeType = vcsCache::get( $this->path, $this->currentVersion, $property ) ) === false )
+        {
+            // Refetch the basic mimeTypermation, and cache it.
+            $process = new pbsSystemProcess( 'svn' );
+            $process->argument( '--non-interactive' );
+
+            // Fecth for specified version, if set
+            if ( $this->currentVersion !== null )
+            {
+                $process->argument( '-r' . $this->currentVersion );
+            }
+
+            // Execute mimeTyper command
+            $return = $process->argument( 'propget' )->argument( 'svn:' . $property )->argument( $this->root . $this->path )->execute();
+
+            $value = trim( $process->stdoutOutput );
+            vcsCache::cache( $this->path, $this->currentVersion, $property, $value );
+        }
+
+        return $mimeType;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getVersionString()
