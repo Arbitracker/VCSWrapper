@@ -29,17 +29,41 @@
 class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
 {
     /**
-     * Array with children ressources of the directory, used for the iterator.
+     * Array with children resources of the directory, used for the iterator.
      * 
      * @var array
      */
-    protected $ressources;
+    protected $resources = null;
 
     /**
-     * @inheritdoc
+     * Initialize resources array
+     * 
+     * Initilaize the array containing all child elements of the current
+     * directly as vcsSvnCliResource objects.
+     * 
+     * @return array(vcsSvnCliResource)
      */
-    public function getVersion( $version )
+    protected function initializeResouces()
     {
+        // Build resources array, without constructing the objects yet, for
+        // lazy construction of the object tree.
+        $contents = dir( $this->root . $this->path );
+        while ( ( $path = $contents->read() ) !== false )
+        {
+            if ( ( $path === '.' ) ||
+                 ( $path === '..' ) ||
+                 ( $path === '.svn' ) )
+                 // Also mid svn:ignore here?
+            {
+                continue;
+            }
+    
+            $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
+                new vcsSvnCliDirectory( $this->root, $this->path . $path . '/' ) :
+                new vcsSvnCliFile( $this->root, $this->path . $path )
+            );
+        }
+        $contents->close();
     }
 
     /**
@@ -47,7 +71,12 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function current()
     {
-        return current( $this->ressources );
+        if ( $this->resources === null )
+        {
+            $this->initializeResouces();
+        }
+
+        return current( $this->resources );
     }
 
     /**
@@ -55,7 +84,12 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function next()
     {
-        return next( $this->ressources );
+        if ( $this->resources === null )
+        {
+            $this->initializeResouces();
+        }
+
+        return next( $this->resources );
     }
 
     /**
@@ -63,7 +97,12 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function key()
     {
-        return key( $this->ressources );
+        if ( $this->resources === null )
+        {
+            $this->initializeResouces();
+        }
+
+        return key( $this->resources );
     }
 
     /**
@@ -71,7 +110,12 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function valid()
     {
-        return !( current( $this->ressources ) === end( $this->ressources ) ) ;
+        if ( $this->resources === null )
+        {
+            $this->initializeResouces();
+        }
+
+        return $this->current() !== false;
     }
     
     /**
@@ -79,7 +123,12 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function rewind()
     {
-        return reset( $this->ressources );
+        if ( $this->resources === null )
+        {
+            $this->initializeResouces();
+        }
+
+        return reset( $this->resources );
     }
 }
 

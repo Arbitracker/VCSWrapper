@@ -191,5 +191,26 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
         } catch ( vcsNoSuchVersionException $e )
         { /* Expected */ }
     }
+
+    public function testIterateRepositoryContents()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        $files = array();
+        foreach ( $repository as $file )
+        {
+            $files[] = (string) $file;
+        }
+
+        $this->assertEquals(
+            array(
+                '/dir1/',
+                '/dir2/',
+                '/file'
+            ),
+            $files
+        );
+    }
 }
 
