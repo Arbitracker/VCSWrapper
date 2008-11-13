@@ -44,5 +44,28 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
             'Expected file "/file" in checkout.'
         );
     }
+
+    public function testUpdateRepositoryCheckout()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->update();
+
+        $this->assertTrue(
+            file_exists( $this->tempDir . '/file' ),
+            'Expected file "/file" in checkout.'
+        );
+    }
+
+    public function testGetVersion()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        $this->assertSame(
+            "4",
+            $repository->getVersionString()
+        );
+    }
 }
 

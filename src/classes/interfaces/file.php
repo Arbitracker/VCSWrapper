@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper SVN Cli file wrapper
+ * PHP VCS wrapper abstract file base class
  *
  * This file is part of vcs-wrapper.
  *
@@ -18,21 +18,20 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package VCSWrapper
- * @subpackage SvnCliWrapper
- * @version $Revision: 10 $
+ * @subpackage Core
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
 /*
- * File implementation vor SVN Cli wrapper
+ * Base class for files in the VCS wrapper.
+ *
+ * This class should be extended by the various wrappers to represent
+ * files in the respective VCS. In the wrapper implementations this base
+ * class should be extended with interfaces annotating the VCS features beside
+ * basic file iteration.
  */
-class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable
+interface vcsFile
 {
-    /**
-     * @inheritdoc
-     */
-    public function blame( $version = null )
-    {
-    }
 }
 

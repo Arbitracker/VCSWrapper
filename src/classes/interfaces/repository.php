@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper abstract file base class
+ * PHP VCS wrapper abstract directory base class
  *
  * This file is part of vcs-wrapper.
  *
@@ -24,14 +24,36 @@
  */
 
 /*
- * Base class for files in the VCS wrapper.
+ * Base class for directories in the VCS wrapper.
  *
  * This class should be extended by the various wrappers to represent
- * files in the respective VCS. In the wrapper implementations this base
+ * directories in the respective VCS. In the wrapper implementations this base
  * class should be extended with interfaces annotating the VCS features beside
- * basic file iteration.
+ * basic directory iteration.
  */
-abstract class vcsFile extends vcsResource
+interface vcsRepository extends vcsDirectory
 {
+    /**
+     * Initialize repository
+     *
+     * Initialize repository from the given URL. Optionally username and
+     * password may be passed to the method, if required for the repository.
+     *
+     * @param string $url 
+     * @param string $user 
+     * @param string $password 
+     * @return void
+     */
+    public function initialize( $url, $user = null, $password = null );
+
+    /**
+     * Update repository
+     *
+     * Update the repository to the most current state. This process may
+     * especially require clearing of caches.
+     * 
+     * @return void
+     */
+    public function update();
 }
 

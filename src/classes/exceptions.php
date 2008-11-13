@@ -81,3 +81,20 @@ class vcsRpositoryInitialisationFailedException extends vcsException
     }
 }
 
+/**
+ * Exception thrown when the update of a repository failed.
+ */
+class vcsRpositoryUpdateFailedException extends vcsException
+{
+    /**
+     * Construct exception
+     * 
+     * @param mixed $value
+     * @return void
+     */
+    public function __construct( $message )
+    {
+        parent::__construct( 'Repository update failed with message: ' . $message );
+    }
+}
+

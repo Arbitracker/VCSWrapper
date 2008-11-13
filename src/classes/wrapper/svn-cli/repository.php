@@ -18,7 +18,7 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package VCSWrapper
- * @subpackage Core
+ * @subpackage SvnCliWrapper
  * @version $Revision: 10 $
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
@@ -26,8 +26,35 @@
 /*
  * Handler for SVN repositories
  */
-class vcsSvnCliRepository extends vcsRepository // implements vcsVersioned, vcsAuthored, vcsLogged
+class vcsSvnCliRepository extends vcsSvnCliDirectory implements vcsRepository
 {
+    /**
+     * Aggegated vcs directory object
+     * 
+     * @var vcsDirectory
+     */
+    protected $directory = null;
+
+    /**
+     * Construct repository with repository root path
+     *
+     * Construct the repository with the repository root path, which will be
+     * used to store the repository contents.
+     *
+     * @param string $root 
+     * @return void
+     */
+    public function __construct( $root )
+    {
+        parent::__construct( $root, '/' );
+
+        // Since PHP does not allow multiple inheritance, so we can't extend
+        // from vcsSvnCliDirectory and vcsRepository, we aggregate the
+        // vcsSvnCliDirectory object and dispatch all calls to methods not
+        // special to vcsRepository to this object.
+        $this->directory = new vcsSvnCliDirectory( $root, '/' );
+    }
+
     /**
      * Initialize repository
      *
@@ -63,19 +90,6 @@ class vcsSvnCliRepository extends vcsRepository // implements vcsVersioned, vcsA
     }
 
     /**
-     * Check if there are updates available
-     *
-     * Checks if there are updates available for the repository and return the
-     * avilability as a boolean state.
-     * 
-     * @return bool
-     */
-    public function hasUpdates()
-    {
-
-    }
-
-    /**
      * Update repository
      *
      * Update the repository to the most current state. This process may
@@ -85,7 +99,15 @@ class vcsSvnCliRepository extends vcsRepository // implements vcsVersioned, vcsA
      */
     public function update()
     {
-        
+        $process = new pbsSystemProcess( 'svn' );
+        $process->argument( '--non-interactive' );
+
+        $return = $process->argument( 'update' )->argument( $this->root )->execute();
+
+        if ( $return !== 0 )
+        {
+            throw new vcsRpositoryUpdateFailedException( $process->stdoutOutput );
+        }
     }
 }
 

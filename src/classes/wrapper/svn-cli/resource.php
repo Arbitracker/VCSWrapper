@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP VCS wrapper SVN Cli directory wrapper
+ * PHP VCS wrapper SVN Cli resource wrapper
  *
  * This file is part of vcs-wrapper.
  *
@@ -24,55 +24,57 @@
  */
 
 /*
- * Directory implementation vor SVN Cli wrapper
+ * Resource implementation vor SVN Cli wrapper
  */
-class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
+class vcsSvnCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged
 {
     /**
-     * Array with children ressources of the directory, used for the iterator.
-     * 
-     * @var array
-     */
-    protected $ressources;
-
-    /**
      * @inheritdoc
      */
-    public function current()
+    public function getVersionString()
     {
-        return current( $this->ressources );
     }
 
     /**
      * @inheritdoc
      */
-    public function next()
+    public function getVersions()
     {
-        return next( $this->ressources );
     }
 
     /**
      * @inheritdoc
      */
-    public function key()
+    public function getVersion( $version )
     {
-        return key( $this->ressources );
     }
 
     /**
      * @inheritdoc
      */
-    public function valid()
+    public static function compareVersions( $version1, $version2 )
     {
-        return !( current( $this->ressources ) === end( $this->ressources ) ) ;
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function rewind()
+    public function getAuthor( $version = null )
     {
-        return reset( $this->ressources );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLog()
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLogEntry( $version )
+    {
     }
 }
 

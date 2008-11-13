@@ -35,38 +35,7 @@
  * overwritten, but by default the Iterator iterates over the $ressources
  * array.
  */
-abstract class vcsDirectory extends vcsResource implements Iterator
+interface vcsDirectory extends Iterator
 {
-    /**
-     * Array with children ressources of the directory, used for the iterator.
-     * 
-     * @var array
-     */
-    protected $ressources;
-
-    public function current()
-    {
-        return current( $this->ressources );
-    }
-
-    public function next()
-    {
-        return next( $this->ressources );
-    }
-
-    public function key()
-    {
-        return key( $this->ressources );
-    }
-
-    public function valid()
-    {
-        return !( current( $this->ressources ) === end( $this->ressources ) ) ;
-    }
-    
-    public function rewind()
-    {
-        return reset( $this->ressources );
-    }
 }
 
