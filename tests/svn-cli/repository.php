@@ -72,7 +72,7 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
 
         $this->assertSame(
-            "3",
+            "4",
             $repository->getVersionString()
         );
     }
@@ -83,7 +83,7 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
 
         $this->assertSame(
-            array( "1", "2", "3" ),
+            array( "1", "2", "3", "4" ),
             $repository->getVersions()
         );
     }
@@ -158,6 +158,12 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
                     'kore',
                     "- Renamed directory\n",
                     1226412664
+                ),
+                4 => new vcsLogEntry(
+                    '4',
+                    'kore',
+                    "- Added file in subdir\n",
+                    1226592944
                 ),
             ),
             $repository->getLog()

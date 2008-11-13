@@ -62,7 +62,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
      * @param string $dir 
      * @return void
      */
-    protected function removeRecusrively( $dir )
+    protected function removeRecursively( $dir )
     {
         $directory = dir( $dir );
         while ( ( $path = $directory->read() ) !== false )
@@ -76,7 +76,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
 
             if ( is_dir( $path ) )
             {
-                $this->removeRecusrively( $path );
+                $this->removeRecursively( $path );
             }
             else
             {
@@ -98,7 +98,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
         {
             foreach ( $this->directories as $dir )
             {
-                $this->removeRecusrively( $dir );
+                $this->removeRecursively( $dir );
             }
         }
     }
