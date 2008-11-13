@@ -29,6 +29,9 @@
  * # scripts/gen_autoload_files.php
  */
 return array(
+    'vcsCacheable'                              => 'classes/interfaces/cacheable.php',
+    'vcsBaseStruct'                             => 'classes/struct.php',
+    'vcsBlameStruct'                            => 'classes/blame.php',
     'vcsCache'                                  => 'classes/cache.php',
     'vcsCacheMetaData'                          => 'classes/cache/metadata.php',
     'vcsCacheFileSystemMetaData'                => 'classes/cache/metadata/filesystem.php',
@@ -41,8 +44,6 @@ return array(
     'vcsRpositoryInitialisationFailedException' => 'classes/exceptions.php',
     'vcsRpositoryUpdateFailedException'         => 'classes/exceptions.php',
     'vcsNoSuchVersionException'                 => 'classes/exceptions.php',
-    'vcsCacheable'                              => 'classes/interfaces/cacheable.php',
-    'vcsBaseStruct'                             => 'classes/struct.php',
     'vcsLogEntry'                               => 'classes/log_entry.php',
     'pbsSystemProcess'                          => 'classes/systemProcess.php',
     'vcsResource'                               => 'classes/resource.php',

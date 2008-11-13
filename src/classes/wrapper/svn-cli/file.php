@@ -57,6 +57,39 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      */
     public function blame( $version = null )
     {
+        $version = ( $version === null ) ? $this->getVersionString() : $version;
+
+        if ( !in_array( $version, $this->getVersions(), true ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        if ( ( $blame = vcsCache::get( $this->path, $version, 'blame' ) ) === false )
+        {
+            // Refetch the basic blamermation, and cache it.
+            $process = new pbsSystemProcess( 'svn' );
+            $process->argument( '--non-interactive' )->argument( '--xml' )->argument( '-r' . $version );
+
+            // Execute command
+            $return = $process->argument( 'blame' )->argument( $this->root . $this->path )->execute();
+            $xml = vcsXml::loadString( $process->stdoutOutput );
+            $contents = preg_split( '(\r\n|\r|\n)', $this->getVersionedContent( $version ) );
+
+            $blame = array();
+            foreach ( $xml->target[0]->entry as $nr => $entry )
+            {
+                $blame[] = new vcsBlameStruct(
+                    $contents[$nr],
+                    $entry->commit[0]['revision'],
+                    $entry->commit[0]->author,
+                    strtotime( $entry->commit[0]->date )
+                );
+            }
+
+            vcsCache::cache( $this->path, $version, 'blame', $blame );
+        }
+
+        return $blame;
     }
 
     /**

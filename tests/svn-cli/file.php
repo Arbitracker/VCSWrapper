@@ -169,5 +169,43 @@ class vcsSvnCliFileTests extends vcsTestCase
         } catch ( vcsNoSuchVersionException $e )
         { /* Expected */ }
     }
+
+    public function testGetFileBlame()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+
+        $this->assertEquals(
+            array(
+                new vcsBlameStruct(
+                    'Some test file',
+                    '1',
+                    'kore',
+                    1226412609
+                ),
+                new vcsBlameStruct(
+                    'A second line, in a later revision',
+                    '5',
+                    'kore',
+                    1226595170
+                ),
+            ),
+            $file->blame()
+        );
+    }
+
+    public function testGetFileBlameInvalidVersion()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+
+        try {
+            $file->blame( "no_such_version" );
+            $this->fail( 'Expected vcsNoSuchVersionException.' );
+        } catch ( vcsNoSuchVersionException $e )
+        { /* Expected */ }
+    }
 }
 
