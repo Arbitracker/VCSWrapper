@@ -49,11 +49,14 @@ interface vcsRepository extends vcsDirectory
     /**
      * Update repository
      *
-     * Update the repository to the most current state. This process may
-     * especially require clearing of caches.
+     * Update the repository to the most current state.
+     *
+     * Optionally a version can be specified, in which case the repository
+     * won't be updated to the latest version, but to the specified one.
      * 
+     * @param string $version
      * @return void
      */
-    public function update();
+    public function update( $version = null );
 }
 
