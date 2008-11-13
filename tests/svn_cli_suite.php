@@ -25,6 +25,7 @@ if ( !defined( 'VCS_TEST' ) )
  * Couchdb backend tests
  */
 require 'svn-cli/repository.php';
+require 'svn-cli/directory.php';
 
 /**
 * Test suite for vcs
@@ -42,6 +43,7 @@ class vcsSvnCliTestSuite extends PHPUnit_Framework_TestSuite
         $this->setName( 'SVN cli wrapper suite' );
 
         $this->addTest( vcsSvnCliRepositoryTests::suite() );
+        $this->addTest( vcsSvnCliDirectoryTests::suite() );
     }
 
     /**
