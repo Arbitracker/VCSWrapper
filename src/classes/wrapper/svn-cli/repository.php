@@ -87,6 +87,10 @@ class vcsSvnCliRepository extends vcsSvnCliDirectory implements vcsRepository
         {
             throw new vcsRpositoryInitialisationFailedException( $process->stdoutOutput );
         }
+
+        // Cache basic revision information for checkout and update
+        // currentVersion property.
+        $this->getResourceInfo();
     }
 
     /**
@@ -108,6 +112,10 @@ class vcsSvnCliRepository extends vcsSvnCliDirectory implements vcsRepository
         {
             throw new vcsRpositoryUpdateFailedException( $process->stdoutOutput );
         }
+
+        // Cache basic revision information for checkout and update
+        // currentVersion property.
+        $this->getResourceInfo();
     }
 }
 

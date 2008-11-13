@@ -21,6 +21,15 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
 		return new PHPUnit_Framework_TestSuite( __CLASS__ );
 	}
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        // Create a cache, required for all VCS wrappers to store metadata
+        // information
+        vcsCache::initialize( $this->createTempDir() );
+    }
+
     public function testInitializeInvalidRepository()
     {
         $repository = new vcsSvnCliRepository( $this->tempDir );
@@ -57,14 +66,25 @@ class vcsSvnCliRepositoryTests extends vcsTestCase
         );
     }
 
-    public function testGetVersion()
+    public function testGetVersionString()
     {
         $repository = new vcsSvnCliRepository( $this->tempDir );
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
 
         $this->assertSame(
-            "4",
+            "3",
             $repository->getVersionString()
+        );
+    }
+
+    public function testGetVersions()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+
+        $this->assertSame(
+            array( "1", "2", "3" ),
+            $repository->getVersions()
         );
     }
 }

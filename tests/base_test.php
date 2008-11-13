@@ -20,17 +20,38 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
     protected $tempDir;
 
     /**
+     * List of all temporary directories created
+     * 
+     * @var array
+     */
+    protected $directories = array();
+
+    /**
      * Create a unique temporary directory for cache contents.
      * 
      * @return void
      */
     public function setUp()
     {
+        $this->tempDir = $this->createTempDir();
+    }
+
+    /**
+     * Create a temporary directory
+     *
+     * Create a temporary writeable directory, which will be removed again at
+     * the end of the test. The directory name is returned.
+     *
+     * @return string
+     */
+    protected function createTempDir()
+    {
         do {
             $path = __DIR__ . '/tmp/cache_' . substr( md5( microtime() ), 0, 8 );
         } while ( is_dir( $path ) || file_exists( $path ) );
 
-        mkdir( $this->tempDir = $path, 0777, true );
+        mkdir( $this->directories[] = $path, 0777, true );
+        return $path;
     }
 
     /**
@@ -75,7 +96,10 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
     {
         if ( !$this->hasFailed() )
         {
-            $this->removeRecusrively( $this->tempDir );
+            foreach ( $this->directories as $dir )
+            {
+                $this->removeRecusrively( $dir );
+            }
         }
     }
 }
