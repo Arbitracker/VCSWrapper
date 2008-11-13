@@ -169,7 +169,6 @@ class arbitTopoLogicalSorting
 
         if ( count( $this->edges ) )
         {
-            var_dump( $this->edges );
             throw new Exception( 'Cycle found in graph. This should not happen.' );
         }
 
@@ -389,6 +388,8 @@ foreach ( $searchPaths as $path )
     $mapping = array();
     $maxClassNameLength = 0;
 
+    // Analyze all PHP files in project
+    $analyzed = array();
     foreach ( $phpFileArray as $file )
     {
         if ( substr( $file, -4 ) !== '.php' )
@@ -397,7 +398,12 @@ foreach ( $searchPaths as $path )
             continue;
         }
     
-        $classes = getClassDependenciesFromFile( $file );
+        $analyzed[$file] = getClassDependenciesFromFile( $file );
+    }
+
+    // First add all nodes to the toplogical sorting object
+    foreach ( $analyzed as $file => $classes )
+    {
         foreach ( $classes as $class => $data )
         {
             $topoSort->addNode( $class, $data );
@@ -406,7 +412,15 @@ foreach ( $searchPaths as $path )
             // Update max class length for later formatting of the autoload
             // file.
             $maxClassNameLength = max( $maxClassNameLength, strlen( $class ) );
+        }
+    }
 
+    // Add connections, after all nodes have been registerd to build the
+    // initial leaves array correctly.
+    foreach ( $analyzed as $file => $classes )
+    {
+        foreach ( $classes as $class => $data )
+        {
             // Add connections for base class
             if ( $data['extends'] !== null )
             {
