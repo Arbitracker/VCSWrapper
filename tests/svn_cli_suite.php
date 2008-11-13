@@ -24,7 +24,7 @@ if ( !defined( 'VCS_TEST' ) )
 /**
  * Couchdb backend tests
  */
-require 'svn-cli/repository.php';
+require 'svn-cli/checkout.php';
 require 'svn-cli/directory.php';
 require 'svn-cli/file.php';
 
