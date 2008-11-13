@@ -64,6 +64,23 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      */
     public function getVersionedContent( $version )
     {
+        if ( !in_array( $version, $this->getVersions(), true ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        if ( ( $content = vcsCache::get( $this->path, $version, 'content' ) ) === false )
+        {
+            // Refetch the basic contentrmation, and cache it.
+            $process = new pbsSystemProcess( 'svn' );
+            $process->argument( '--non-interactive' )->argument( '-r' . $version );
+
+            // Execute command
+            $return = $process->argument( 'cat' )->argument( $this->root . $this->path )->execute();
+            vcsCache::cache( $this->path, $version, 'content', $content = $process->stdoutOutput );
+        }
+
+        return $content;
     }
 
     /**

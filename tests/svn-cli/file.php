@@ -144,5 +144,30 @@ class vcsSvnCliFileTests extends vcsTestCase
             $file->getMimeType()
         );
     }
+
+    public function testGetFileVersionedFileContents()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+
+        $this->assertEquals(
+            "Some test file\n",
+            $file->getVersionedContent( "1" )
+        );
+    }
+
+    public function testGetFileContentsInvalidVersion()
+    {
+        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+
+        try {
+            $file->getVersionedContent( "no_such_version" );
+            $this->fail( 'Expected vcsNoSuchVersionException.' );
+        } catch ( vcsNoSuchVersionException $e )
+        { /* Expected */ }
+    }
 }
 
