@@ -26,7 +26,7 @@
 /*
  * Handler for SVN repositories
  */
-class vcsSvnCliRepository extends vcsSvnCliDirectory implements vcsRepository
+class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
 {
     /**
      * Aggegated vcs directory object

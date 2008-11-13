@@ -32,7 +32,7 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
 
     public function testIterateRootDirContents()
     {
-        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository = new vcsSvnCliCheckout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
 
         $dir = new vcsSvnCliDirectory( $this->tempDir, '/' );
@@ -55,7 +55,7 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
 
     public function testIterateSubDirContents()
     {
-        $repository = new vcsSvnCliRepository( $this->tempDir );
+        $repository = new vcsSvnCliCheckout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
 
         $dir = new vcsSvnCliDirectory( $this->tempDir, '/dir1/' );

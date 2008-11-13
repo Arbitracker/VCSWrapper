@@ -31,7 +31,7 @@
  * class should be extended with interfaces annotating the VCS features beside
  * basic directory iteration.
  */
-interface vcsRepository extends vcsDirectory
+interface vcsCheckout extends vcsDirectory
 {
     /**
      * Initialize repository

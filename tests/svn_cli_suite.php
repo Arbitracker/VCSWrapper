@@ -43,7 +43,7 @@ class vcsSvnCliTestSuite extends PHPUnit_Framework_TestSuite
         parent::__construct();
         $this->setName( 'SVN cli wrapper suite' );
 
-        $this->addTest( vcsSvnCliRepositoryTests::suite() );
+        $this->addTest( vcsSvnCliCheckoutTests::suite() );
         $this->addTest( vcsSvnCliDirectoryTests::suite() );
         $this->addTest( vcsSvnCliFileTests::suite() );
     }

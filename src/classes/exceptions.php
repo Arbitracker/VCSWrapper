@@ -135,7 +135,7 @@ class vcsRpositoryInitialisationFailedException extends vcsException
      */
     public function __construct( $message )
     {
-        parent::__construct( 'Repository initialization failed with message: ' . $message );
+        parent::__construct( 'Checkout initialization failed with message: ' . $message );
     }
 }
 
@@ -152,7 +152,7 @@ class vcsRpositoryUpdateFailedException extends vcsException
      */
     public function __construct( $message )
     {
-        parent::__construct( 'Repository update failed with message: ' . $message );
+        parent::__construct( 'Checkout update failed with message: ' . $message );
     }
 }
 
