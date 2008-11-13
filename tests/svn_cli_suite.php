@@ -26,6 +26,7 @@ if ( !defined( 'VCS_TEST' ) )
  */
 require 'svn-cli/repository.php';
 require 'svn-cli/directory.php';
+require 'svn-cli/file.php';
 
 /**
 * Test suite for vcs
@@ -44,6 +45,7 @@ class vcsSvnCliTestSuite extends PHPUnit_Framework_TestSuite
 
         $this->addTest( vcsSvnCliRepositoryTests::suite() );
         $this->addTest( vcsSvnCliDirectoryTests::suite() );
+        $this->addTest( vcsSvnCliFileTests::suite() );
     }
 
     /**

@@ -104,6 +104,11 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getVersionString()
     {
+        if ( $this->currentVersion === null )
+        {
+            $this->getResourceInfo();
+        }
+
         return $this->currentVersion;
     }
 
