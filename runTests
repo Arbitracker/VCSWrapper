@@ -3,8 +3,8 @@
 
 // List of special test modules.
 $modules = array(
-	// No modules yet...
 	'xml'     => array( 'vcsXmlTestSuite', 'tests/xml_suite.php' ),
+	'diff'    => array( 'vcsDiffTestSuite', 'tests/diff_suite.php' ),
 	'cache'   => array( 'vcsCacheTestSuite', 'tests/cache_suite.php' ),
 	'svn_cli' => array( 'vcsSvnCliTestSuite', 'tests/svn_cli_suite.php' ),
 );
