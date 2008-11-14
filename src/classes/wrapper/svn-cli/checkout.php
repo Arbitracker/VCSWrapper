@@ -29,13 +29,6 @@
 class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
 {
     /**
-     * Aggegated vcs directory object
-     * 
-     * @var vcsDirectory
-     */
-    protected $directory = null;
-
-    /**
      * Construct repository with repository root path
      *
      * Construct the repository with the repository root path, which will be
