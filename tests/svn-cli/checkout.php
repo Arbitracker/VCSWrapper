@@ -37,7 +37,7 @@ class vcsSvnCliCheckoutTests extends vcsTestCase
         try
         {
             $repository->initialize( 'file:///hopefully/not/existing/svn/repo' );
-            $this->fail( 'pbsSystemProcessNonZeroExitCodeException' );
+            $this->fail( 'Expected pbsSystemProcessNonZeroExitCodeException.' );
         } catch ( pbsSystemProcessNonZeroExitCodeException $e )
         { /* Expected */ }
 
