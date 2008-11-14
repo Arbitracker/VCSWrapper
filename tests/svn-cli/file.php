@@ -207,5 +207,28 @@ class vcsSvnCliFileTests extends vcsTestCase
         } catch ( vcsNoSuchVersionException $e )
         { /* Expected */ }
     }
+
+    public function testGetFileDiff()
+    {
+        $repository = new vcsSvnCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+
+        $diff = $file->getDiff( 1 );
+        
+
+        $this->assertEquals(
+            array(
+                new vcsDiffChunk(
+                    1, 1, 1, 2,
+                    array(
+                        new vcsDiffLine( 3, 'Some test file' ),
+                        new vcsDiffLine( 1, 'A second line, in a later revision' ),
+                    )
+                ),
+            ),
+            $diff[0]->chunks
+        );
+    }
 }
 

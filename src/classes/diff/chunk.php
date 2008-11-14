@@ -49,12 +49,13 @@ class vcsDiffChunk extends vcsBaseStruct
      * @param array $chunks 
      * @return void
      */
-    public function __construct( $start = null, $startRange = 1, $end = null, $endRange = 1 )
+    public function __construct( $start = null, $startRange = 1, $end = null, $endRange = 1, array $lines = array() )
     {
         $this->start      = (int) $start;
         $this->startRange = (int) $startRange;
         $this->end        = (int) $end;
         $this->endRange   = (int) $endRange;
+        $this->lines      = $lines;
     }
 }
 
