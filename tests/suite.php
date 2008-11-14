@@ -45,7 +45,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
     public function __construct()
     {
         parent::__construct();
-        $this->setName( 'vcsWrapper - A PHP VCS wrapper' );
+        $this->setName( 'vcsWrapper - A PHP version control system wrapper' );
 
         $this->addTestSuite( vcsXmlTestSuite::suite() );
         $this->addTestSuite( vcsDiffTestSuite::suite() );
