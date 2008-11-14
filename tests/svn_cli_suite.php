@@ -15,7 +15,6 @@ if ( !defined( 'VCS_TEST' ) )
     foreach ( $files as $class => $file )
     {
         require_once $base . $file;
-        PHPUnit_Util_Filter::addFileToWhitelist( $base . $file );
     }
 
     require 'base_test.php';
