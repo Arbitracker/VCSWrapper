@@ -45,6 +45,8 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     protected function initializeResouces()
     {
+        $this->resources = array();
+
         // Build resources array, without constructing the objects yet, for
         // lazy construction of the object tree.
         $contents = dir( $this->root . $this->path );
@@ -129,6 +131,32 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
         }
 
         return reset( $this->resources );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getChildren()
+    {
+        if ( $this->resources === null )
+        {
+            $this->initializeResouces();
+        }
+
+        return current( $this->resources );
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function hasChildren()
+    {
+        if ( $this->resources === null )
+        {
+            $this->initializeResouces();
+        }
+
+        return current( $this->resources ) instanceof vcsDirectory;
     }
 }
 

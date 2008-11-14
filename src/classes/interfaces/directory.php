@@ -35,7 +35,7 @@
  * overwritten, but by default the Iterator iterates over the $ressources
  * array.
  */
-interface vcsDirectory extends Iterator
+interface vcsDirectory extends RecursiveIterator
 {
 }
 
