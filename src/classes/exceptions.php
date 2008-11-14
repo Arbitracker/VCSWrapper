@@ -123,40 +123,6 @@ class vcsNotCacheableException extends vcsException
 }
 
 /**
- * Exception thrown when the initialization of a repository failed.
- */
-class vcsRpositoryInitialisationFailedException extends vcsException
-{
-    /**
-     * Construct exception
-     * 
-     * @param mixed $value
-     * @return void
-     */
-    public function __construct( $message )
-    {
-        parent::__construct( 'Checkout initialization failed with message: ' . $message );
-    }
-}
-
-/**
- * Exception thrown when the update of a repository failed.
- */
-class vcsRpositoryUpdateFailedException extends vcsException
-{
-    /**
-     * Construct exception
-     * 
-     * @param mixed $value
-     * @return void
-     */
-    public function __construct( $message )
-    {
-        parent::__construct( 'Checkout update failed with message: ' . $message );
-    }
-}
-
-/**
  * Exception thrown when a version is requested from a repository, which does
  * not exist.
  */
