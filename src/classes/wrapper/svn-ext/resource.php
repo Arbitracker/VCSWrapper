@@ -36,6 +36,36 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     protected $currentVersion = null;
 
     /**
+     * Get resource base information
+     *
+     * Get the base information, like version, author, etc for the current
+     * resource in the current version.
+     *
+     * @return vcsXml
+     */
+    protected function getResourceInfo()
+    {
+        if ( ( $this->currentVersion === null ) ||
+             ( ( $info = vcsCache::get( $this->path, $this->currentVersion, 'info' ) ) === false ) )
+        {
+            // Fecth for specified version, if set
+            if ( $this->currentVersion !== null )
+            {
+                $info = svn_info( $this->root . $this->path, $this->currentVersion );
+            }
+            else
+            {
+                $info = svn_info( $this->root . $this->path );
+            }
+
+            $info = $info[0];
+            vcsCache::cache( $this->path, $this->currentVersion = (string) $info['revision'], 'info', $info );
+        }
+
+        return $info;
+    }
+
+    /**
      * Get resource log
      *
      * Get the full log for the current resource up tu the current revision
@@ -95,10 +125,8 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      */
     public function getVersionString()
     {
-        $log  = $this->getResourceLog();
-        $last = end( $log );
-
-        return $last->version;
+        $info = $this->getResourceInfo();
+        return (string) $info['revision'];
     }
 
     /**
@@ -129,10 +157,8 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      */
     public function getAuthor( $version = null )
     {
-        $log  = $this->getResourceLog();
-        $last = end( $log );
-
-        return $last->author;
+        $info = $this->getResourceInfo();
+        return $info['last_changed_author'];
     }
 
     /**

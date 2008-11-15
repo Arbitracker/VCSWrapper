@@ -90,7 +90,7 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
     public function update( $version = null )
     {
         // Remember version before update try
-        $oldVersion = $this->currentVersion;
+        $oldVersion = $this->getVersionString();
 
         if ( $version !== null )
         {
