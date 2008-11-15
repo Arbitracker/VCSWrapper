@@ -92,8 +92,23 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             // Execute logr command
             $return = $process->argument( 'log' )->argument( $this->root . $this->path )->execute();
 
-            $log = vcsXml::loadString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $log->entry[0]['revision'], 'log', $log );
+            // Transform XML into object array
+            $xmlLog = vcsXml::loadString( $process->stdoutOutput );
+            $log    = array();
+            foreach ( $xmlLog->logentry as $entry )
+            {
+                $log[(string) $entry['revision']] = new vcsLogEntry(
+                    $entry['revision'],
+                    $entry->author,
+                    $entry->msg,
+                    strtotime( $entry->date )
+                );
+            }
+            uksort( $log, array( $this, 'compareVersions' ) );
+            $last = end( $log );
+
+            // Cache extracted data
+            vcsCache::cache( $this->path, $this->currentVersion = (string) $last->version, 'log', $log );
         }
 
         return $log;
@@ -149,11 +164,11 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
     {
         $versions = array();
         $log = $this->getResourceLog();
-        foreach ( $log->logentry as $entry )
+        foreach ( $log as $entry )
         {
-            $versions[] = (string) $entry['revision'];
+            $versions[] = (string) $entry->version;
         }
-        usort( $versions, array( $this, 'compareVersions' ) );
+
         return $versions;
     }
 
@@ -179,19 +194,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getLog()
     {
-        $versions = array();
-        $log      = $this->getResourceLog();
-        foreach ( $log->logentry as $entry )
-        {
-            $versions[(string) $entry['revision']] = new vcsLogEntry(
-                $entry['revision'],
-                $entry->author,
-                $entry->msg,
-                strtotime( $entry->date )
-            );
-        }
-        uksort( $versions, array( $this, 'compareVersions' ) );
-        return $versions;
+        return $this->getResourceLog();
     }
 
     /**
@@ -199,7 +202,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getLogEntry( $version )
     {
-        $log = $this->getLog();
+        $log = $this->getResourceLog();
 
         if ( !isset( $log[$version] ) )
         {
