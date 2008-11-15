@@ -61,7 +61,7 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
 
     }
 
-    public function testInitializeCheckoutCheckout()
+    public function testInitializeCheckout()
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
         $repository->initialize( realpath( __DIR__ . '/../data/archive.zip' ) );
@@ -72,11 +72,12 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
         );
     }
 
-    public function testUpdateCheckoutCheckout()
+    public function testUpdateCheckout()
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
         $repository->initialize( realpath( __DIR__ . '/../data/archive.zip' ) );
-        $repository->update();
+
+        $this->assertFalse( $repository->update(), "There are never updates available for archive checkouts." );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),

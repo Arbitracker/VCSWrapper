@@ -29,6 +29,15 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
         $cacheMetaData->created( $path, 10 );
     }
 
+    public function testReCreateCacheEntry()
+    {
+        $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );
+
+        file_put_contents( $this->tempDir . ( $path = '/foo' ), '0123456789' );
+        $cacheMetaData->created( $path, 123 );
+        $cacheMetaData->created( $path, 123 );
+    }
+
     public function testUpdateAccessTime()
     {
         $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );

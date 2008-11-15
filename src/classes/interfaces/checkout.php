@@ -49,13 +49,14 @@ interface vcsCheckout extends vcsDirectory
     /**
      * Update repository
      *
-     * Update the repository to the most current state.
+     * Update the repository to the most current state. Method will return
+     * true, if an update happened, and false if no update was available.
      *
      * Optionally a version can be specified, in which case the repository
      * won't be updated to the latest version, but to the specified one.
      * 
      * @param string $version
-     * @return void
+     * @return bool
      */
     public function update( $version = null );
 }

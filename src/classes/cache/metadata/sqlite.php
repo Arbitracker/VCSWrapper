@@ -85,7 +85,7 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
         $time = ( $time === null ) ? time() : $time;
 
         // Insert new cached item into meta data storage
-        $query = $this->db->prepare( 'INSERT INTO metadata ( path, size, accessed ) VALUES ( :path, :size, :accessed )' );
+        $query = $this->db->prepare( 'REPLACE INTO metadata ( path, size, accessed ) VALUES ( :path, :size, :accessed )' );
         $query->bindValue( ':path',     $path );
         $query->bindValue( ':size',     $size );
         $query->bindValue( ':accessed', $time );
