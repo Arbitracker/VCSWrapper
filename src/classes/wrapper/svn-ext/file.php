@@ -26,7 +26,7 @@
 /*
  * File implementation vor SVN Ext wrapper
  */
-class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsFetchable, vcsDiffable
+class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, vcsFetchable, vcsDiffable
 {
     /**
      * @inheritdoc
@@ -50,6 +50,39 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsFetchable, 
 
         // If not set, fall back to application/octet-stream
         return 'application/octet-stream';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function blame( $version = null )
+    {
+        $version = ( $version === null ) ? $this->getVersionString() : $version;
+
+        if ( !in_array( $version, $this->getVersions(), true ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        if ( ( $blame = vcsCache::get( $this->path, $version, 'blame' ) ) === false )
+        {
+            $svnBlame = svn_blame( $this->root . $this->path );
+
+            $blame = array();
+            foreach ( $svnBlame as $entry )
+            {
+                $blame[] = new vcsBlameStruct(
+                    $entry['line'],
+                    $entry['rev'],
+                    $entry['author'],
+                    strtotime( $entry['date'] )
+                );
+            }
+
+            vcsCache::cache( $this->path, $version, 'blame', $blame );
+        }
+
+        return $blame;
     }
 
     /**

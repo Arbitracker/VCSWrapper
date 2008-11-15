@@ -42,8 +42,8 @@ class vcsSvnExtTestSuite extends PHPUnit_Framework_TestSuite
         parent::__construct();
         $this->setName( 'SVN ext wrapper suite' );
 
-        $this->addTest( vcsSvnExtCheckoutTests::suite() );
-        $this->addTest( vcsSvnExtDirectoryTests::suite() );
+//        $this->addTest( vcsSvnExtCheckoutTests::suite() );
+//        $this->addTest( vcsSvnExtDirectoryTests::suite() );
         $this->addTest( vcsSvnExtFileTests::suite() );
     }
 
