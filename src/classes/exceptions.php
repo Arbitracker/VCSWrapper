@@ -123,6 +123,23 @@ class vcsNotCacheableException extends vcsException
 }
 
 /**
+ * Exception thrown when a checkout of a repository failed.
+ */
+class vcsCheckoutFailedException extends vcsException
+{
+    /**
+     * Construct exception
+     * 
+     * @param string $url
+     * @return void
+     */
+    public function __construct( $url )
+    {
+        parent::__construct( "Checkout of repository at '$url' failed." );
+    }
+}
+
+/**
  * Exception thrown when a version is requested from a repository, which does
  * not exist.
  */

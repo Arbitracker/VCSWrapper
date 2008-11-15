@@ -123,7 +123,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceProperty( $property )
     {
-        if ( ( $mimeType = vcsCache::get( $this->path, $this->currentVersion, $property ) ) === false )
+        if ( ( $value = vcsCache::get( $this->path, $this->currentVersion, $property ) ) === false )
         {
             // Refetch the basic mimeTypermation, and cache it.
             $process = new vcsSvnCliProcess();
@@ -141,7 +141,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             vcsCache::cache( $this->path, $this->currentVersion, $property, $value );
         }
 
-        return $mimeType;
+        return $value;
     }
 
     /**
