@@ -98,7 +98,10 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
         {
             foreach ( $this->directories as $dir )
             {
-                $this->removeRecursively( $dir );
+                if ( is_dir( $dir ) )
+                {
+                    $this->removeRecursively( $dir );
+                }
             }
         }
     }

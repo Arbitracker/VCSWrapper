@@ -48,6 +48,25 @@ class vcsNoSuchFileException extends vcsException
 }
 
 /**
+ * Exception thrown, when something totally unexpected happens, for no
+ * custom exception really makes sense, because the wrapper state cannot
+ * be handled properly on application side.
+ */
+class vcsRuntimeException extends vcsException
+{
+    /**
+     * Construct exception
+     * 
+     * @param string $message
+     * @return void
+     */
+    public function __construct( $message )
+    {
+        parent::__construct( "Runtime exception: $message" );
+    }
+}
+
+/**
  * Exception thrown, when a requested file could not be found.
  */
 class vcsXmlParserException extends vcsException
