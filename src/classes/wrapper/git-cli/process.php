@@ -45,6 +45,7 @@ class vcsGitCliProcess extends pbsSystemProcess
     public function __construct( $executable = 'env' )
     {
         parent::__construct( $executable );
+        self::checkVersion();
 
         $this->nonZeroExitCodeException = true;
         $this->argument( 'git' )->argument( '--no-pager' );
@@ -65,7 +66,7 @@ class vcsGitCliProcess extends pbsSystemProcess
             return true;
         }
 
-        $process = new pbsSystemProcess();
+        $process = new pbsSystemProcess( 'env' );
         $process->argument( 'git' )->argument( '--version' )->execute();
 
         if ( !preg_match( '(\\d+(?:\.\\d+)+)', $process->stdoutOutput, $match ) )
@@ -73,7 +74,7 @@ class vcsGitCliProcess extends pbsSystemProcess
             throw new vcsRuntimeException( 'Could not determine GIT version.' );
         }
 
-        if ( version_compare( $match[0], '1.6' ) )
+        if ( version_compare( $match[0], '1.6', '>=' ) )
         {
             return self::$checked = true;
         }
