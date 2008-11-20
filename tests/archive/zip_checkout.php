@@ -95,6 +95,7 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
         {
             $files[] = (string) $file;
         }
+        sort( $files );
 
         $this->assertEquals(
             array(

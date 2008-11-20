@@ -47,6 +47,7 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
         {
             $files[] = (string) $file;
         }
+        sort( $files );
 
         $this->assertEquals(
             array(
@@ -71,6 +72,7 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
         {
             $files[] = (string) $file;
         }
+        sort( $files );
 
         $this->assertEquals(
             array(

@@ -312,6 +312,7 @@ class vcsGitCliCheckoutTests extends vcsTestCase
         {
             $files[] = (string) $file;
         }
+        sort( $files );
 
         $this->assertEquals(
             array(

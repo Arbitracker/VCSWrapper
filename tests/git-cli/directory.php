@@ -42,6 +42,7 @@ class vcsGitCliDirectoryTests extends vcsTestCase
         {
             $files[] = (string) $file;
         }
+        sort( $files );
 
         $this->assertEquals(
             array(
@@ -66,6 +67,7 @@ class vcsGitCliDirectoryTests extends vcsTestCase
         {
             $files[] = (string) $file;
         }
+        sort( $files );
 
         $this->assertEquals(
             array(
