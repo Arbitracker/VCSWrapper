@@ -68,8 +68,10 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
 
         file_put_contents( $this->tempDir . ( $path1 = '/foo1' ), '0123456789' );
         $cacheMetaData->created( $path1, 10, 1 );
+        sleep( 1 );
         file_put_contents( $this->tempDir . ( $path2 = '/foo2' ), '0123456789' );
         $cacheMetaData->created( $path2, 10, 2 );
+        sleep( 1 );
         file_put_contents( $this->tempDir . ( $path3 = '/foo3' ), '0123456789' );
         $cacheMetaData->created( $path3, 10, 3 );
 
