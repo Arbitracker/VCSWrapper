@@ -30,7 +30,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
 {
     /**
      * Current version of the given resource
-     * 
+     *
      * @var string
      */
     protected $currentVersion = null;
@@ -52,7 +52,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             $process = new vcsSvnCliProcess();
             $process->argument( '--xml' );
 
-            // Fecth for specified version, if set
+            // Fetch for specified version, if set
             if ( $this->currentVersion !== null )
             {
                 $process->argument( '-r' . $this->currentVersion );
