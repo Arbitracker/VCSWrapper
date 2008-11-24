@@ -58,7 +58,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
                 $process->argument( '-r' . $this->currentVersion );
             }
 
-            // Execute infor command
+            // Execute info command
             $return = $process->argument( 'info' )->argument( $this->root . $this->path )->execute();
 
             $info = vcsXml::loadString( $process->stdoutOutput );
