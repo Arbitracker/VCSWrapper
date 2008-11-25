@@ -154,26 +154,29 @@ class vcsSvnCliCheckoutTests extends vcsTestCase
 
     public function testUpdateCheckoutWithUpdate()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-
         // Copy the repository to not chnage the test reference repository
         $repDir = $this->createTempDir() . '/svn';
         self::copyRecursive( realpath( __DIR__ . '/../data/svn' ), $repDir );
-        $repository->initialize( 'file://' . $repDir );
+
+        // Create two repositories one for the checkin one for the test checkout
+        $checkin = new vcsSvnCliCheckout( $this->tempDir . '/ci' );
+        $checkin->initialize( 'file://' . $repDir );
+
+        $checkout = new vcsSvnCliCheckout( $this->tempDir . '/co' );
+        $checkout->initialize( 'file://' . $repDir );
 
         // Manually execute update in repository
-        file_put_contents( $file = $this->tempDir . '/another', 'Some test contents' );
+        file_put_contents( $file = $this->tempDir . '/ci/another', 'Some test contents' );
         $svn = new vcsSvnCliProcess();
         $svn->argument( 'add' )->argument( $file )->execute();
         $svn = new vcsSvnCliProcess();
         $svn->argument( 'commit' )->argument( $file )->argument( '-m' )->argument( '- Test commit.' )->execute();
 
-        $this->assertTrue( $repository->update(), "Repository should have had an update available." );
+        $this->assertTrue( $checkin->update(), "Repository should have had an update available." );
 
-        $this->assertTrue(
-            file_exists( $this->tempDir . '/file' ),
-            'Expected file "/file" in checkout.'
-        );
+        $this->assertFileNotExists( $this->tempDir . '/co/another' );
+        $this->assertTrue( $checkout->update(), "Repository should have had an update available." );
+        $this->assertFileExists( $this->tempDir . '/co/another' );
     }
 
     public function testGetVersionString()
