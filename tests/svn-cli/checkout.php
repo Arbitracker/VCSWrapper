@@ -7,7 +7,7 @@
  */
 
 /**
- * Tests for the SQLite cache meta data handler
+ * Tests for the SVN Cli checkout/repository wrapper
  */
 class vcsSvnCliCheckoutTests extends vcsTestCase
 {
