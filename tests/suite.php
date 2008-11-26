@@ -32,6 +32,7 @@ require 'cache_suite.php';
 require 'svn_cli_suite.php';
 require 'svn_ext_suite.php';
 require 'git_cli_suite.php';
+require 'cvs_cli_suite.php';
 require 'archive_suite.php';
 
 /**
@@ -55,6 +56,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
         $this->addTestSuite( vcsSvnCliTestSuite::suite() );
         $this->addTestSuite( vcsSvnExtTestSuite::suite() );
         $this->addTestSuite( vcsGitCliTestSuite::suite() );
+        $this->addTestSuite( vcsCvsCliTestSuite::suite() );
         $this->addTestSuite( vcsArchiveTestSuite::suite() );
     }
 

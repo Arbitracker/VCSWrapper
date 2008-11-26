@@ -6,6 +6,7 @@ $modules = array(
 	'xml'     => array( 'vcsXmlTestSuite', 'tests/xml_suite.php' ),
 	'diff'    => array( 'vcsDiffTestSuite', 'tests/diff_suite.php' ),
 	'cache'   => array( 'vcsCacheTestSuite', 'tests/cache_suite.php' ),
+	'cvs-cli' => array( 'vcsCvsCliTestSuite', 'tests/cvs_cli_suite.php' ),
 	'svn-cli' => array( 'vcsSvnCliTestSuite', 'tests/svn_cli_suite.php' ),
 	'svn-ext' => array( 'vcsSvnExtTestSuite', 'tests/svn_ext_suite.php' ),
 	'git-cli' => array( 'vcsGitCliTestSuite', 'tests/git_cli_suite.php' ),
