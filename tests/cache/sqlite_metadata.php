@@ -27,6 +27,8 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
         {
             $this->markTestSkipped( 'sqlite3 extension required for this test.' );
         }
+
+        parent::setUp();
     }
 
     public function testStoreCreationDate()
