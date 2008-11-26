@@ -32,7 +32,7 @@ class vcsUnifiedDiffParserTests extends vcsTestCase
     {
         if ( self::$diffs !== null ) return $diffs;
 
-        $files = glob( __DIR__ . '/../data/diff/unified/s_*.diff' );
+        $files = glob( dirname( __FILE__ ) . '/../data/diff/unified/s_*.diff' );
         foreach ( $files as $file )
         {
             self::$diffs[] = array(

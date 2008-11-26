@@ -65,7 +65,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
      */
     public static function suite()
     {
-        return new static( __CLASS__ );
+        return new vcsTestSuite( __CLASS__ );
     }
 }
 

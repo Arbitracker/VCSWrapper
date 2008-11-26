@@ -38,7 +38,7 @@ class vcsArchiveFileTests extends vcsTestCase
     public function testGetFileContents()
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( __DIR__ . '/../data/archive.zip' ) );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
         $file = new vcsArchiveFile( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -50,7 +50,7 @@ class vcsArchiveFileTests extends vcsTestCase
     public function testGetFileMimeType()
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( __DIR__ . '/../data/archive.zip' ) );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
         $file = new vcsArchiveFile( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(

@@ -33,7 +33,7 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
     public function testIterateRootDirContents()
     {
         $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $dir = new vcsSvnCliDirectory( $this->tempDir, '/' );
 
@@ -57,7 +57,7 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
     public function testRecursiveIterator()
     {
         $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $dir      = new vcsSvnCliDirectory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
@@ -83,7 +83,7 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
     public function testIterateSubDirContents()
     {
         $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $dir = new vcsSvnCliDirectory( $this->tempDir, '/dir1/' );
 

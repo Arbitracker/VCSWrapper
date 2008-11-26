@@ -23,6 +23,6 @@ elseif ( count( $argv ) < 2 )
     $_SERVER['argv'] = array_merge( $argv, array( 'vcsTestSuite', 'tests/suite.php' ) );
 }
 
-require __DIR__ . '/tests/runner/command.php';
+require dirname( __FILE__ ) . '/tests/runner/command.php';
 arbitTextUiCommand::main();
 

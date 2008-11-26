@@ -38,7 +38,7 @@ class vcsArchiveDirectoryTests extends vcsTestCase
     public function testIterateRootDirContents()
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( __DIR__ . '/../data/archive.zip' ) );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
 
         $dir = new vcsArchiveDirectory( $this->tempDir, '/' );
 
@@ -62,7 +62,7 @@ class vcsArchiveDirectoryTests extends vcsTestCase
     public function testRecursiveIterator()
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( __DIR__ . '/../data/archive.zip' ) );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
 
         $dir      = new vcsArchiveDirectory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
@@ -88,7 +88,7 @@ class vcsArchiveDirectoryTests extends vcsTestCase
     public function testIterateSubDirContents()
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( __DIR__ . '/../data/archive.zip' ) );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
 
         $dir = new vcsArchiveDirectory( $this->tempDir, '/dir1/' );
 

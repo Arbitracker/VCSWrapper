@@ -99,9 +99,9 @@ class vcsBaseStruct implements vcsCacheable
      * @param array $properties 
      * @return arbitBaseStruct
      */
-    public static function __set_state( array $properties )
+    public static function __set_state( array $properties, $class = __CLASS__ )
     {
-        $struct = new static();
+        $struct = new $class();
 
         foreach ( $properties as $key => $value )
         {

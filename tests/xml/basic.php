@@ -30,7 +30,7 @@ class vcsXmlTests extends vcsTestCase
     {
         try
         {
-            $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/not_existing_file.xml.xml' );
+            $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/not_existing_file.xml.xml' );
             $this->fail( 'Expected vcsNoSuchFileException.' );
         }
         catch( vcsNoSuchFileException $e )
@@ -46,7 +46,7 @@ class vcsXmlTests extends vcsTestCase
     {
         try
         {
-            $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/broken_1.xml' );
+            $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/broken_1.xml' );
             $this->fail( 'Expected vcsXmlParserException.' );
         }
         catch( vcsXmlParserException $e )
@@ -62,7 +62,7 @@ class vcsXmlTests extends vcsTestCase
     {
         try
         {
-            $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/broken_2.xml' );
+            $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/broken_2.xml' );
             $this->fail( 'Expected vcsXmlParserException.' );
         }
         catch( vcsXmlParserException $e )
@@ -78,7 +78,7 @@ class vcsXmlTests extends vcsTestCase
     {
         try
         {
-            $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/broken_3.xml' );
+            $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/broken_3.xml' );
             $this->fail( 'Expected vcsXmlParserException.' );
         }
         catch( vcsXmlParserException $e )
@@ -92,7 +92,7 @@ class vcsXmlTests extends vcsTestCase
      */
     public function testMinimalXmlFile()
     {
-        $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/minimal.xml' );
+        $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/minimal.xml' );
 
         $this->assertTrue(
             $xml instanceof vcsXml
@@ -106,7 +106,7 @@ class vcsXmlTests extends vcsTestCase
      */
     public function testMinimalXmlString()
     {
-        $xml = vcsXml::loadString( file_get_contents( __DIR__ . '/../data/xml/minimal.xml' ) );
+        $xml = vcsXml::loadString( file_get_contents( dirname( __FILE__ ) . '/../data/xml/minimal.xml' ) );
 
         $this->assertTrue(
             $xml instanceof vcsXml
@@ -120,7 +120,7 @@ class vcsXmlTests extends vcsTestCase
      */
     public function testTextContent()
     {
-        $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/text.xml' );
+        $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/text.xml' );
 
         $this->assertTrue(
             $xml instanceof vcsXmlNode
@@ -144,7 +144,7 @@ class vcsXmlTests extends vcsTestCase
      */
     public function testXmlWithAttributes()
     {
-        $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/attributes.xml' );
+        $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/attributes.xml' );
 
         $this->assertTrue(
             $xml->element instanceof vcsXmlNodeList
@@ -176,7 +176,7 @@ class vcsXmlTests extends vcsTestCase
      */
     public function testMultilevelNodeListCreation()
     {
-        $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/multilevel.xml' );
+        $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/multilevel.xml' );
 
         $this->assertTrue(
             $xml->section->module instanceof vcsXmlNodeList
@@ -200,7 +200,7 @@ class vcsXmlTests extends vcsTestCase
      */
     public function testNodeListIterator()
     {
-        $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/multilevel.xml' );
+        $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/multilevel.xml' );
 
         $modules = $xml->section->module;
 

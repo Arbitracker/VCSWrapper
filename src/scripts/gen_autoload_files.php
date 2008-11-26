@@ -24,7 +24,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-$basePath = __DIR__ . '/../';
+$basePath = dirname( __FILE__ ) . '/../';
 
 // Add core to search paths
 $searchPaths = array(

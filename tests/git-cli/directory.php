@@ -33,7 +33,7 @@ class vcsGitCliDirectoryTests extends vcsTestCase
     public function testIterateRootDirContents()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
 
         $dir = new vcsGitCliDirectory( $this->tempDir, '/' );
 
@@ -57,7 +57,7 @@ class vcsGitCliDirectoryTests extends vcsTestCase
     public function testRecursiveIterator()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
 
         $dir      = new vcsGitCliDirectory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
@@ -84,7 +84,7 @@ class vcsGitCliDirectoryTests extends vcsTestCase
     public function testIterateSubDirContents()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
 
         $dir = new vcsGitCliDirectory( $this->tempDir, '/dir1/' );
 

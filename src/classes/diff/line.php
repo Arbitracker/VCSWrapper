@@ -66,5 +66,19 @@ class vcsDiffLine extends vcsBaseStruct
         $this->type    = $type;
         $this->content = $content;
     }
+
+    /**
+     * Recreate struct exported by var_export()
+     *
+     * Recreate struct exported by var_export()
+     * 
+     * @ignore
+     * @param array $properties 
+     * @return arbitBaseStruct
+     */
+    public static function __set_state( array $properties, $class = __CLASS__ )
+    {
+        return vcsBaseStruct::__set_state( $properties, $class );
+    }
 }
 

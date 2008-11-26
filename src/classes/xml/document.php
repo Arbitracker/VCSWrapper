@@ -89,7 +89,7 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
         $reader->open( $xmlFile );
 
         // Current node, processed. Start with a reference to th root node.
-        $current = $root = new static();
+        $current = $root = new vcsXml();
 
         // Stack of parents for the current node. We store this list, because
         // we do not want to store a parent node reference in the nodes, as

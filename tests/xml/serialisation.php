@@ -28,7 +28,7 @@ class vcsXmlSerializeTests extends vcsTestCase
      */
     public function testMinimalSerilization()
     {
-        $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/minimal.xml' );
+        $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/minimal.xml' );
 
         // This result should come out of the cache.
         eval( '$cachedXml = ' . var_export( $xml, true ) . ';' );
@@ -44,7 +44,7 @@ class vcsXmlSerializeTests extends vcsTestCase
      */
     public function testExampleSerilization()
     {
-        $xml = vcsXml::loadFile( __DIR__ . '/../data/xml/example.xml' );
+        $xml = vcsXml::loadFile( dirname( __FILE__ ) . '/../data/xml/example.xml' );
 
         // This result should come out of the cache.
         eval( '$cachedXml = ' . var_export( $xml, true ) . ';' );

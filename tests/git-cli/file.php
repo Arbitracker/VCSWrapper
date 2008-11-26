@@ -33,7 +33,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetVersionString()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -45,7 +45,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetVersions()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -60,7 +60,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetAuthor()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -72,7 +72,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetLog()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -91,7 +91,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetLogEntry()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -105,7 +105,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         try {
@@ -118,7 +118,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetFileContents()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -130,7 +130,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetFileMimeType()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -142,7 +142,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetFileBlame()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -167,7 +167,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetFileBlameInvalidVersion()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         try {
@@ -180,7 +180,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetFileDiff()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "43fb423f4ee079af2f3cba4e07eb8b10f4476815" );
@@ -202,7 +202,7 @@ class vcsGitCliFileTests extends vcsTestCase
     public function testGetFileDiffUnknownRevision()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/git' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         try {

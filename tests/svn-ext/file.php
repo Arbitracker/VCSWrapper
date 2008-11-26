@@ -38,7 +38,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetVersionString()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -50,7 +50,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetVersions()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -62,7 +62,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetAuthor()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -74,7 +74,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetLog()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -99,7 +99,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetLogEntry()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -116,7 +116,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         try {
@@ -129,7 +129,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetFileContents()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -141,7 +141,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetFileMimeType()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -153,7 +153,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetFileVersionedFileContents()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -165,7 +165,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetFileContentsInvalidVersion()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         try {
@@ -178,7 +178,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetFileBlame()
     {
         $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -203,7 +203,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetFileBlameInvalidVersion()
     {
         $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         try {
@@ -216,7 +216,7 @@ class vcsSvnExtFileTests extends vcsTestCase
     public function testGetFileDiff()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( 1 );

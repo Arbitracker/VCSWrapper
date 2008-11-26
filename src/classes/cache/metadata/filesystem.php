@@ -129,20 +129,29 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
         $iterator = new RecursiveIteratorIterator( 
             new RecursiveDirectoryIterator( $this->root, RecursiveDirectoryIterator::CURRENT_AS_FILEINFO )
         );
-        $priorityQueue = new SplPriorityQueue();
+
+        $ctimes   = array();
+        $filedata = array();
         foreach ( $iterator as $file )
         {
             if ( $file->isFile() &&
                  ( $file->getFilename() !== basename( $this->storage ) ) )
             {
-                $priorityQueue->insert( array( $file->getRealPath(), $file->getSize() ), -$file->getCTime() );
+                $ctimes[]   = $file->getCTime();
+                $filedata[] = array( $file->getRealPath(), $file->getSize() );
             }
         }
+
+        // Sort the file data depending on the ctimes
+        array_multisort(
+            $ctimes, SORT_NUMERIC, SORT_ASC,
+            $filedata
+        );
 
         // Remove files until we reached the maximum cache size
         $maxSize = $size * $rate;
         $reduced = 0;
-        foreach ( $priorityQueue as $file )
+        foreach ( $filedata as $file )
         {
             $reduced += $file[1];
             unlink( $file[0] );

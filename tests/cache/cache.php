@@ -15,7 +15,7 @@ class vcsTestCacheableObject implements vcsCacheable
     }
     public static function __set_state( array $properties )
     {
-        return new static( reset( $properties ) );
+        return new vcsTestCacheableObject( reset( $properties ) );
     }
 }
 

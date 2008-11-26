@@ -21,6 +21,14 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 		return new PHPUnit_Framework_TestSuite( __CLASS__ );
 	}
 
+    public function setUp()
+    {
+        if ( !extension_loaded( 'sqlite3' ) )
+        {
+            $this->markTestSkipped( 'sqlite3 extension required for this test.' );
+        }
+    }
+
     public function testStoreCreationDate()
     {
         $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );

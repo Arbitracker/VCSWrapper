@@ -201,7 +201,13 @@ class vcsCache
         }
 
         $cacheFile = self::getFileName( $resource, $version, $key );
-        mkdir( dirname( self::$path . $cacheFile ), 0770, true );
+
+        $cacheFileDir = dirname( self::$path . $cacheFile );
+        if ( !is_dir( $cacheFileDir ) )
+        {
+            mkdir( dirname( self::$path . $cacheFile ), 0770, true );
+        }
+
         file_put_contents( self::$path . $cacheFile, sprintf( "<?php\n\nreturn %s;\n\n", var_export( $value, true ) ) );
         self::$metaDataHandler->created( $cacheFile, filesize( self::$path . $cacheFile ) );
     }

@@ -53,7 +53,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testInitializeCheckout()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -64,7 +64,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testUpdateCheckout()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertFalse( $repository->update(), "Repository should already be on latest revision." );
 
@@ -100,7 +100,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     * @param int $fileMode
     * @return void
     */
-    static public function copyRecursive( $source, $destination, $depth = -1, $dirMode = 0775, $fileMode = 0664 )
+    public static function copyRecursive( $source, $destination, $depth = -1, $dirMode = 0775, $fileMode = 0664 )
     {
         // Check if source file exists at all.
         if ( !is_file( $source ) && !is_dir( $source ) )
@@ -165,7 +165,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
 
         // Copy the repository to not chnage the test reference repository
         $repDir = $this->createTempDir() . '/svn';
-        self::copyRecursive( realpath( __DIR__ . '/../data/svn' ), $repDir );
+        self::copyRecursive( realpath( dirname( __FILE__ ) . '/../data/svn' ), $repDir );
         $repository->initialize( 'file://' . $repDir );
 
         // Manually execute update in repository
@@ -186,7 +186,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testGetVersionString()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertSame(
             "5",
@@ -197,7 +197,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testGetVersions()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertSame(
             array( "1", "2", "3", "4", "5" ),
@@ -210,7 +210,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
         return $this->markTestSkipped( 'Update to earlier versions seems not to be supported by pecl/svn.' );
 
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
             'Expected file "/file" in checkout.'
@@ -227,7 +227,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testCompareVersions()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertTrue(
             $repository->compareVersions( "1", "2" ) < 0
@@ -245,7 +245,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testGetAuthor()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertEquals(
             'kore',
@@ -256,7 +256,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testGetLog()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertEquals(
             array(
@@ -298,7 +298,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testGetLogEntry()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertEquals(
             new vcsLogEntry(
@@ -314,7 +314,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         try {
             $repository->getLogEntry( "no_such_version" );
@@ -326,7 +326,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     public function testIterateCheckoutContents()
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../data/svn' ) );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $files = array();
         foreach ( $repository as $file )
