@@ -1,7 +1,9 @@
 head	1.2;
 access;
 symbols
-	initial-tags:1.1.1.1 initial-tag:1.1.1;
+	milestone:1.2
+	initial-tags:1.1.1.1
+	initial-tag:1.1.1;
 locks; strict;
 comment	@# @;
 
