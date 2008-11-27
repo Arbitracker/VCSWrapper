@@ -41,7 +41,7 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
      * Get the base information, like version, author, etc for the current
      * resource in the current version.
      *
-     * @return vcsXml
+     * @return vcsLogEntry
      */
     protected function getResourceInfo()
     {
@@ -51,40 +51,20 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
             return $info;
         }
 
-        $version = $this->currentVersion;
-        if ( $version === null )
+        $log = $this->getResourceLog();
+
+        // Fecth for specified version, if set
+        if ( $this->currentVersion !== null )
         {
-            $version = 'HEAD';
+            $info = $log[$this->currentVersion];
+        }
+        else
+        {
+            $info = end( $log );
         }
 
-        $process = new vcsCvsCliProcess();
-        $process->workingDirectory( $this->root )
-                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
-                ->argument( 'log' )
-                ->argument( '-r' . $version )
-                ->argument( '.' . $this->path )
-                ->execute();
-
-        $regexp = '(\-{27}(\r\n|\r|\n)
-                   (?# Get revision number )
-                   revision\s+(?P<revision>[\d\.]+)(\r\n|\r|\n)
-                   (?# Get commit date )
-                   date:\s+(?P<date>[^;]+);\s+
-                   (?# Get commit author )
-                   author:\s+(?P<author>[^;]+);\s+
-                   (?# Skip everything else )
-                   [^\n\r]+;(\r\n|\r|\n)
-                   (?# Get commit message )
-                   (?P<message>[\r\n\t]*|.*)$)xs';
-
-        $output = rtrim( substr( rtrim( $process->stdoutOutput ), 0, -77 ) );
-        if ( preg_match( $regexp, $output, $match ) === 0 )
-        {
-            return null;
-        }
-
-        $info = new vcsLogEntry( $match['revision'], $match['author'], $match['message'], $match['date'] );
-        vcsCache::cache( $this->path, $this->currentVersion = (string) $info->version, 'info', $info );
+        $this->currentVersion = $info->version;
+        vcsCache::cache( $this->path, $this->currentVersion, 'info', $info );
 
         return $info;
     }
@@ -94,7 +74,7 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
      *
      * Get the full log for the current resource up tu the current revision
      *
-     * @return vcsXml
+     * @return array(vcsLogEntry)
      */
     protected function getResourceLog()
     {
@@ -120,8 +100,7 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
 
         $log = array();
 
-        $regexp = '(\-{27}(\r\n|\r|\n)
-                   (?# Get revision number )
+        $regexp = '((?# Get revision number )
                    revision\s+(?P<revision>[\d\.]+)(\r\n|\r|\n)
                    (?# Get commit date )
                    date:\s+(?P<date>[^;]+);\s+
@@ -129,27 +108,36 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
                    author:\s+(?P<author>[^;]+);\s+
                    (?# Skip everything else )
                    [^\n\r]+;(\r\n|\r|\n)
+                   (branches:\s+[^\n\r]+;(\r\n|\r|\n))?
                    (?# Get commit message )
-                   (?P<message>[\r\n\t]*|.*)(\r\n|\r|\n)$)xs';
+                   (?P<message>[\r\n\t]*|.*)$)xs';
 
         // Remove closing equal characters
         $output = rtrim( substr( rtrim( $process->stdoutOutput ), 0, -77 ) );
         // Split all log entries
-        $rawLogs = explode( '---------------------------', $output );
+        $rawLogs = explode( '----------------------------', $output );
+        $rawLogs = array_map( 'trim', $rawLogs );
         foreach ( $rawLogs as $rawLog )
         {
             if ( preg_match( $regexp, $rawLog, $match ) === 0 )
             {
                 continue;
             }
+
+            $date     = strtotime( $match['date'] );
             $revision = $match['revision'];
-            $logEntry = new vcsLogEntry( $revision, $match['author'], $match['message'], $match['date'] );
+            $logEntry = new vcsLogEntry( $revision, $match['author'], $match['message'], $date );
 
             $log[$revision] = $logEntry;
         }
 
-        var_dump($logs);
+        $log  = array_reverse( $log );
+        $last = end( $log );
 
+        $this->currentVersion = $last->version;
+        vcsCache::cache( $this->path, $this->currentVersion, 'log', $log );
+
+        return $log;
     }
 
     /**
@@ -181,7 +169,14 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getVersions()
     {
-        $this->getResourceLog();
+        $versions = array();
+        $log = $this->getResourceLog();
+        foreach ( $log as $entry )
+        {
+            $versions[] = (string) $entry->version;
+        }
+
+        return $versions;
     }
 
     /**
@@ -189,7 +184,15 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
      */
     public static function compareVersions( $version1, $version2 )
     {
-
+        if ( version_compare( $version1, $version2, 'eq' ) === true )
+        {
+            return 0;
+        }
+        else if ( version_compare( $version1, $version2, 'gt' ) === true )
+        {
+            return 1;
+        }
+        return -1;
     }
 
     /**
@@ -197,7 +200,19 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getAuthor( $version = null )
     {
+        if ( $version === null )
+        {
+            return $this->getResourceInfo()->author;
+        }
 
+        $log = $this->getResourceLog();
+
+        if ( !isset( $log[$version] ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        return $log[$version]->author;
     }
 
     /**
@@ -205,7 +220,7 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getLog()
     {
-
+        return $this->getResourceLog();
     }
 
     /**
@@ -213,7 +228,14 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getLogEntry( $version )
     {
+        $log = $this->getResourceLog();
 
+        if ( !isset( $log[$version] ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        return $log[$version];
     }
 }
 

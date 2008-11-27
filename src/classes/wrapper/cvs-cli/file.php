@@ -58,7 +58,31 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      */
     public function getVersionedContent( $version )
     {
+        $versions = array_merge( array( 'HEAD' ), $this->getVersions() );
+        if ( !in_array( $version, $versions, true ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
 
+        if ( ( $content = vcsCache::get( $this->path, $version, 'content' ) ) === false )
+        {
+            // Refetch the basic contentrmation, and cache it.
+            $process = new vcsCvsCliProcess();
+            $process->workingDirectory( $this->root )
+                    ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+                    ->argument( 'update' )
+                    ->argument( '-p' )
+                    ->argument( '-r' )
+                    ->argument( $version )
+                    ->argument( '.' . $this->path )
+                    ->execute();
+
+            $output  = $process->stdoutOutput;
+            $content = ltrim( substr( $output, strpos( $output, '***************' ) + 15 ) );
+            vcsCache::cache( $this->path, $version, 'content', $content );
+        }
+
+        return $content;
     }
 
     /**

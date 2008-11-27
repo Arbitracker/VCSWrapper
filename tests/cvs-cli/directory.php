@@ -33,14 +33,18 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
     public function testIterateRootDirContents()
     {
         $repository = new vcsCvsCliCheckout( $this->tempDir );
-        $repository->initialize( realpath( __DIR__ . '/../data/cvs' ) . '#cvs' );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
 
         $dir = new vcsCvsCliDirectory( $this->tempDir, '/' );
 
         $files = array();
         foreach ( $dir as $file )
         {
-            $files[] = (string) $file;
+            // Stupid, but cvs also checks out the not versions .svn folders
+            if ( strpos( (string) $file, '.svn' ) === false )
+            {
+                $files[] = (string) $file;
+            }
         }
         sort( $files );
 
@@ -58,7 +62,7 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
     public function testRecursiveIterator()
     {
         $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../data/cvs' ) . '#cvs' );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
 
         $dir      = new vcsCvsCliDirectory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
@@ -66,7 +70,11 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
         $files = array();
         foreach ( $iterator as $file )
         {
-            $files[] = (string) $file;
+            // Stupid, but cvs also checks out the not versions .svn folders
+            if ( strpos( (string) $file, '.svn' ) === false )
+            {
+                $files[] = (string) $file;
+            }
         }
         sort( $files );
 
@@ -75,6 +83,7 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
                 '/dir/',
                 '/dir1/',
                 '/dir1/file',
+                '/dir1/file1',
                 '/dir2/',
                 '/file'
             ),
@@ -85,19 +94,25 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
     public function testIterateSubDirContents()
     {
         $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../data/cvs' ) . '#cvs' );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
 
         $dir = new vcsCvsCliDirectory( $this->tempDir, '/dir1/' );
 
         $files = array();
         foreach ( $dir as $file )
         {
-            $files[] = (string) $file;
+            // Stupid, but cvs also checks out the not versions .svn folders
+            if ( strpos( (string) $file, '.svn' ) === false )
+            {
+                $files[] = (string) $file;
+            }
         }
+        sort( $files );
 
         $this->assertEquals(
             array(
-                '/dir1/file'
+                '/dir1/file',
+                '/dir1/file1',
             ),
             $files
         );
