@@ -23,7 +23,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Resource implementation vor CVS Cli wrapper
  */
 abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged

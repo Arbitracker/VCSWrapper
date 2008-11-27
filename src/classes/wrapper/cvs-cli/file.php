@@ -23,7 +23,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * File implementation vor CVS Cli wrapper
  */
 class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, vcsFetchable, vcsDiffable
@@ -138,7 +138,34 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      */
     public function getDiff( $version, $current = null )
     {
+        $current = ( $current === null ) ? $this->getVersionString() : $current;
 
+        if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) !== false )
+        {
+            return $diff;
+        }
+
+        // Refetch the basic content information, and cache it.
+        $process = new vcsCvsCliProcess();
+        // WTF: Why is there a non zero exit code?
+        $process->nonZeroExitCodeException = false;
+        // Configure process instance
+        $process->workingDirectory( $this->root )
+                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+                ->argument( 'diff' )
+                ->argument( '-u' )
+                ->argument( '-r' )
+                ->argument( $version )
+                ->argument( '-r' )
+                ->argument( $current )
+                ->argument( '.' . $this->path )
+                ->execute();
+
+        $parser = new vcsUnifiedDiffParser();
+        $diff   = $parser->parseString( $process->stdoutOutput );
+        vcsCache::cache( $this->path, $version, 'diff', $diff );
+
+        return $diff;
     }
 }
 
