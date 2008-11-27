@@ -50,9 +50,7 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
 
         $this->assertEquals(
             array(
-                '/dir/',
                 '/dir1/',
-                '/dir2/',
                 '/file'
             ),
             $files
@@ -80,11 +78,9 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
 
         $this->assertEquals(
             array(
-                '/dir/',
                 '/dir1/',
                 '/dir1/file',
                 '/dir1/file1',
-                '/dir2/',
                 '/file'
             ),
             $files

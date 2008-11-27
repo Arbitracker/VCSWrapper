@@ -62,6 +62,7 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
         $process->argument( '-d' )
                 ->argument( $repoUrl )
                 ->argument( 'checkout' )
+                ->argument( '-P' )
                 ->argument( '-d' )
                 ->argument( $this->root )
                 ->argument( $module )

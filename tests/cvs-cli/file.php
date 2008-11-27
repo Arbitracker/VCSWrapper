@@ -185,4 +185,29 @@ class vcsCvsCliFileTests extends vcsTestCase
         $this->setExpectedException( 'vcsNoSuchVersionException' );
         $file->getVersionedContent( 'no_such_version' );
     }
+
+    public function testGetFileBlame()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+
+        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $this->assertEquals(
+            array(
+                new vcsBlameStruct(
+                    'Some test file',
+                    '1',
+                    'manu',
+                    1226412609
+                ),
+                new vcsBlameStruct(
+                    'A second line, in a later revision',
+                    '5',
+                    'manu',
+                    1226595170
+                ),
+            ),
+            $file->blame()
+        );
+    }
 }
