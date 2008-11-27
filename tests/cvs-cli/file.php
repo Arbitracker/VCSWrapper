@@ -191,23 +191,58 @@ class vcsCvsCliFileTests extends vcsTestCase
         $checkout = new vcsCvsCliCheckout( $this->tempDir );
         $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
         $this->assertEquals(
             array(
                 new vcsBlameStruct(
-                    'Some test file',
-                    '1',
+                    'Some test contents',
+                    '1.1',
                     'manu',
-                    1226412609
+                    1227481200
                 ),
                 new vcsBlameStruct(
-                    'A second line, in a later revision',
-                    '5',
+                    'More test contents',
+                    '1.2',
                     'manu',
-                    1226595170
+                    1227740400
+                ),
+                new vcsBlameStruct(
+                    'And another test line',
+                    '1.3',
+                    'manu',
+                    1227740400
                 ),
             ),
             $file->blame()
         );
+    }
+
+    public function testGetFileBlameWithVersion()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+
+        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $this->assertEquals(
+            array(
+                new vcsBlameStruct(
+                    'Some test contents',
+                    '1.1',
+                    'manu',
+                    1227481200
+                ),
+            ),
+            $file->blame( '1.1' )
+        );
+    }
+
+    public function testGetFileBlameWithInvalidVersion()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+
+        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $this->setExpectedException( 'vcsNoSuchVersionException' );
+        $file->blame( 'no_such_version' );
     }
 }

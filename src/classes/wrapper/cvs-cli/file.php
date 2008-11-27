@@ -50,7 +50,55 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      */
     public function blame( $version = null )
     {
+        $version = ( $version === null ) ? $this->getVersionString() : $version;
 
+        $versions = array_merge( array( 'HEAD' ), $this->getVersions() );
+        if ( !in_array( $version, $versions, true ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        if ( ( $blame = vcsCache::get( $this->path, $version, 'blame' ) ) !== false )
+        {
+            return $blame;
+        }
+
+        // Refetch the basic blamermation, and cache it.
+        $process = new vcsCvsCliProcess();
+        $process->workingDirectory( $this->root )
+                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+                ->argument( 'annotate' )
+                ->argument( '-r' )
+                ->argument( $version )
+                ->argument( '.' . $this->path )
+                ->execute();
+
+
+        $output   = $process->stdoutOutput;
+        $contents = trim( substr( $output, strpos( $output, '***************' ) + 15 ) );
+        $contents = preg_split( '(\r\n|\r|\n)', $contents );
+
+        $blame = array();
+        foreach ( $contents as $line )
+        {
+            $regexp = '((?P<revision>[0-9\.]+)\s+\(
+                       (?P<author>.*)\s+
+                       (?P<date>\S+)\):\s+
+                       (?P<content>.*)$)x';
+
+            preg_match( $regexp, $line, $match );
+
+            $blame[] = new vcsBlameStruct(
+                trim( $match['content'] ),
+                trim( $match['revision'] ),
+                trim( $match['author'] ),
+                strtotime( $match['date'] )
+            );
+        }
+
+        vcsCache::cache( $this->path, $version, 'blame', $blame );
+
+        return $blame;
     }
 
     /**
