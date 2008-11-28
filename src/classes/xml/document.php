@@ -34,7 +34,7 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
 {
     /**
      * Create XML document from file
-     * 
+     *
      * @param string $xmlFile
      * @return vcsXml
      */
@@ -52,13 +52,13 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
 
     /**
      * Create XML document from string
-     * 
+     *
      * @param string $xmlString
      * @return vcsXml
      */
     public static function loadString( $xmlString )
     {
-        $xmlFile = tempnam( sys_get_temp_dir(), 'xml_' );
+        $xmlFile = tempnam( self::getSysTempDir(), 'xml_' );
         file_put_contents( $xmlFile, $xmlString );
         $xml = self::parseXml( $xmlFile );
         unlink( $xmlFile );
@@ -66,11 +66,37 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
     }
 
     /**
+     * Returns the system temp directory.
+     *
+     * @return string
+     */
+    protected static function getSysTempDir()
+    {
+        if ( function_exists( 'sys_get_temp_dir' ) )
+        {
+            return sys_get_temp_dir();
+        }
+        else if ( $tmp = getenv( 'TMP' ) )
+        {
+            return $tmp;
+        }
+        else if ( $tmp = getenv( 'TEMP' ) )
+        {
+            return $tmp;
+        }
+        else if ( $tmp = getenv( 'TMPDIR' ) )
+        {
+            return $tmp;
+        }
+        return '/tmp';
+    }
+
+    /**
      * Parse XML file
      *
      * Parse the given XML into vcsXmlNode objects using the XMLReader class.
-     * 
-     * @param string $xmlFile 
+     *
+     * @param string $xmlFile
      * @return vcsXmlNode
      */
     protected static function parseXml( $xmlFile )
@@ -183,11 +209,11 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
 
     /**
      * Skip root node
-     * 
+     *
      * SimpleXML offers direct access to the childs of the root, without any
      * information about the actual root node. We do the same by just skipping
      * from the root node its first child.
-     * 
+     *
      * @return void
      */
     protected function skipRoot()
@@ -198,10 +224,10 @@ class vcsXml extends vcsXmlNode implements vcsCacheable
 
     /**
      * Set object state after var_export.
-     * 
+     *
      * Set object state after var_export.
-     * 
-     * @param array $array 
+     *
+     * @param array $array
      * @param string $class
      * @return vcsXml
      */
