@@ -55,6 +55,16 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
         );
     }
 
+    public function testInitializeCheckoutWithVersion()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#1.2' );
+
+        $this->assertFileExists( $this->tempDir . '/file' );
+        $this->assertFileExists( $this->tempDir . '/dir1/file' );
+        $this->assertFileNotExists( $this->tempDir . '/dir1/file1' );
+    }
+
     public function testUpdateCheckout()
     {
         $checkout = new vcsCvsCliCheckout( $this->tempDir );
@@ -116,5 +126,15 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
         $checkout->update( '1.0' );
         $this->assertFileNotExists( $this->tempDir . '/dir1/file', 'Expected file "/dir1/file" not in checkout.' );
+    }
+
+    public function testUpdateCheckoutFromTagToHead()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+
+        $this->assertFileNotExists( $this->tempDir . '/dir1/file1', 'Expected file "/dir1/file1" not in checkout.' );
+        $checkout->update( 'HEAD' );
+        $this->assertFileExists( $this->tempDir . '/dir1/file1', 'Expected file "/dir1/file1" in checkout.' );
     }
 }

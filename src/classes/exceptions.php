@@ -37,7 +37,7 @@ class vcsNoSuchFileException extends vcsException
 {
     /**
      * Construct exception
-     * 
+     *
      * @param string $file
      * @return void
      */
@@ -56,7 +56,7 @@ class vcsRuntimeException extends vcsException
 {
     /**
      * Construct exception
-     * 
+     *
      * @param string $message
      * @return void
      */
@@ -73,7 +73,7 @@ class vcsXmlParserException extends vcsException
 {
     /**
      * Human readable error names for libXML error type constants.
-     * 
+     *
      * @var array
      */
     protected $levels = array(
@@ -84,7 +84,7 @@ class vcsXmlParserException extends vcsException
 
     /**
      * Construct exception
-     * 
+     *
      * @param string $file
      * @param array $error
      * @return void
@@ -114,7 +114,7 @@ class vcsCacheNotInitializedException extends vcsException
 {
     /**
      * Construct exception
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -131,7 +131,7 @@ class vcsNotCacheableException extends vcsException
 {
     /**
      * Construct exception
-     * 
+     *
      * @param mixed $value
      * @return void
      */
@@ -148,7 +148,7 @@ class vcsCheckoutFailedException extends vcsException
 {
     /**
      * Construct exception
-     * 
+     *
      * @param string $url
      * @return void
      */
@@ -166,7 +166,7 @@ class vcsNoSuchVersionException extends vcsException
 {
     /**
      * Construct exception
-     * 
+     *
      * @param string $path
      * @param string $version
      * @return void
@@ -185,7 +185,7 @@ class vcsInvalidZipArchiveException extends vcsException
 {
     /**
      * Failure messages for the error codes.
-     * 
+     *
      * @var array
      */
     protected $messages = array(
@@ -217,7 +217,7 @@ class vcsInvalidZipArchiveException extends vcsException
 
     /**
      * Construct exception
-     * 
+     *
      * @param string $file
      * @param int $code
      * @return void
@@ -228,3 +228,20 @@ class vcsInvalidZipArchiveException extends vcsException
     }
 }
 
+/**
+ * Exception thrown when a checkout url could not be used to access a source
+ * repository.
+ */
+class vcsInvalidRepositoryUrlException extends vcsException
+{
+    /**
+     * Construct exception
+     *
+     * @param string $url
+     * @param string $wrapper
+     */
+    public function __construct( $url, $wrapper )
+    {
+        parent::__construct( 'Invalid ' .$wrapper . ' repository url: "' . $url . '".' );
+    }
+}

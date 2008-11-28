@@ -55,14 +55,28 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
      */
     public function initialize( $url, $user = null, $password = null )
     {
+        $count = substr_count( $url, '#' );
+        if ( $count === 1 )
+        {
+            $revision = null;
+            list( $repoUrl, $module ) = explode( '#', $url );
+        }
+        else if ( $count === 2 )
+        {
+            list( $repoUrl, $module, $revision ) = explode( '#', $url );
+        }
+        else
+        {
+            throw new vcsInvalidRepositoryUrlException( $url, 'cvs' );
+        }
+
         $process = new vcsCvsCliProcess();
-
-        list( $repoUrl, $module ) = explode( '#', $url );
-
         $process->argument( '-d' )
                 ->argument( $repoUrl )
                 ->argument( 'checkout' )
                 ->argument( '-P' )
+                ->argument( '-r' )
+                ->argument( $revision )
                 ->argument( '-d' )
                 ->argument( $this->root )
                 ->argument( $module )
