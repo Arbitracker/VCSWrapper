@@ -69,28 +69,39 @@ class vcsGitCliCheckoutTests extends vcsTestCase
 
     public function testUpdateCheckoutWithUpdate()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-
-        // Copy the repository to not chnage the test reference repository
         $repDir = $this->createTempDir() . '/git';
         self::copyRecursive( realpath( dirname( __FILE__ ) . '/../data/git' ), $repDir );
-        $repository->initialize( 'file://' . $repDir );
+
+        // Copy the repository to not chnage the test reference repository
+        $checkin = new vcsGitCliCheckout( $this->tempDir . '/ci' );
+        $checkin->initialize( 'file://' . $repDir );
+
+        $checkout = new vcsGitCliCheckout( $this->tempDir . '/co' );
+        $checkout->initialize( 'file://' . $repDir );
 
         // Manually execute update in repository
-        file_put_contents( $this->tempDir . '/' . ( $file = 'another' ), 'Some test contents' );
+        file_put_contents( $this->tempDir . '/ci/another', 'Some test contents' );
         $git = new vcsGitCliProcess();
-        $git->workingDirectory( $this->tempDir );
-        $git->argument( 'add' )->argument( $file )->execute();
+        $git->workingDirectory( $this->tempDir . '/ci' );
+        $git->argument( 'add' )->argument( 'another' )->execute();
+        
         $git = new vcsGitCliProcess();
-        $git->workingDirectory( $this->tempDir );
-        $git->argument( 'commit' )->argument( $file )->argument( '-m' )->argument( '- Test commit.' )->execute();
+        $git->workingDirectory( $this->tempDir . '/ci' );
+        $git->argument( 'commit' )->argument( 'another' )->argument( '-m' )->argument( '- Test commit.' )->execute();
 
-        $this->assertTrue( $repository->update(), "Repository should have had an update available." );
+        $git = new vcsGitCliProcess();
+        $git->workingDirectory( $this->tempDir . '/ci' );
+        $git->argument( 'merge' );
+        
+        $git = new vcsGitCliProcess();
+        $git->workingDirectory( $this->tempDir . '/ci' );
+        $git->argument( 'commit' )->argument( '-a' )->argument( '-m' )->argument( '- Test commit.' )->execute();
 
-        $this->assertTrue(
-            file_exists( $this->tempDir . '/file' ),
-            'Expected file "/file" in checkout.'
-        );
+        $this->assertTrue( $checkin->update(), "Checkin repository should have had an update available." );
+
+        $this->assertFileNotExists( $this->tempDir . '/co/another' );
+        $this->assertTrue( $checkout->update(), "Checkout repository should have had an update available." );
+        $this->assertFileExists( $this->tempDir . '/co/another' );
     }
 
     public function testGetVersionString()
