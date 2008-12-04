@@ -20,7 +20,7 @@
  * @package VCSWrapper
  * @subpackage Core
  * @version $Revision: 349 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
 /**
