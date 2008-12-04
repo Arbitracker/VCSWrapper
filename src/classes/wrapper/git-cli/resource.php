@@ -174,9 +174,17 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
     /**
      * @inheritdoc
      */
-    public static function compareVersions( $version1, $version2 )
+    public function compareVersions( $version1, $version2 )
     {
-        return $version1 - $version2;
+        $versions = $this->getVersions();
+
+        if ( ( ( $key1 = array_search( $version1, $versions ) ) === false ) ||
+             ( ( $key2 = array_search( $version2, $versions ) ) === false ) )
+        {
+            return 0;
+        }
+
+        return $key1 - $key2;
     }
 
     /**

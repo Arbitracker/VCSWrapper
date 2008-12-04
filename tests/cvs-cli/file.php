@@ -56,9 +56,13 @@ class vcsCvsCliFileTests extends vcsTestCase
 
     public function testCompareVersions()
     {
-        $this->assertEquals( 0, vcsCvsCliFile::compareVersions( '1.1', '1.1' ) );
-        $this->assertLessThan( 0, vcsCvsCliFile::compareVersions( '1.1', '1.2' ) );
-        $this->assertGreaterThan( 0, vcsCvsCliFile::compareVersions( '1.3', '1.2' ) );
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+
+        $this->assertEquals( 0, $file->compareVersions( '1.1', '1.1' ) );
+        $this->assertLessThan( 0, $file->compareVersions( '1.1', '1.2' ) );
+        $this->assertGreaterThan( 0, $file->compareVersions( '1.3', '1.2' ) );
     }
 
     public function testGetAuthor()

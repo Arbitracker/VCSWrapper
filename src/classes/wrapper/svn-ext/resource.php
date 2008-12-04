@@ -147,7 +147,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     /**
      * @inheritdoc
      */
-    public static function compareVersions( $version1, $version2 )
+    public function compareVersions( $version1, $version2 )
     {
         return $version1 - $version2;
     }

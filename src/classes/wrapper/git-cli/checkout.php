@@ -92,8 +92,7 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
 
         $process = new vcsGitCliProcess();
         $process->workingDirectory( $this->root );
-        $process->argument( 'pull' )->argument( './' )
-            ->argument( 'HEAD' . ( $version === null ? '' : ':' . $version ) );
+        $process->argument( 'pull' )->argument( 'origin' );
         $process->execute();
 
         // Check if an update has happened

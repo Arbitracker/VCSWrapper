@@ -182,7 +182,7 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
     /**
      * @inheritdoc
      */
-    public static function compareVersions( $version1, $version2 )
+    public function compareVersions( $version1, $version2 )
     {
         if ( version_compare( $version1, $version2, 'eq' ) === true )
         {
@@ -192,6 +192,7 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
         {
             return 1;
         }
+
         return -1;
     }
 

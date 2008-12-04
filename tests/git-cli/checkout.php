@@ -91,11 +91,7 @@ class vcsGitCliCheckoutTests extends vcsTestCase
 
         $git = new vcsGitCliProcess();
         $git->workingDirectory( $this->tempDir . '/ci' );
-        $git->argument( 'merge' );
-        
-        $git = new vcsGitCliProcess();
-        $git->workingDirectory( $this->tempDir . '/ci' );
-        $git->argument( 'commit' )->argument( '-a' )->argument( '-m' )->argument( '- Test commit.' )->execute();
+        $git->argument( 'merge' )->argument( 'origin' );
 
         $this->assertTrue( $checkin->update(), "Checkin repository should have had an update available." );
 
@@ -156,15 +152,15 @@ class vcsGitCliCheckoutTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
 
         $this->assertTrue(
-            $repository->compareVersions( "1", "2" ) < 0
+            $repository->compareVersions( "16d59ca5905f40aba24d0efb6fc5f0d82ab65fbf", "2037a8d0efd4e51a4dd84161837f8865cf7d34b1" ) < 0
         );
 
         $this->assertTrue(
-            $repository->compareVersions( "2", "2" ) == 0
+            $repository->compareVersions( "16d59ca5905f40aba24d0efb6fc5f0d82ab65fbf", "16d59ca5905f40aba24d0efb6fc5f0d82ab65fbf" ) == 0
         );
 
         $this->assertTrue(
-            $repository->compareVersions( "3", "2" ) > 0
+            $repository->compareVersions( "8faf65e1c48d4908d48a647c1d23df54e1e15e85", "43fb423f4ee079af2f3cba4e07eb8b10f4476815" ) > 0
         );
     }
 
