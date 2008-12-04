@@ -69,6 +69,31 @@ class vcsGitCliFileTests extends vcsTestCase
         );
     }
 
+    public function testGetAuthorOldVersion()
+    {
+        $repository = new vcsGitCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
+        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+
+        $this->assertEquals(
+            'kore',
+            $file->getAuthor( '2037a8d0efd4e51a4dd84161837f8865cf7d34b1' )
+        );
+    }
+
+    public function testGetAuthorInvalidVersion()
+    {
+        $repository = new vcsGitCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
+        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+
+        try {
+            $file->getAuthor( 'invalid' );
+            $this->fail( 'Expected vcsNoSuchVersionException.' );
+        } catch ( vcsNoSuchVersionException $e )
+        { /* Expected */ }
+    }
+
     public function testGetLog()
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );

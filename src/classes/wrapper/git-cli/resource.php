@@ -184,8 +184,15 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getAuthor( $version = null )
     {
-        $info = $this->getResourceInfo();
-        return $info->author;
+        $version = $version === null ? $this->getVersionString() : $version;
+        $log = $this->getResourceLog();
+
+        if ( !isset( $log[$version] ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        return $log[$version]->author;
     }
 
     /**
