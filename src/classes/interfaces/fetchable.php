@@ -19,7 +19,7 @@
  *
  * @package VCSWrapper
  * @subpackage Core
- * @version $Revision: 10 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
