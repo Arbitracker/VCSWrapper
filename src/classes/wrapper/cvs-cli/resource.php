@@ -83,11 +83,7 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
             return $log;
         }
 
-        $version = $this->currentVersion;
-        if ( $version === null )
-        {
-            $version = 'HEAD';
-        }
+        $version = $this->currentVersion !== null ? $this->currentVersion : 'HEAD';
 
         $process = new vcsCvsCliProcess();
         $process->workingDirectory( $this->root )

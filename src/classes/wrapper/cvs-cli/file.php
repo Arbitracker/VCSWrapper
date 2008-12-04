@@ -52,7 +52,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
     {
         $version = ( $version === null ) ? $this->getVersionString() : $version;
 
-        $versions = array_merge( array( 'HEAD' ), $this->getVersions() );
+        $versions = $this->getVersions();
         if ( !in_array( $version, $versions, true ) )
         {
             throw new vcsNoSuchVersionException( $this->path, $version );
@@ -106,7 +106,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      */
     public function getVersionedContent( $version )
     {
-        $versions = array_merge( array( 'HEAD' ), $this->getVersions() );
+        $versions = $this->getVersions();
         if ( !in_array( $version, $versions, true ) )
         {
             throw new vcsNoSuchVersionException( $this->path, $version );
