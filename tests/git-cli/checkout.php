@@ -91,7 +91,7 @@ class vcsGitCliCheckoutTests extends vcsTestCase
 
         $git = new vcsGitCliProcess();
         $git->workingDirectory( $this->tempDir . '/ci' );
-        $git->argument( 'merge' )->argument( 'origin' );
+        $git->argument( 'push' )->argument( 'origin' )->execute();
 
         $this->assertTrue( $checkin->update(), "Checkin repository should have had an update available." );
 
