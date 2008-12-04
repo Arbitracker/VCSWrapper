@@ -66,6 +66,31 @@ class vcsSvnCliFileTests extends vcsTestCase
         );
     }
 
+    public function testGetAuthorOldVersion()
+    {
+        $repository = new vcsSvnCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+
+        $this->assertEquals(
+            'kore',
+            $file->getAuthor( '1' )
+        );
+    }
+
+    public function testGetAuthorInvalidVersion()
+    {
+        $repository = new vcsSvnCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+
+        try {
+            $file->getAuthor( 'invalid' );
+            $this->fail( 'Expected vcsNoSuchVersionException.' );
+        } catch ( vcsNoSuchVersionException $e )
+        { /* Expected */ }
+    }
+
     public function testGetLog()
     {
         $repository = new vcsSvnCliCheckout( $this->tempDir );
