@@ -2,7 +2,7 @@
 /**
  * Basic test cases for framework
  *
- * @version $Revision: 589 $
+ * @version $Revision$
  * @license GPLv3
  */
 
@@ -104,6 +104,58 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
                 '/file'
             ),
             $files
+        );
+    }
+
+    public function testGetCheckout()
+    {
+        $repository = new vcsZipArchiveCheckout( $this->tempDir );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+
+        $this->assertSame(
+            $repository->get(),
+            $repository
+        );
+
+        $this->assertSame(
+            $repository->get( '/' ),
+            $repository
+        );
+    }
+
+    public function testGetInvalid()
+    {
+        $repository = new vcsZipArchiveCheckout( $this->tempDir );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+
+        try
+        {
+            $repository->get( '/../' );
+            $this->fail( 'Expected vcsFileNotFoundException.' );
+        }
+        catch ( vcsFileNotFoundException $e )
+        { /* Expected */ }
+    }
+
+    public function testGetDirectory()
+    {
+        $repository = new vcsZipArchiveCheckout( $this->tempDir );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+
+        $this->assertEquals(
+            $repository->get( '/dir1' ),
+            new vcsArchiveDirectory( $this->tempDir, '/dir1' )
+        );
+    }
+
+    public function testGetFile()
+    {
+        $repository = new vcsZipArchiveCheckout( $this->tempDir );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+
+        $this->assertEquals(
+            $repository->get( '/file' ),
+            new vcsArchiveFile( $this->tempDir, '/file' )
         );
     }
 }

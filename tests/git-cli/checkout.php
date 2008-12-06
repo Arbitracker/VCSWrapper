@@ -2,7 +2,7 @@
 /**
  * Basic test cases for framework
  *
- * @version $Revision: 589 $
+ * @version $Revision$
  * @license GPLv3
  */
 
@@ -243,6 +243,58 @@ class vcsGitCliCheckoutTests extends vcsTestCase
                 '/file'
             ),
             $files
+        );
+    }
+
+    public function testGetCheckout()
+    {
+        $repository = new vcsGitCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
+
+        $this->assertSame(
+            $repository->get(),
+            $repository
+        );
+
+        $this->assertSame(
+            $repository->get( '/' ),
+            $repository
+        );
+    }
+
+    public function testGetInvalid()
+    {
+        $repository = new vcsGitCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
+
+        try
+        {
+            $repository->get( '/../' );
+            $this->fail( 'Expected vcsFileNotFoundException.' );
+        }
+        catch ( vcsFileNotFoundException $e )
+        { /* Expected */ }
+    }
+
+    public function testGetDirectory()
+    {
+        $repository = new vcsGitCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
+
+        $this->assertEquals(
+            $repository->get( '/dir1' ),
+            new vcsGitCliDirectory( $this->tempDir, '/dir1' )
+        );
+    }
+
+    public function testGetFile()
+    {
+        $repository = new vcsGitCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
+
+        $this->assertEquals(
+            $repository->get( '/file' ),
+            new vcsGitCliFile( $this->tempDir, '/file' )
         );
     }
 }

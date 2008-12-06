@@ -2,7 +2,7 @@
 /**
  * Basic test cases for framework
  *
- * @version $Revision: 589 $
+ * @version $Revision$
  * @license GPLv3
  */
 
@@ -260,6 +260,58 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
                 '/file'
             ),
             $files
+        );
+    }
+
+    public function testGetCheckout()
+    {
+        $repository = new vcsSvnExtCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+
+        $this->assertSame(
+            $repository->get(),
+            $repository
+        );
+
+        $this->assertSame(
+            $repository->get( '/' ),
+            $repository
+        );
+    }
+
+    public function testGetInvalid()
+    {
+        $repository = new vcsSvnExtCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+
+        try
+        {
+            $repository->get( '/../' );
+            $this->fail( 'Expected vcsFileNotFoundException.' );
+        }
+        catch ( vcsFileNotFoundException $e )
+        { /* Expected */ }
+    }
+
+    public function testGetDirectory()
+    {
+        $repository = new vcsSvnExtCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+
+        $this->assertEquals(
+            $repository->get( '/dir1' ),
+            new vcsSvnExtDirectory( $this->tempDir, '/dir1' )
+        );
+    }
+
+    public function testGetFile()
+    {
+        $repository = new vcsSvnExtCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+
+        $this->assertEquals(
+            $repository->get( '/file' ),
+            new vcsSvnExtFile( $this->tempDir, '/file' )
         );
     }
 }

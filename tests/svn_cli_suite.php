@@ -2,7 +2,7 @@
 /**
  * vcs main test suite
  *
- * @version $Revision: 14 $
+ * @version $Revision$
  * @license LGPLv3
  */
 

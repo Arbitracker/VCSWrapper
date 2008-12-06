@@ -245,3 +245,20 @@ class vcsInvalidRepositoryUrlException extends vcsException
         parent::__construct( 'Invalid ' .$wrapper . ' repository url: "' . $url . '".' );
     }
 }
+
+/**
+ * Exception thrown when a file or directory is requested from a
+ * repository, which is not part of the repository.
+ */
+class vcsFileNotFoundException extends vcsException
+{
+    /**
+     * Construct exception
+     *
+     * @param string $file
+     */
+    public function __construct( $file )
+    {
+        parent::__construct( "Could not locate '$file' inside the repository." );
+    }
+}

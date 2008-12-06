@@ -2,7 +2,7 @@
 /**
  * Base test cache for cache tests
  *
- * @version $Revision: 589 $
+ * @version $Revision$
  * @license GPLv3
  */
 

@@ -59,5 +59,19 @@ interface vcsCheckout extends vcsDirectory
      * @return bool
      */
     public function update( $version = null );
+
+    /**
+     * Get checkout item
+     *
+     * Get an item from the checkout, specified by its local path. If no item
+     * with the specified path exists an exception is thrown.
+     *
+     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * instance, depending on the given path.
+     * 
+     * @param string $path
+     * @return mixed
+     */
+    public function get( $path = '/' );
 }
 

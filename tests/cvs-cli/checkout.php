@@ -137,4 +137,56 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
         $checkout->update( 'HEAD' );
         $this->assertFileExists( $this->tempDir . '/dir1/file1', 'Expected file "/dir1/file1" in checkout.' );
     }
+
+    public function testGetCheckout()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+
+        $this->assertSame(
+            $checkout->get(),
+            $checkout
+        );
+
+        $this->assertSame(
+            $checkout->get( '/' ),
+            $checkout
+        );
+    }
+
+    public function testGetInvalid()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+
+        try
+        {
+            $checkout->get( '/../' );
+            $this->fail( 'Expected vcsFileNotFoundException.' );
+        }
+        catch ( vcsFileNotFoundException $e )
+        { /* Expected */ }
+    }
+
+    public function testGetDirectory()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+
+        $this->assertEquals(
+            $checkout->get( '/dir1' ),
+            new vcsCvsCliDirectory( $this->tempDir, '/dir1' )
+        );
+    }
+
+    public function testGetFile()
+    {
+        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+
+        $this->assertEquals(
+            $checkout->get( '/file' ),
+            new vcsCvsCliFile( $this->tempDir, '/file' )
+        );
+    }
 }

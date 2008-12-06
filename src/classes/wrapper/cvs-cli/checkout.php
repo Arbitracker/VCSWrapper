@@ -114,5 +114,40 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
 
         return ( preg_match( '#[\n\r]U #', $process->stdoutOutput ) > 0 );
     }
+
+    /**
+     * Get checkout item
+     *
+     * Get an item from the checkout, specified by its local path. If no item
+     * with the specified path exists an exception is thrown.
+     *
+     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * instance, depending on the given path.
+     * 
+     * @param string $path
+     * @return mixed
+     */
+    public function get( $path = '/' )
+    {
+        $fullPath = realpath( $this->root . $path );
+
+        if ( ( $fullPath === false ) ||
+             ( strpos( $fullPath, $this->root ) !== 0 ) )
+        {
+            throw new vcsFileNotFoundException( $path );
+        }
+
+        switch ( true )
+        {
+            case ( $path === '/' ):
+                return $this;
+
+            case is_dir( $fullPath ):
+                return new vcsCvsCliDirectory( $this->root, $path );
+
+            default:
+                return new vcsCvsCliFile( $this->root, $path );
+        }
+    }
 }
 

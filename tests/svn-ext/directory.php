@@ -2,7 +2,7 @@
 /**
  * Basic test cases for framework
  *
- * @version $Revision: 589 $
+ * @version $Revision$
  * @license GPLv3
  */
 
