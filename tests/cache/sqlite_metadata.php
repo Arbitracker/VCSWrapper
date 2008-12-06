@@ -39,6 +39,14 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
         $cacheMetaData->created( $path, 123 );
     }
 
+    public function testCreateCacheInNonexistingDir()
+    {
+        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir . 'cache/' );
+
+        touch( $this->tempDir . ( $path = '/foo' ) );
+        $cacheMetaData->created( $path, 123 );
+    }
+
     public function testReCreateCacheEntry()
     {
         $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );

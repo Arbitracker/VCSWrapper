@@ -48,6 +48,12 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
         // Check for existance of meta data storage file
         if ( !file_exists( $dbFile = ( $this->root . '/metadata.db' ) ) )
         {
+            // Create cache directory, if not yet existing
+            if ( !is_dir( $this->root ) )
+            {
+                mkdir( $this->root, 0750, true );
+            }
+
             // Create the table with appropriate indexes, if the table does not
             // yet exist
             $db = new SQLite3( $dbFile );
