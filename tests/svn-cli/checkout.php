@@ -100,7 +100,7 @@ class vcsSvnCliCheckoutTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertSame(
-            "5",
+            "6",
             $repository->getVersionString()
         );
     }
@@ -111,7 +111,7 @@ class vcsSvnCliCheckoutTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $this->assertSame(
-            array( "1", "2", "3", "4", "5" ),
+            array( "1", "2", "3", "4", "5", "6" ),
             $repository->getVersions()
         );
     }
@@ -199,6 +199,12 @@ class vcsSvnCliCheckoutTests extends vcsTestCase
                     "- Added another line to file\n",
                     1226595170
                 ),
+                6 => new vcsLogEntry(
+                    '6',
+                    'kore',
+                    "# Added binary to repository\n",
+                    1228676322
+                ),
             ),
             $repository->getLog()
         );
@@ -246,6 +252,7 @@ class vcsSvnCliCheckoutTests extends vcsTestCase
 
         $this->assertEquals(
             array(
+                '/binary',
                 '/dir1/',
                 '/dir2/',
                 '/file'

@@ -59,7 +59,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
             }
 
             $info = $info[0];
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $info['revision'], 'info', $info );
+            vcsCache::cache( $this->path, $this->currentVersion = (string) $info['last_changed_rev'], 'info', $info );
         }
 
         return $info;
@@ -126,7 +126,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     public function getVersionString()
     {
         $info = $this->getResourceInfo();
-        return (string) $info['revision'];
+        return (string) $info['last_changed_rev'];
     }
 
     /**

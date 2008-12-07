@@ -46,6 +46,7 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
 
         $this->assertEquals(
             array(
+                '/binary',
                 '/dir1/',
                 '/dir2/',
                 '/file'
@@ -71,6 +72,7 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
 
         $this->assertEquals(
             array(
+                '/binary',
                 '/dir1/',
                 '/dir1/file',
                 '/dir2/',

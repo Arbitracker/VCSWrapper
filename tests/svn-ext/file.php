@@ -202,7 +202,7 @@ class vcsSvnExtFileTests extends vcsTestCase
 
     public function testGetFileBlame()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
+        $repository = new vcsSvnExtCheckout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
@@ -225,9 +225,21 @@ class vcsSvnExtFileTests extends vcsTestCase
         );
     }
 
+    public function testGetBinaryFileBlame()
+    {
+        $repository = new vcsSvnExtCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $file = new vcsSvnExtFile( $this->tempDir, '/binary' );
+
+        $this->assertEquals(
+            false,
+            $file->blame()
+        );
+    }
+
     public function testGetFileBlameInvalidVersion()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
+        $repository = new vcsSvnExtCheckout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 

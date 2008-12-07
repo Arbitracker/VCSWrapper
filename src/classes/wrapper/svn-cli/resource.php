@@ -62,7 +62,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             $return = $process->argument( 'info' )->argument( $this->root . $this->path )->execute();
 
             $info = vcsXml::loadString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $info->entry[0]['revision'], 'info', $info );
+            vcsCache::cache( $this->path, $this->currentVersion = (string) $info->entry[0]->commit[0]['revision'], 'info', $info );
         }
 
         return $info;
@@ -185,6 +185,12 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getAuthor( $version = null )
     {
+        if ( $version === null )
+        {
+            $info = $this->getResourceInfo();
+            return (string) $info->entry[0]->commit[0]->author;
+        }
+
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
 

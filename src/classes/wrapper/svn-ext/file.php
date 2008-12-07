@@ -66,17 +66,24 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
 
         if ( ( $blame = vcsCache::get( $this->path, $version, 'blame' ) ) === false )
         {
-            $svnBlame = svn_blame( $this->root . $this->path );
+            // Silence warning about binary files, and just use the return
+            // value. There is no good way to know this beforehand. The
+            // mime-type might be an indicator, but the list of possible
+            // "binary" mime types is to long to really check for that.
+            $svnBlame = @svn_blame( $this->root . $this->path );
 
-            $blame = array();
-            foreach ( $svnBlame as $entry )
+            if ( ( $blame = $svnBlame ) !== false )
             {
-                $blame[] = new vcsBlameStruct(
-                    $entry['line'],
-                    $entry['rev'],
-                    $entry['author'],
-                    strtotime( $entry['date'] )
-                );
+                $blame = array();
+                foreach ( $svnBlame as $entry )
+                {
+                    $blame[] = new vcsBlameStruct(
+                        $entry['line'],
+                        $entry['rev'],
+                        $entry['author'],
+                        strtotime( $entry['date'] )
+                    );
+                }
             }
 
             vcsCache::cache( $this->path, $version, 'blame', $blame );

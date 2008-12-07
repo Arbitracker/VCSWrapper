@@ -220,6 +220,18 @@ class vcsSvnCliFileTests extends vcsTestCase
         );
     }
 
+    public function testGetBinaryFileBlame()
+    {
+        $repository = new vcsSvnCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $file = new vcsSvnCliFile( $this->tempDir, '/binary' );
+
+        $this->assertEquals(
+            false,
+            $file->blame()
+        );
+    }
+
     public function testGetFileBlameInvalidVersion()
     {
         $repository = new vcsSvnCliCheckout( $this->tempDir );

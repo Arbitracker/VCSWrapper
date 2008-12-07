@@ -75,6 +75,13 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
             $xml = vcsXml::loadString( $process->stdoutOutput );
             $contents = preg_split( '(\r\n|\r|\n)', $this->getVersionedContent( $version ) );
 
+            // Check if blame information si available. Is absent fro binary
+            // files.
+            if ( !$xml->target )
+            {
+                return false;
+            }
+
             $blame = array();
             foreach ( $xml->target[0]->entry as $nr => $entry )
             {

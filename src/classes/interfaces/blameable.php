@@ -49,10 +49,13 @@ interface vcsBlameable extends vcsAuthored
      *  );
      * </code>
      *
+     * If some file in the repository has no blame information associated, like
+     * binary files, the method should return false.
+     *
      * Optionally a version may be specified which defines a later version of
      * the resource for which the blame information should be returned.
      *
-     * @return array
+     * @return mixed
      */
     public function blame( $version = null );
 }
