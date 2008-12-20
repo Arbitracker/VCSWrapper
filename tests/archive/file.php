@@ -58,5 +58,17 @@ class vcsArchiveFileTests extends vcsTestCase
             $file->getMimeType()
         );
     }
+
+    public function testGetLocalFilePath()
+    {
+        $repository = new vcsZipArchiveCheckout( $this->tempDir );
+        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $file = new vcsArchiveFile( $this->tempDir, '/dir1/file' );
+
+        $this->assertEquals(
+            $this->tempDir . '/dir1/file',
+            $file->getLocalPath()
+        );
+    }
 }
 

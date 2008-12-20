@@ -63,6 +63,18 @@ abstract class vcsResource
     }
 
     /**
+     * Return the local path
+     *
+     * Returns the path to the resource in the local file system.
+     * 
+     * @return string
+     */
+    public function getLocalPath()
+    {
+        return $this->root . $this->path;
+    }
+
+    /**
      * String conversion method
      *
      * When a resources is casted to a string, return the local repository path
