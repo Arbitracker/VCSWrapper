@@ -10,7 +10,7 @@
  * Set file whitelist for phpunit
  */
 define( 'VCS_TEST', __FILE__ );
-$files = include ( $base = dirname(  __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
+$files = include ( $base = dirname(  __FILE__ ) . '/../src/classes/' ) . 'autoload.php';
 foreach ( $files as $class => $file )
 {
     require_once $base . $file;
@@ -26,7 +26,6 @@ require 'base_test.php';
 /**
  * Test suites
  */
-require 'xml_suite.php';
 require 'diff_suite.php';
 require 'cache_suite.php';
 require 'svn_cli_suite.php';
@@ -50,7 +49,6 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
         parent::__construct();
         $this->setName( 'vcsWrapper - A PHP version control system wrapper' );
 
-        $this->addTestSuite( vcsXmlTestSuite::suite() );
         $this->addTestSuite( vcsDiffTestSuite::suite() );
         $this->addTestSuite( vcsCacheTestSuite::suite() );
         $this->addTestSuite( vcsSvnCliTestSuite::suite() );

@@ -1,25 +1,25 @@
 <?php
 /**
- * PHP VCS wrapper autoload file
+ * arbit autoload file
  *
- * This file is part of vcs-wrapper.
+ * This file is part of arbit.
  *
- * vcs-wrapper is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; version 3 of the License.
+ * arbit is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3 of the License.
  *
- * vcs-wrapper is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
- * more details.
+ * arbit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with vcs-wrapper; if not, write to the Free Software Foundation, Inc., 51
- * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU General Public License
+ * along with arbit; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
  * @version $Revision$
- * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
 
 /*
@@ -29,69 +29,71 @@
  * # scripts/gen_autoload_files.php
  */
 return array(
-    'vcsCacheable'                                     => 'classes/interfaces/cacheable.php',
-    'vcsBaseStruct'                                    => 'classes/struct.php',
-    'vcsBlameStruct'                                   => 'classes/blame.php',
-    'vcsCache'                                         => 'classes/cache.php',
-    'vcsCacheMetaData'                                 => 'classes/cache/metadata.php',
-    'vcsCacheFileSystemMetaData'                       => 'classes/cache/metadata/filesystem.php',
-    'vcsCacheSqliteMetaData'                           => 'classes/cache/metadata/sqlite.php',
-    'vcsDiffChunk'                                     => 'classes/diff/chunk.php',
-    'vcsDiff'                                          => 'classes/diff/diff.php',
-    'vcsDiffLine'                                      => 'classes/diff/line.php',
-    'vcsDiffParser'                                    => 'classes/diff/parser.php',
-    'vcsUnifiedDiffParser'                             => 'classes/diff/parser/unified.php',
-    'vcsException'                                     => 'classes/exceptions.php',
-    'vcsNoSuchFileException'                           => 'classes/exceptions.php',
-    'vcsRuntimeException'                              => 'classes/exceptions.php',
-    'vcsXmlParserException'                            => 'classes/exceptions.php',
-    'vcsCacheNotInitializedException'                  => 'classes/exceptions.php',
-    'vcsNotCacheableException'                         => 'classes/exceptions.php',
-    'vcsCheckoutFailedException'                       => 'classes/exceptions.php',
-    'vcsNoSuchVersionException'                        => 'classes/exceptions.php',
-    'vcsInvalidZipArchiveException'                    => 'classes/exceptions.php',
-    'pbsSystemProcessInvalidCustomDescriptorException' => 'classes/external/exceptions/system_process/invalidCustomFileDescriptor.php',
-    'pbsSystemProcessNonZeroExitCodeException'         => 'classes/external/exceptions/system_process/nonZeroExitCode.php',
-    'pbsSystemProcessNotRunningException'              => 'classes/external/exceptions/system_process/notRunning.php',
-    'pbsSystemProcessRecursivePipeException'           => 'classes/external/exceptions/system_process/recursivePipe.php',
-    'vcsLogEntry'                                      => 'classes/log_entry.php',
-    'vcsResource'                                      => 'classes/resource.php',
-    'vcsArchiveResource'                               => 'classes/wrapper/archive/resource.php',
-    'vcsDirectory'                                     => 'classes/interfaces/directory.php',
-    'vcsArchiveDirectory'                              => 'classes/wrapper/archive/directory.php',
-    'vcsCheckout'                                      => 'classes/interfaces/checkout.php',
-    'vcsArchiveCheckout'                               => 'classes/wrapper/archive/checkout.php',
-    'vcsZipArchiveCheckout'                            => 'classes/wrapper/archive/checkout/zip.php',
-    'vcsFile'                                          => 'classes/interfaces/file.php',
-    'vcsArchiveFile'                                   => 'classes/wrapper/archive/file.php',
-    'vcsCvsCliDirectory'                               => 'classes/wrapper/cvs-cli/directory.php',
-    'vcsCvsCliCheckout'                                => 'classes/wrapper/cvs-cli/checkout.php',
-    'vcsVersioned'                                     => 'classes/interfaces/versioned.php',
-    'vcsAuthored'                                      => 'classes/interfaces/authored.php',
-    'vcsLogged'                                        => 'classes/interfaces/logged.php',
-    'vcsCvsCliResource'                                => 'classes/wrapper/cvs-cli/resource.php',
-    'vcsBlameable'                                     => 'classes/interfaces/blameable.php',
-    'vcsFetchable'                                     => 'classes/interfaces/fetchable.php',
-    'vcsDiffable'                                      => 'classes/interfaces/diffable.php',
-    'vcsCvsCliFile'                                    => 'classes/wrapper/cvs-cli/file.php',
-    'pbsSystemProcess'                                 => 'classes/external/system_process/systemProcess.php',
-    'vcsCvsCliProcess'                                 => 'classes/wrapper/cvs-cli/process.php',
-    'vcsGitCliResource'                                => 'classes/wrapper/git-cli/resource.php',
-    'vcsGitCliDirectory'                               => 'classes/wrapper/git-cli/directory.php',
-    'vcsGitCliCheckout'                                => 'classes/wrapper/git-cli/checkout.php',
-    'vcsGitCliFile'                                    => 'classes/wrapper/git-cli/file.php',
-    'vcsGitCliProcess'                                 => 'classes/wrapper/git-cli/process.php',
-    'vcsSvnCliResource'                                => 'classes/wrapper/svn-cli/resource.php',
-    'vcsSvnCliDirectory'                               => 'classes/wrapper/svn-cli/directory.php',
-    'vcsSvnCliCheckout'                                => 'classes/wrapper/svn-cli/checkout.php',
-    'vcsSvnCliFile'                                    => 'classes/wrapper/svn-cli/file.php',
-    'vcsSvnCliProcess'                                 => 'classes/wrapper/svn-cli/process.php',
-    'vcsSvnExtResource'                                => 'classes/wrapper/svn-ext/resource.php',
-    'vcsSvnExtDirectory'                               => 'classes/wrapper/svn-ext/directory.php',
-    'vcsSvnExtCheckout'                                => 'classes/wrapper/svn-ext/checkout.php',
-    'vcsSvnExtFile'                                    => 'classes/wrapper/svn-ext/file.php',
-    'vcsXmlNode'                                       => 'classes/xml/node.php',
-    'vcsXml'                                           => 'classes/xml/document.php',
-    'vcsXmlNodeList'                                   => 'classes/xml/node_list.php',
+    'vcsCacheable'                                     => 'interfaces/cacheable.php',
+    'vcsBaseStruct'                                    => 'struct.php',
+    'vcsBlameStruct'                                   => 'blame.php',
+    'vcsCache'                                         => 'cache.php',
+    'vcsCacheMetaData'                                 => 'cache/metadata.php',
+    'vcsCacheFileSystemMetaData'                       => 'cache/metadata/filesystem.php',
+    'vcsCacheSqliteMetaData'                           => 'cache/metadata/sqlite.php',
+    'vcsDiffChunk'                                     => 'diff/chunk.php',
+    'vcsDiff'                                          => 'diff/diff.php',
+    'vcsDiffLine'                                      => 'diff/line.php',
+    'vcsDiffParser'                                    => 'diff/parser.php',
+    'vcsUnifiedDiffParser'                             => 'diff/parser/unified.php',
+    'vcsException'                                     => 'exceptions.php',
+    'vcsNoSuchFileException'                           => 'exceptions.php',
+    'vcsRuntimeException'                              => 'exceptions.php',
+    'vcsXmlParserException'                            => 'exceptions.php',
+    'vcsCacheNotInitializedException'                  => 'exceptions.php',
+    'vcsNotCacheableException'                         => 'exceptions.php',
+    'vcsCheckoutFailedException'                       => 'exceptions.php',
+    'vcsNoSuchVersionException'                        => 'exceptions.php',
+    'vcsInvalidZipArchiveException'                    => 'exceptions.php',
+    'vcsInvalidRepositoryUrlException'                 => 'exceptions.php',
+    'vcsFileNotFoundException'                         => 'exceptions.php',
+    'pbsSystemProcessInvalidCustomDescriptorException' => 'external/exceptions/system_process/invalidCustomFileDescriptor.php',
+    'pbsSystemProcessNonZeroExitCodeException'         => 'external/exceptions/system_process/nonZeroExitCode.php',
+    'pbsSystemProcessNotRunningException'              => 'external/exceptions/system_process/notRunning.php',
+    'pbsSystemProcessRecursivePipeException'           => 'external/exceptions/system_process/recursivePipe.php',
+    'vcsXmlNode'                                       => 'external/xml/node.php',
+    'vcsXml'                                           => 'external/xml/document.php',
+    'vcsXmlNodeList'                                   => 'external/xml/node_list.php',
+    'vcsLogEntry'                                      => 'log_entry.php',
+    'vcsResource'                                      => 'resource.php',
+    'vcsArchiveResource'                               => 'wrapper/archive/resource.php',
+    'vcsDirectory'                                     => 'interfaces/directory.php',
+    'vcsArchiveDirectory'                              => 'wrapper/archive/directory.php',
+    'vcsCheckout'                                      => 'interfaces/checkout.php',
+    'vcsArchiveCheckout'                               => 'wrapper/archive/checkout.php',
+    'vcsZipArchiveCheckout'                            => 'wrapper/archive/checkout/zip.php',
+    'vcsFile'                                          => 'interfaces/file.php',
+    'vcsArchiveFile'                                   => 'wrapper/archive/file.php',
+    'vcsCvsCliDirectory'                               => 'wrapper/cvs-cli/directory.php',
+    'vcsCvsCliCheckout'                                => 'wrapper/cvs-cli/checkout.php',
+    'vcsVersioned'                                     => 'interfaces/versioned.php',
+    'vcsAuthored'                                      => 'interfaces/authored.php',
+    'vcsLogged'                                        => 'interfaces/logged.php',
+    'vcsCvsCliResource'                                => 'wrapper/cvs-cli/resource.php',
+    'vcsBlameable'                                     => 'interfaces/blameable.php',
+    'vcsFetchable'                                     => 'interfaces/fetchable.php',
+    'vcsDiffable'                                      => 'interfaces/diffable.php',
+    'vcsCvsCliFile'                                    => 'wrapper/cvs-cli/file.php',
+    'pbsSystemProcess'                                 => 'external/system_process/systemProcess.php',
+    'vcsCvsCliProcess'                                 => 'wrapper/cvs-cli/process.php',
+    'vcsGitCliResource'                                => 'wrapper/git-cli/resource.php',
+    'vcsGitCliDirectory'                               => 'wrapper/git-cli/directory.php',
+    'vcsGitCliCheckout'                                => 'wrapper/git-cli/checkout.php',
+    'vcsGitCliFile'                                    => 'wrapper/git-cli/file.php',
+    'vcsGitCliProcess'                                 => 'wrapper/git-cli/process.php',
+    'vcsSvnCliResource'                                => 'wrapper/svn-cli/resource.php',
+    'vcsSvnCliDirectory'                               => 'wrapper/svn-cli/directory.php',
+    'vcsSvnCliCheckout'                                => 'wrapper/svn-cli/checkout.php',
+    'vcsSvnCliFile'                                    => 'wrapper/svn-cli/file.php',
+    'vcsSvnCliProcess'                                 => 'wrapper/svn-cli/process.php',
+    'vcsSvnExtResource'                                => 'wrapper/svn-ext/resource.php',
+    'vcsSvnExtDirectory'                               => 'wrapper/svn-ext/directory.php',
+    'vcsSvnExtCheckout'                                => 'wrapper/svn-ext/checkout.php',
+    'vcsSvnExtFile'                                    => 'wrapper/svn-ext/file.php',
 );
 
