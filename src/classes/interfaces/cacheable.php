@@ -27,13 +27,13 @@
  * Interface indicating that an object can be cached. To be cacheable the
  * implementing class needs the to implement __set_state method.
  */
-interface vcsCacheable
+interface arbitCacheable
 {
     /**
      * Recreate struct exported by var_export()
      * 
      * @param array $properties 
-     * @return vcsCacheable
+     * @return arbitCacheable
      */
     public static function __set_state( array $properties );
 }

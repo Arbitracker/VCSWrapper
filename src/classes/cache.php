@@ -178,7 +178,7 @@ class vcsCache
      *
      * Cache the meta data, identified by the $key, for the given resource in
      * the given version. You may cache all scalar values, arrays and objects
-     * which are implementing the interface vcsCacheable.
+     * which are implementing the interface arbitCacheable.
      *
      * @param string $resource 
      * @param string $version 
@@ -195,7 +195,7 @@ class vcsCache
 
         if ( !is_scalar( $value ) &&
              !is_array( $value ) &&
-             ( !$value instanceof vcsCacheable ) )
+             ( !$value instanceof arbitCacheable ) )
         {
             throw new vcsNotCacheableException( $value );
         }

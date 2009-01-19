@@ -11,7 +11,7 @@
  */
 if ( !defined( 'VCS_TEST' ) )
 {
-    $files = include ( $base = dirname(  __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
+    $files = include ( $base = dirname(  __FILE__ ) . '/../src/classes/' ) . 'autoload.php';
     foreach ( $files as $class => $file )
     {
         require_once $base . $file;

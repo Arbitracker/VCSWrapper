@@ -72,7 +72,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
 
             // Execute command
             $return = $process->argument( 'blame' )->argument( $this->root . $this->path )->execute();
-            $xml = vcsXml::loadString( $process->stdoutOutput );
+            $xml = arbitXml::loadString( $process->stdoutOutput );
 
             // Check if blame information si available. Is absent fro binary
             // files.

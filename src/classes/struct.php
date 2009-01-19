@@ -27,7 +27,7 @@
  * Basic struct class with optional value validation when the __set method gets
  * overwritten in the child classes.
  */
-class vcsBaseStruct implements vcsCacheable
+class vcsBaseStruct implements arbitCacheable
 {
     /**
      * Array containing the structs properties.

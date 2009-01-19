@@ -41,7 +41,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * Get the base information, like version, author, etc for the current
      * resource in the current version.
      *
-     * @return vcsXml
+     * @return arbitXml
      */
     protected function getResourceInfo()
     {
@@ -61,7 +61,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             // Execute info command
             $return = $process->argument( 'info' )->argument( $this->root . $this->path )->execute();
 
-            $info = vcsXml::loadString( $process->stdoutOutput );
+            $info = arbitXml::loadString( $process->stdoutOutput );
             vcsCache::cache( $this->path, $this->currentVersion = (string) $info->entry[0]->commit[0]['revision'], 'info', $info );
         }
 
@@ -73,7 +73,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      *
      * Get the full log for the current resource up tu the current revision
      *
-     * @return vcsXml
+     * @return arbitXml
      */
     protected function getResourceLog()
     {
@@ -93,7 +93,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             $return = $process->argument( 'log' )->argument( $this->root . $this->path )->execute();
 
             // Transform XML into object array
-            $xmlLog = vcsXml::loadString( $process->stdoutOutput );
+            $xmlLog = arbitXml::loadString( $process->stdoutOutput );
             $log    = array();
             foreach ( $xmlLog->logentry as $entry )
             {

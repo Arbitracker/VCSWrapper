@@ -67,47 +67,6 @@ class vcsRuntimeException extends vcsException
 }
 
 /**
- * Exception thrown, when a requested file could not be found.
- */
-class vcsXmlParserException extends vcsException
-{
-    /**
-     * Human readable error names for libXML error type constants.
-     *
-     * @var array
-     */
-    protected $levels = array(
-        LIBXML_ERR_WARNING => 'Warning',
-        LIBXML_ERR_ERROR   => 'Error',
-        LIBXML_ERR_FATAL   => 'Fatal error',
-    );
-
-    /**
-     * Construct exception
-     *
-     * @param string $file
-     * @param array $error
-     * @return void
-     */
-    public function __construct( $file, array $errors )
-    {
-        foreach ( $errors as $nr => $error )
-        {
-            $errors[$nr] = sprintf( "%s: (%d) %s in %s +%d (%d).",
-                $this->levels[$error->level],
-                $error->code,
-                $error->message,
-                $error->file,
-                $error->line,
-                $error->column
-            );
-        }
-
-        parent::__construct( "The XML file '$file' could not be parsed:\n - " . implode( "\n - ", $errors ) . "\n" );
-    }
-}
-
-/**
  * Exception thrown, when the cache is used, but not initialized.
  */
 class vcsCacheNotInitializedException extends vcsException
@@ -137,7 +96,7 @@ class vcsNotCacheableException extends vcsException
      */
     public function __construct( $value )
     {
-        parent::__construct( 'Value of type ' . gettype( $value ) . ' cannot be cached. Only arrays, scalar values and objects implementing vcsCacheable are allowed.' );
+        parent::__construct( 'Value of type ' . gettype( $value ) . ' cannot be cached. Only arrays, scalar values and objects implementing arbitCacheable are allowed.' );
     }
 }
 
@@ -262,3 +221,4 @@ class vcsFileNotFoundException extends vcsException
         parent::__construct( "Could not locate '$file' inside the repository." );
     }
 }
+

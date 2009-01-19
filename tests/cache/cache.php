@@ -6,7 +6,7 @@
  * @license GPLv3
  */
 
-class vcsTestCacheableObject implements vcsCacheable
+class vcsTestCacheableObject implements arbitCacheable
 {
     public $foo = null;
     public function __construct( $foo )
