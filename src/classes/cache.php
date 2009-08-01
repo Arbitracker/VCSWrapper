@@ -139,7 +139,7 @@ class vcsCache
      */
     protected static function getFileName( $resource, $version, $key )
     {
-        return "/$version/$resource/$key";
+        return "/$version/$resource/$key.cache";
     }
 
     /**
@@ -205,7 +205,7 @@ class vcsCache
         $cacheFileDir = dirname( self::$path . $cacheFile );
         if ( !is_dir( $cacheFileDir ) )
         {
-            mkdir( dirname( self::$path . $cacheFile ), 0770, true );
+            mkdir( $cacheFileDir, 0770, true );
         }
 
         file_put_contents( self::$path . $cacheFile, sprintf( "<?php\n\nreturn %s;\n\n", var_export( $value, true ) ) );
