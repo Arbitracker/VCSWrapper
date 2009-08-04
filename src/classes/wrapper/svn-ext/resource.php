@@ -26,7 +26,7 @@
 /*
  * Resource implementation vor SVN Ext wrapper
  */
-abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged
+abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged, vcsDiffable
 {
     /**
      * Current version of the given resource
@@ -189,6 +189,32 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
         }
 
         return $log[$version];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDiff( $version, $current = null )
+    {
+        $current = ( $current === null ) ? $this->getVersionString() : $current;
+
+        if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
+        {
+            list( $diffStream, $errors ) = svn_diff( $this->root . $this->path, $version, $this->root . $this->path, $current );
+            $diffContents = '';
+            while ( !feof( $diffStream ) )
+            {
+                $diffContents .= fread( $diffStream, 8192);
+            }
+            fclose( $diffStream );
+
+            // Execute command
+            $parser = new vcsUnifiedDiffParser();
+            $diff   = $parser->parseString( $diffContents );
+            vcsCache::cache( $this->path, $version, 'diff', $diff );
+        }
+
+        return $diff;
     }
 }
 

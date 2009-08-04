@@ -26,7 +26,7 @@
 /*
  * File implementation vor SVN Ext wrapper
  */
-class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, vcsFetchable, vcsDiffable
+class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, vcsFetchable
 {
     /**
      * @inheritdoc
@@ -110,32 +110,6 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
         }
 
         return $content;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDiff( $version, $current = null )
-    {
-        $current = ( $current === null ) ? $this->getVersionString() : $current;
-
-        if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
-        {
-            list( $diffStream, $errors ) = svn_diff( $this->root . $this->path, $version, $this->root . $this->path, $current );
-            $diffContents = '';
-            while ( !feof( $diffStream ) )
-            {
-                $diffContents .= fread( $diffStream, 8192);
-            }
-            fclose( $diffStream );
-
-            // Execute command
-            $parser = new vcsUnifiedDiffParser();
-            $diff   = $parser->parseString( $diffContents );
-            vcsCache::cache( $this->path, $version, 'diff', $diff );
-        }
-
-        return $diff;
     }
 }
 
