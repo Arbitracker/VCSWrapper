@@ -26,7 +26,7 @@
 /*
  * File implementation vor SVN Cli wrapper
  */
-class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, vcsFetchable, vcsDiffable
+class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, vcsFetchable
 {
     /**
      * @inheritdoc
@@ -121,29 +121,6 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
         }
 
         return $content;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDiff( $version, $current = null )
-    {
-        $current = ( $current === null ) ? $this->getVersionString() : $current;
-
-        if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
-        {
-            // Refetch the basic contentrmation, and cache it.
-            $process = new vcsSvnCliProcess();
-            $process->argument( '-r' . $version . ':' . $current );
-
-            // Execute command
-            $return = $process->argument( 'diff' )->argument( $this->root . $this->path )->execute();
-            $parser = new vcsUnifiedDiffParser();
-            $diff   = $parser->parseString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $version, 'diff', $diff );
-        }
-
-        return $diff;
     }
 }
 

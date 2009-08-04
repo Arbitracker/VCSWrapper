@@ -102,5 +102,26 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
             $files
         );
     }
+
+    public function testGetDirectoryDiff()
+    {
+        $repository = new vcsSvnCliCheckout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $dir = new vcsSvnCliDirectory( $this->tempDir, '/dir1/' );
+
+        $diff = $dir->getDiff( 2 );
+
+        $this->assertEquals(
+            array(
+                new vcsDiffChunk(
+                    0, 1, 1, 1,
+                    array(
+                        new vcsDiffLine( 1, 'Some test contents' ),
+                    )
+                ),
+            ),
+            $diff[0]->chunks
+        );
+    }
 }
 
