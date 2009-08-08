@@ -245,6 +245,12 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             vcsCache::cache( $this->path, $version, 'diff', $diff );
         }
 
+        foreach ( $diff as $fileDiff )
+        {
+            $fileDiff->from = substr( $fileDiff->from, strlen( $this->root ) );
+            $fileDiff->to   = substr( $fileDiff->to, strlen( $this->root ) );
+        }
+
         return $diff;
     }
 }

@@ -117,6 +117,14 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
         $diff = $dir->getDiff( 2 );
 
         $this->assertEquals(
+            '/dir1/file',
+            $diff[0]->from
+        );
+        $this->assertEquals(
+            '/dir1/file',
+            $diff[0]->to
+        );
+        $this->assertEquals(
             array(
                 new vcsDiffChunk(
                     0, 1, 1, 1,

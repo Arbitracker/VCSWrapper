@@ -255,6 +255,14 @@ class vcsSvnCliFileTests extends vcsTestCase
         
 
         $this->assertEquals(
+            '/file',
+            $diff[0]->from
+        );
+        $this->assertEquals(
+            '/file',
+            $diff[0]->to
+        );
+        $this->assertEquals(
             array(
                 new vcsDiffChunk(
                     1, 1, 1, 2,
