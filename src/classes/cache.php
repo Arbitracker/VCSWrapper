@@ -116,8 +116,10 @@ class vcsCache
         self::$cleanupRate = (float)  $cleanupRate;
 
         // Determine meta data handler to use for caching the cache metadata.
-        if ( extension_loaded( 'sqlite3' ) )
+        if ( false && extension_loaded( 'sqlite3' ) )
         {
+            // SQLite metadata cache handler disabled for now, since it has 
+            // lock issues.
             self::$metaDataHandler = new vcsCacheSqliteMetaData( self::$path );
         }
         else
