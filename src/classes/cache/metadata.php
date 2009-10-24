@@ -47,6 +47,11 @@ abstract class vcsCacheMetaData
     public function __construct( $root )
     {
         $this->root = $root;
+
+        if ( !is_dir( $root ) )
+        {
+            mkdir( $root, 0777, true );
+        }
     }
 
     /**
