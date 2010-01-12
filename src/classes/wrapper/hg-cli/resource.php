@@ -92,7 +92,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
 
             // Execute log command
             $process->argument( 'log' );
-            $process->argument( '--template' )->argument( '{node}\t{author|email}\t{date|isodate}\t{desc}\n' );
+            $process->argument( '--template' )->argument( '{node}\t{author|email}\t{date|isodate}\t{desc|urlescape}\n' );
             $process->argument( '.' . $this->path );
             $process->execute();
 
@@ -116,7 +116,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
                     $author = substr( $author, 0, $atPosition );
                 }
                 
-                $log[$node] = new vcsLogEntry( $node, $author, $desc, strtotime( $date ) );
+                $log[$node] = new vcsLogEntry( $node, $author, urldecode( $desc ), strtotime( $date ) );
             }
             $log = array_reverse( $log );
             $last = end( $log );
