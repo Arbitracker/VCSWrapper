@@ -34,7 +34,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * Construct the repository with the repository root path, which will be
      * used to store the repository contents.
      *
-     * @param string $root 
+     * @param string $root
      * @return void
      */
     public function __construct( $root )
@@ -48,9 +48,9 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * Initialize repository from the given URL. Optionally username and
      * password may be passed to the method, if required for the repository.
      *
-     * @param string $url 
-     * @param string $user 
-     * @param string $password 
+     * @param string $url
+     * @param string $user
+     * @param string $password
      * @return void
      */
     public function initialize( $url, $user = null, $password = null )
@@ -82,7 +82,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      *
      * Optionally a version can be specified, in which case the repository
      * won't be updated to the latest version, but to the specified one.
-     * 
+     *
      * @param string $version
      * @return bool
      */
@@ -113,7 +113,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      *
      * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
      * instance, depending on the given path.
-     * 
+     *
      * @param string $path
      * @return mixed
      */
