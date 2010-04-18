@@ -64,14 +64,14 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
             $process->workingDirectory( $this->root );
 
             // Execute command
-            $return = $process->argument( 'blame' )->argument( '.' . $this->path )->execute();
+            $return = $process->argument( 'blame' )->argument('-l')->argument( '.' . $this->path )->execute();
             $contents = preg_split( '(\r\n|\r|\n)', trim( $process->stdoutOutput ) );
 
             // Convert returned lines into diff structures
             $blame = array();
             foreach ( $contents as $nr => $line )
             {
-                if ( preg_match( '(^\\^?(?P<version>[0-9a-f]{1,40})\\s+\\((?P<author>\\S*)\s+(?P<date>.*)\s+(?P<number>\\d+)\\) (?P<line>.*))', $line, $match ) )
+                if ( preg_match( '{^\^?(?P<version>[0-9a-f]{1,40})[^(]+\((?P<author>\S*)\s+(?P<date>.*)\s+(?P<number>\d+)\) (?P<line>.*)}', $line, $match ) )
                 {
                     $blame[] = new vcsBlameStruct( $match['line'], $match['version'], $match['author'], strtotime( $match['date'] ) );
                 }
@@ -101,7 +101,7 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
 
         if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
         {
-            // Refetch the basic contentrmation, and cache it.
+            // Refetch the basic content information, and cache it.
             $process = new vcsGitCliProcess();
             $process->workingDirectory( $this->root );
             $process->argument( 'diff' )->argument( '--no-ext-diff' );
