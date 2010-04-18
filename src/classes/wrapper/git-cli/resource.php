@@ -26,11 +26,11 @@
 /*
  * Resource implementation vor Git Cli wrapper
  */
-abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged
+abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged, vcsDiffable
 {
     /**
      * Current version of the given resource
-     * 
+     *
      * @var string
      */
     protected $currentVersion = null;
@@ -224,6 +224,35 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
         }
 
         return $log[$version];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDiff( $version, $current = null )
+    {
+        if ( !in_array( $version, $this->getVersions(), true ) )
+        {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        $current = ( $current === null ) ? $this->getVersionString() : $current;
+
+        if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
+        {
+            // Refetch the basic content information, and cache it.
+            $process = new vcsGitCliProcess();
+            $process->workingDirectory( $this->root );
+            $process->argument( 'diff' )->argument( '--no-ext-diff' );
+            $process->argument( $version . '..' . $current )->argument( '.' . $this->path )->execute();
+
+            // Parse resulting unified diff
+            $parser = new vcsUnifiedDiffParser();
+            $diff   = $parser->parseString( $process->stdoutOutput );
+            vcsCache::cache( $this->path, $version, 'diff', $diff );
+        }
+
+        return $diff;
     }
 }
 
