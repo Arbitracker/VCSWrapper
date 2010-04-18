@@ -45,10 +45,6 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
      * Initilaize the array containing all child elements of the current
      * directly as vcsHgCliResource objects.
      * 
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses resources
-     * @uses vcsHgCliDirectory
-     * @uses vcsHgCliFile
      * @return array(vcsHgCliResource)
      */
     protected function initializeResouces() 
@@ -77,9 +73,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Returns the current item inside this iterator
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses initializeResouces
-     * @return mixed Current object inside this iterator
+     * @return mixed
      */
     public function current()
     {
@@ -91,9 +85,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Returns the next item of the iterator.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses initializeResouces
-     * @return mixed Next object inside this iterator
+     * @return mixed
      */
     public function next()
     {
@@ -105,9 +97,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Returns the key for the current pointer.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses initializeResouces
-     * @return integer Key for the current item
+     * @return integer
      */
     public function key()
     {
@@ -119,9 +109,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Checks if the current item is valid.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses initializeResouces
-     * @return boolean Returns TRUE of the current item is valid
+     * @return boolean
      */
     public function valid()
     {
@@ -133,9 +121,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Set the internal pointer of an array to its first element.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses initializeResouces
-     * @return mixed First element inside this directory
+     * @return mixed
      */
     public function rewind()
     {
@@ -147,9 +133,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Returns the children for this instance.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses initializeResouces
-     * @return vcsDirectory Children of this instance
+     * @return vcsDirectory
      */
     public function getChildren() 
     {
@@ -161,10 +145,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Returns if this directory contains files of directories.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses initializeResouces
-     * @uses vcsDirectory
-     * @return boolean Returns TRUE of it has children, otherwise FALSE
+     * @return boolean
      */
     public function hasChildren()
     {

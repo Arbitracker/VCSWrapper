@@ -44,10 +44,6 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * Get the base information, like version, author, etc for the current
      * resource in the current version.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses currentVersion
-     * @uses getResourceLog
-     * @uses vcsCache
      * @return vcsLogEntry
      */
     protected function getResourceInfo() 
@@ -69,13 +65,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     /**
      * Returns the complete log for this resource.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses currentVersion
-     * @uses path
-     * @uses vcsLogEntry
-     * @uses vcsHgCliProcess
-     * @uses vcsCache
-     * @return array Resource log as array (keys are version, values are vcsLogEntry instance)
+     * @return array
      */
     protected function getResourceLog() 
     {
@@ -134,9 +124,8 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      *
      * This method is not implemented because mercurial has no properties.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @param string $property Name of the property to return
-     * @return string Always returns an emtpy string
+     * @param string $property
+     * @return string
      */
     protected function getResourceProperty( $property ) 
     {
@@ -147,9 +136,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     /**
      * Returns the current version.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getResourceInfo
-     * @return string Current version of this resource
+     * @return string
      */
     public function getVersionString() 
     {
@@ -160,9 +147,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     /**
      * Returns all version for this resource.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getResourceLog
-     * @return array All known version of this resource
+     * @return array
      */
     public function getVersions() 
     {
@@ -180,11 +165,12 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     /**
      * Compares two versions.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getVersions
-     * @param string $version1 First version number
-     * @param string $version2 Second version number
-     * @return integer Returns -1 if the first version is lower than the second, 0 if they are equal, and 1 if the second is lower.
+     * Returns -1 if the first version is lower than the second, 0 if they are 
+     * equal, and 1 if the second is lower.
+     *
+     * @param string $version1
+     * @param string $version2
+     * @return integer 
      */
     public function compareVersions( $version1, $version2 ) 
     {
@@ -203,12 +189,8 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     /**
      * Returns the author for the given resource.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getResourceLog
-     * @uses path
-     * @throws vcsNoSuchVersionException Thrown if the version was not found
-     * @param string $version Version for which the author will be returned
-     * @return string Author of the given version 
+     * @param string $version
+     * @return string
      */
     public function getAuthor( $version = null ) 
     {
@@ -225,9 +207,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     /**
      * Returns the resource log for this resource.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getResourceLog
-     * @return string Resource log for this resource
+     * @return string
      */
     public function getLog() 
     {
@@ -237,12 +217,8 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     /**
      * Returns the log entry for he given version.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getResourceLog
-     * @uses path
-     * @throws vcsNoSuchVersionException Thrown if the version was not found
-     * @param string $version Version for which the log entry will be returned
-     * @return string Log entry for the given version
+     * @param string $version
+     * @return string
      */
     public function getLogEntry( $version ) 
     {

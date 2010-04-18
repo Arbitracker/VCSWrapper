@@ -43,9 +43,7 @@ class vcsHgCliProcess extends pbsSystemProcess
     /**
      * Class constructor taking the executable
      * 
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses checkVersion
-     * @param string $executable Executable to create system process for;
+     * @param string $executable
      * @return void
      */
     public function __construct( $executable = 'env' ) 
@@ -64,9 +62,6 @@ class vcsHgCliProcess extends pbsSystemProcess
      * Verify hat the version of the installed GIT binary is at least 1.6. Will
      * throw an exception, if the binary is not available or too old.
      * 
-     * @author Tobias Tom <t.tom@succont.de>
-     * @throws vcsRuntimeException Thrown if the mercurial version cannot be determined
-     * @uses pbsSystemProcess
      * @return void
      */
     protected static function checkVersion()

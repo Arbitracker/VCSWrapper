@@ -38,7 +38,6 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * Construct the repository with the repository root path, which will be
      * used to store the repository contents.
      *
-     * @author Tobias Tom <t.tom@succont.de>
      * @param string $root 
      * @return void
      */
@@ -53,13 +52,9 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * Initialize repository from the given URL. Optionally username and
      * password may be passed to the method, if required for the repository.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses vcsHgCliProcess
-     * @uses getResourceInfo
-     * @throws vcsCheckoutFailedException Thrown if the directory exists, and is not empty
-     * @param string $url URL of the mercurial repositiory
-     * @param string $user Optional username to use with the repository 
-     * @param string $password  Password which might be required for the repository
+     * @param string $url
+     * @param string $user
+     * @param string $password
      * @return void
      */
     public function initialize( $url, $user = null, $password = null )
@@ -96,9 +91,6 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * Optionally a version can be specified, in which case the repository
      * won't be updated to the latest version, but to the specified one.
      * 
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getVersionString
-     * @uses vcsHgCliProcess
      * @param string $version
      * @return bool
      */
@@ -134,10 +126,6 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
      * instance, depending on the given path.
      * 
-     * @author Tobias Tom <t.tom@succont.de
-     * @uses vcsHgCliDirectory
-     * @uses vcsHgCliFile
-     * @throws vcsFileNotFoundException Thrown if the directory does not exit
      * @param string $path
      * @return mixed
      */

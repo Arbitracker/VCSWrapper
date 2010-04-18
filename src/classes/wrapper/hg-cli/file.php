@@ -35,10 +35,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
     /**
      * Returns the contents of this file
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses root
-     * @uses path
-     * @return string Contents of this file
+     * @return string
      */
     public function getContents()
     {
@@ -48,7 +45,6 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
     /**
      * Returns the mimetype for this file.
      *
-     * @author Tobias Tom <t.tom@succont.de>
      * @return string Mimetype of this file
      */
     public function getMimeType()
@@ -60,15 +56,8 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
     /**
      * Returns blame information for each line in file.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getVersionString
-     * @uses vcsHgCliProcess
-     * @uses vcsBlameStruct
-     * @uses vcsCache
-     * @throws vcsNoSuchVersionException Thrown if the given version was not found inside the file
-     * @throws vcsRuntimeException Thrown if a line inside the blame output cannot be parsed
-     * @param string $version Version for which blame should be returned, current version by default
-     * @return array(vcsBlameStruct) Array with vcsBlameStruct for each line
+     * @param string $version
+     * @return array(vcsBlameStruct)
      */
     public function blame( $version = null )
     {
@@ -160,15 +149,9 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
     /**
      * Returns the diff between two different versions.
      *
-     * @author Tobias Tom <t.tom@succont.de>
-     * @uses getVersions
-     * @uses path
-     * @uses vcsHgCliProcess
-     * @uses vcsUnifiedDiffParser
-     * @uses vcsCache
-     * @param string $version First version
-     * @param string $current Second version, current by default
-     * @return vcsDiff Diff instance for the given versions
+     * @param string $version
+     * @param string $current
+     * @return vcsDiff
      */
     public function getDiff( $version, $current = null )
     {
