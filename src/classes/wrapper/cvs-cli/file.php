@@ -114,7 +114,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
 
         if ( ( $content = vcsCache::get( $this->path, $version, 'content' ) ) === false )
         {
-            // Refetch the basic contentrmation, and cache it.
+            // Refetch the basic content information, and cache it.
             $process = new vcsCvsCliProcess();
             $process->workingDirectory( $this->root )
                     ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )

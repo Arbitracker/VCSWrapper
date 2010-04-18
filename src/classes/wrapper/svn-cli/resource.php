@@ -234,7 +234,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
 
         if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
         {
-            // Refetch the basic contentrmation, and cache it.
+            // Refetch the basic content information, and cache it.
             $process = new vcsSvnCliProcess();
             $process->argument( '-r' . $version . ':' . $current );
 

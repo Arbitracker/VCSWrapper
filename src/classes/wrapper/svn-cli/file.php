@@ -111,7 +111,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
 
         if ( ( $content = vcsCache::get( $this->path, $version, 'content' ) ) === false )
         {
-            // Refetch the basic contentrmation, and cache it.
+            // Refetch the basic content information, and cache it.
             $process = new vcsSvnCliProcess();
             $process->argument( '-r' . $version );
 

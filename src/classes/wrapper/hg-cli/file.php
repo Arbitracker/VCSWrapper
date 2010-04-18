@@ -34,24 +34,24 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
 {
     /**
      * Returns the contents of this file
-     * 
+     *
      * @author Tobias Tom <t.tom@succont.de>
      * @uses root
      * @uses path
      * @return string Contents of this file
      */
-    public function getContents() 
+    public function getContents()
     {
         return file_get_contents( $this->root . $this->path );
     }
 
     /**
      * Returns the mimetype for this file.
-     * 
+     *
      * @author Tobias Tom <t.tom@succont.de>
      * @return string Mimetype of this file
      */
-    public function getMimeType() 
+    public function getMimeType()
     {
         // If not set, fall back to application/octet-stream
         return 'application/octet-stream';
@@ -70,7 +70,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
      * @param string $version Version for which blame should be returned, current version by default
      * @return array(vcsBlameStruct) Array with vcsBlameStruct for each line
      */
-    public function blame( $version = null ) 
+    public function blame( $version = null )
     {
         $version = ( $version === null ) ? $this->getVersionString() : $version;
 
@@ -107,13 +107,13 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                 }
                 $user = substr( $line, 0, $emailEndPos + 1 );
                 $shortHash = substr( $line, $emailEndPos + 2, 12 );
-                
+
                 $date = substr( $line, $emailEndPos + 15, 30 );
                 $line = substr( $line, $emailEndPos + 46 );
-                
+
                 $linePositionEnd = strpos( $line, ':' );
                 $lineNumber = substr( $linePositionEnd, 0, $linePositionEnd );
-                
+
                 $line = trim( substr( $line, $linePositionEnd + 1 ) );
 
                 if ( !isset( $shortHashCache[ $shortHash ] ) ) {
@@ -124,7 +124,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                     $process->argument( '--debug' );
                     $process->argument( '-r' . $shortHash );
                     $process->execute();
-                    
+
                     $result = trim( $process->stdoutOutput );
                     $spacePosition = strpos( $result, ' ' );
                     // if there is a space inside the revision, we have additional tags
@@ -132,7 +132,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                     if ( $spacePosition ) {
                         $result = substr( $result, 0, $spacePosition );
                     }
-                    
+
                     $shortHashCache[ $shortHash ] = $result;
                 }
                 // get the long revision from the cache
@@ -145,7 +145,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                 // start and end of email, now lets get it from the username
                 $email = substr( $user, $emailStart + 1, $emailEnd - $emailStart );
                 // alias and domain part, should be separated with @.
-                // todo: we might want to check if there is really a @. 
+                // todo: we might want to check if there is really a @.
                 list( $alias, $domain ) = explode( '@', $email );
 
                 $blame[] = new vcsBlameStruct( $line, $revision, $alias, strtotime( $date ) );
@@ -159,7 +159,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
 
     /**
      * Returns the diff between two different versions.
-     * 
+     *
      * @author Tobias Tom <t.tom@succont.de>
      * @uses getVersions
      * @uses path
@@ -168,9 +168,9 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
      * @uses vcsCache
      * @param string $version First version
      * @param string $current Second version, current by default
-     * @return vcsDiff Diff instance for the given versions 
+     * @return vcsDiff Diff instance for the given versions
      */
-    public function getDiff( $version, $current = null ) 
+    public function getDiff( $version, $current = null )
     {
         if ( !in_array( $version, $this->getVersions(), true ) ) {
             throw new vcsNoSuchVersionException( $this->path, $version );
@@ -178,7 +178,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
 
         $diff = vcsCache::get( $this->path, $version, 'diff' );
         if ($diff === false) {
-            // Refetch the basic contentrmation, and cache it.
+            // Refetch the basic content information, and cache it.
             $process = new vcsHgCliProcess();
             $process->workingDirectory( $this->root );
             $process->argument( 'diff' );
