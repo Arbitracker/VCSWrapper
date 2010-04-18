@@ -174,13 +174,13 @@ class vcsGitCliFileTests extends vcsTestCase
             array(
                 new vcsBlameStruct(
                     'Some test file',
-                    '43fb423',
+                    '43fb423f4ee079af2f3cba4e07eb8b10f447681',
                     'kore',
                     1226920616
                 ),
                 new vcsBlameStruct(
                     'Another line in the file',
-                    '2037a8d0',
+                    '2037a8d0efd4e51a4dd84161837f8865cf7d34b1',
                     'kore',
                     1226921232
                 ),
