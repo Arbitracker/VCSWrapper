@@ -83,17 +83,22 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
             $process->argument( '.' . $this->path );
             $return = $process->execute();
             
-            $xmlDoc = new SimpleXMLElement($process->stdoutOutput);
-
-            // Convert returned lines into diff structures
             $blame = array();
-            foreach ( $xmlDoc->entry AS $line ) {
-                $user = $line["author"];
-                $date = strtotime($line["date"]);
-                $revno = $line["revno"];
-                $line = $line;
+            libxml_use_internal_errors(true);
+            try {
+                $xmlDoc = new SimpleXMLElement($process->stdoutOutput);
 
-                $blame[] = new vcsBlameStruct( $line, $revno, $user, $date );
+                // Convert returned lines into diff structures
+                foreach ( $xmlDoc->entry AS $line ) {
+                    $user = $line["author"];
+                    $date = strtotime($line["date"]);
+                    $revno = $line["revno"];
+                    $line = $line;
+
+                    $blame[] = new vcsBlameStruct( $line, $revno, $user, $date );
+                }
+            } catch (Exception $e) {
+                $blame[] = new vcsBlameStruct( "INVALID; BINARY FILE", $version, "", time());
             }
 
             vcsCache::cache( $this->path, $version, 'blame', $blame );
@@ -102,45 +107,5 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
         return $blame;
     }
 
-    /**
-     * Returns the diff between two different versions.
-     *
-     * @param string $version
-     * @param string $current
-     * @return vcsDiff
-     */
-    public function getDiff( $version, $current = null )
-    {
-        if ( !in_array( $version, $this->getVersions(), true ) ) {
-            throw new vcsNoSuchVersionException( $this->path, $version );
-        }
-
-        $diff = vcsCache::get( $this->path, $version, 'diff' );
-        if ($diff === false) {
-            // Refetch the basic content information, and cache it.
-            $process = new vcsBzrCliProcess();
-            $process->workingDirectory( $this->root );
-            $process->argument( 'diff' );
-            if ($current !== null) {
-                $process->argument( '-r' . $version . ".." . $current );
-            } else {
-                $process->argument( "-r" . $version );
-            }
-            $process->argument( '.' . $this->path );
-            try {
-                $process->execute();
-            } catch ( pbsSystemProcessNonZeroExitCodeException $e ) {
-                print_r($e);
-                print_r($process);
-            }
-
-            // Parse resulting unified diff
-            $parser = new vcsUnifiedDiffParser();
-            $diff   = $parser->parseString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $version, 'diff', $diff );
-        }
-
-        return $diff;
-    }
 }
 

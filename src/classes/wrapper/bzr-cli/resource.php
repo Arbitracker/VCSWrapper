@@ -29,7 +29,7 @@
  * @package VCSWrapper
  * @version $Revision$
  **/
-abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged
+abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged, vcsDiffable
 {
     /**
      * Current version of the given resource
@@ -225,6 +225,46 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
         }
 
         return $log[$version];
+    }
+    /**
+     * Returns the diff between two different versions.
+     *
+     * @param string $version
+     * @param string $current
+     * @return vcsDiff
+     */
+    public function getDiff( $version, $current = null )
+    {
+        if ( !in_array( $version, $this->getVersions(), true ) ) {
+            throw new vcsNoSuchVersionException( $this->path, $version );
+        }
+
+        $diff = vcsCache::get( $this->path, $version, 'diff' );
+        if ($diff === false) {
+            // Refetch the basic content information, and cache it.
+            $process = new vcsBzrCliProcess();
+            $process->workingDirectory( $this->root );
+            $process->argument( 'diff' );
+            if ($current !== null) {
+                $process->argument( '-r' . $version . ".." . $current );
+            } else {
+                $process->argument( "-r" . $version );
+            }
+            $process->argument( '.' . $this->path );
+            try {
+                $process->execute();
+            } catch ( pbsSystemProcessNonZeroExitCodeException $e ) {
+                print_r($e);
+                print_r($process);
+            }
+
+            // Parse resulting unified diff
+            $parser = new vcsUnifiedDiffParser();
+            $diff   = $parser->parseString( $process->stdoutOutput );
+            vcsCache::cache( $this->path, $version, 'diff', $diff );
+        }
+
+        return $diff;
     }
 }
 
