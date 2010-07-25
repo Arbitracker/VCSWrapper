@@ -13,6 +13,13 @@
 class vcsBzrCliFileTests extends vcsTestCase
 {
     /**
+     * Default system timezone.
+     *
+     * @var string
+     */
+    private $timezone = null;
+
+    /**
      * Return test suite
      *
      * @return PHPUnit_Framework_TestSuite
@@ -29,6 +36,20 @@ class vcsBzrCliFileTests extends vcsTestCase
         // Create a cache, required for all VCS wrappers to store metadata
         // information
         vcsCache::initialize( $this->createTempDir() );
+
+        // Store default timezone
+        $this->timezone = ini_get( 'date.timezone' );
+
+        // Test data uses US/Mountain
+        ini_set( 'date.timezone', 'US/Mountain' );
+    }
+
+    public function tearDown()
+    {
+        // Restore system timezone
+        ini_set( 'date.timezone', $this->timezone );
+ 
+        parent::tearDown();
     }
 
     public function testGetVersionString()
