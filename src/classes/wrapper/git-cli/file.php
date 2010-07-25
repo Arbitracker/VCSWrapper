@@ -71,7 +71,7 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
             $blame = array();
             foreach ( $contents as $nr => $line )
             {
-                if ( preg_match( '{^\^?(?P<version>[0-9a-f]{1,40})[^(]+\((?P<author>\S*)\s+(?P<date>.*)\s+(?P<number>\d+)\) (?P<line>.*)}', $line, $match ) )
+                if ( preg_match( '{^\^?(?P<version>[0-9a-f]{1,40})[^(]+\((?P<author>.*)\s+(?P<date>(19|20).*)\s+(?P<number>\d+)\) (?P<line>.*)}', $line, $match ) )
                 {
                     $blame[] = new vcsBlameStruct( $match['line'], $match['version'], $match['author'], strtotime( $match['date'] ) );
                 }
