@@ -168,6 +168,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
                 unlink( $path );
             }
         }
+        $directory->close();
 
         rmdir( $dir );
     }
