@@ -82,8 +82,6 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
     */
     static public function copyRecursive( $source, $destination, $depth = -1, $dirMode = 0775, $fileMode = 0664 )
     {
-        echo "Copy $source -> $destination", PHP_EOL;
-
         // Check if source file exists at all.
         if ( !is_file( $source ) && !is_dir( $source ) )
         {
