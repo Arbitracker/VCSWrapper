@@ -46,13 +46,12 @@ class vcsBzrCliProcess extends pbsSystemProcess
      * @param string $executable
      * @return void
      */
-    public function __construct( $executable = 'env' ) 
+    public function __construct( $executable = 'bzr' ) 
     {
         parent::__construct( $executable );
         self::checkVersion();
 
         $this->nonZeroExitCodeException = false;
-        $this->argument( 'bzr' );
     }
 
 
@@ -70,8 +69,8 @@ class vcsBzrCliProcess extends pbsSystemProcess
             return true;
         }
 
-        $process = new pbsSystemProcess( 'env' );
-        $process->argument( 'bzr' )->argument( '--version' )->execute();
+        $process = new pbsSystemProcess( 'bzr' );
+        $process->argument( '--version' )->execute();
 
         if ( !preg_match( '/\Bazaar \(bzr\) ([0-9.]*)/', $process->stdoutOutput, $match ) )
         {
@@ -80,6 +79,14 @@ class vcsBzrCliProcess extends pbsSystemProcess
         if ( version_compare( $match[1], '1.1', '>=' ) )
         {
             return self::$checked = true;
+        }
+
+        $process = new pbsSystemProcess( 'bzr' );
+        $process->argument( 'plugins' )->execute();
+
+        if ( strpos( $process->stdoutOutput, 'xmloutput' ) === false )
+        {
+            throw new vcsRuntimeException( 'Missing required bazaar pluging "xmloutput".' );
         }
 
         throw new vcsRuntimeException( 'Bazaar is required in a minimum version of 1.1.' );
