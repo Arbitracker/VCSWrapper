@@ -71,11 +71,14 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
             rmdir( $this->root );
         }
 
+        // Fix incorrect windows checkout URLs
+        $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
+
         $process = new vcsBzrCliProcess();
         $process->nonZeroExitCodeException = true;
-        $process->argument( 'checkout' );   // bound branch
-        $process->argument( $url );         // repository url
-        $process->argument( $this->root );  // to directory
+        $process->argument( 'checkout' );
+        $process->argument( str_replace( '\\', '/', $url ) );
+        $process->argument( new pbsPathArgument( $this->root ) );
         $return = $process->execute();
 
         // Cache basic revision information for checkout and update
@@ -132,7 +135,9 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
     {
         $fullPath = realpath( $this->root . $path );
 
-        if ( ( $fullPath === false ) || ( strpos( $fullPath, $this->root ) !== 0 ) ) {
+        if ( ( $fullPath === false ) ||
+             ( strpos( str_replace( '\\', '/', $fullPath ), str_replace( '\\', '/', $this->root ) ) !== 0 ) )
+        {
             throw new vcsFileNotFoundException( $path );
         }
 

@@ -80,7 +80,7 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
             if ( $version !== null ) {
                 $process->argument( '-r' . $version );
             }
-            $process->argument( '.' . $this->path );
+            $process->argument( new pbsPathArgument( '.' . $this->path ) );
             $return = $process->execute();
             
             $blame = array();

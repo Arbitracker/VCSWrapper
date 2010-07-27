@@ -84,7 +84,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
                 $process->argument( '-r ' . $this->currentVersion );
             }
 
-            $process->argument( '.' . $this->path );
+            $process->argument( new pbsPathArgument( '.' . $this->path ) );
             
             $process->execute();
 
@@ -250,7 +250,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
             } else {
                 $process->argument( "-r" . $version );
             }
-            $process->argument( '.' . $this->path );
+            $process->argument( new pbsPathArgument( '.' . $this->path ) );
             try {
                 $process->execute();
             } catch ( pbsSystemProcessNonZeroExitCodeException $e ) {
