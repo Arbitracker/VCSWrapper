@@ -34,12 +34,12 @@ class vcsSvnCliProcess extends pbsSystemProcess
      * @param string $executable Executable to create system process for;
      * @return void
      */
-    public function __construct( $executable = 'env' )
+    public function __construct( $executable = 'svn' )
     {
         parent::__construct( $executable );
 
         $this->nonZeroExitCodeException = true;
-        $this->argument( 'svn' )->argument( '--non-interactive' );
+        $this->argument( '--non-interactive' );
     }
 }
 

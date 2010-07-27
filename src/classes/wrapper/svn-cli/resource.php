@@ -59,7 +59,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             }
 
             // Execute info command
-            $return = $process->argument( 'info' )->argument( $this->root . $this->path )->execute();
+            $return = $process->argument( 'info' )->argument( new pbsPathArgument( $this->root . $this->path ) )->execute();
 
             $info = arbitXml::loadString( $process->stdoutOutput );
             vcsCache::cache( $this->path, $this->currentVersion = (string) $info->entry[0]->commit[0]['revision'], 'info', $info );
@@ -90,7 +90,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             }
 
             // Execute logr command
-            $return = $process->argument( 'log' )->argument( $this->root . $this->path )->execute();
+            $return = $process->argument( 'log' )->argument( new pbsPathArgument( $this->root . $this->path ) )->execute();
 
             // Transform XML into object array
             $xmlLog = arbitXml::loadString( $process->stdoutOutput );
@@ -135,7 +135,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             }
 
             // Execute mimeTyper command
-            $return = $process->argument( 'propget' )->argument( 'svn:' . $property )->argument( $this->root . $this->path )->execute();
+            $return = $process->argument( 'propget' )->argument( 'svn:' . $property )->argument( new pbsPathArgument( $this->root . $this->path ) )->execute();
 
             $value = trim( $process->stdoutOutput );
             vcsCache::cache( $this->path, $this->currentVersion, $property, $value );
@@ -239,7 +239,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             $process->argument( '-r' . $version . ':' . $current );
 
             // Execute command
-            $return = $process->argument( 'diff' )->argument( $this->root . $this->path )->execute();
+            $return = $process->argument( 'diff' )->argument( new pbsPathArgument( $this->root . $this->path ) )->execute();
             $parser = new vcsUnifiedDiffParser();
             $diff   = $parser->parseString( $process->stdoutOutput );
             vcsCache::cache( $this->path, $version, 'diff', $diff );

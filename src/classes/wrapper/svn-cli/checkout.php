@@ -67,7 +67,10 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
             }
         }
 
-        $return = $process->argument( 'checkout' )->argument( $url )->argument( $this->root )->execute();
+        // Fix incorrect windows checkout URLs
+        $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
+
+        $return = $process->argument( 'checkout' )->argument( str_replace( '\\', '/', $url ) )->argument( new pbsPathArgument( $this->root ) )->execute();
 
         // Cache basic revision information for checkout and update
         // currentVersion property.
@@ -98,7 +101,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
             $process->argument( '-r' . $version );
         }
 
-        $return = $process->argument( 'update' )->argument( $this->root )->execute();
+        $return = $process->argument( 'update' )->argument( new pbsPathArgument( $this->root ) )->execute();
 
         // Check if an update has happened
         $this->currentVersion = null;
@@ -122,7 +125,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         $fullPath = realpath( $this->root . $path );
 
         if ( ( $fullPath === false ) ||
-             ( strpos( $fullPath, $this->root ) !== 0 ) )
+             ( strpos( str_replace( '\\', '/', $fullPath ), str_replace( '\\', '/', $this->root ) ) !== 0 ) )
         {
             throw new vcsFileNotFoundException( $path );
         }
