@@ -41,7 +41,7 @@ class vcsBzrCliTestSuite extends PHPUnit_Framework_TestSuite
     public function __construct()
     {
         parent::__construct();
-        $this->setName( 'Mercurial cli wrapper suite' );
+        $this->setName( 'Bazaar cli wrapper suite' );
 
         $this->addTest( vcsBzrCliCheckoutTests::suite() );
         $this->addTest( vcsBzrCliDirectoryTests::suite() );
