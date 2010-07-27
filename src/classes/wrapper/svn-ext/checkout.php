@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Handler for SVN repositories
+ *
+ * @package VCSWrapper
+ * @subpackage SvnExtWrapper
+ * @version $Revision$
  */
 class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
 {

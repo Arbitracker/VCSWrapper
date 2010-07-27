@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Abstract base class for diff parsers
+ *
+ * @package VCSWrapper
+ * @subpackage Diff
+ * @version $Revision$
  */
 abstract class vcsDiffParser
 {

@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Handler for Git repositories
+ *
+ * @package VCSWrapper
+ * @subpackage GitCliWrapper
+ * @version $Revision$
  */
 class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
 {

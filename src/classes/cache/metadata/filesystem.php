@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
- * file system Cache metadata handler.
+/**
+ * File system Cache metadata handler.
+ *
+ * @package VCSWrapper
+ * @subpackage Cache
+ * @version $Revision$
  */
 class vcsCacheFileSystemMetaData extends vcsCacheMetaData
 {

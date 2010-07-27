@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Basic struct containing a diff chunk
+ *
+ * @package VCSWrapper
+ * @subpackage Diff
+ * @version $Revision$
  */
 class vcsDiffChunk extends vcsBaseStruct
 {
@@ -44,9 +48,11 @@ class vcsDiffChunk extends vcsBaseStruct
     /**
      * Construct diff from properties
      * 
-     * @param string $from 
-     * @param string $to 
-     * @param array $chunks 
+     * @param int $start 
+     * @param int $startRange 
+     * @param int $end 
+     * @param int $endRange 
+     * @param array $lines 
      * @return void
      */
     public function __construct( $start = null, $startRange = 1, $end = null, $endRange = 1, array $lines = array() )
@@ -65,7 +71,8 @@ class vcsDiffChunk extends vcsBaseStruct
      * 
      * @ignore
      * @param array $properties 
-     * @return arbitBaseStruct
+     * @param string $class 
+     * @return vcsDiffChunk
      */
     public static function __set_state( array $properties, $class = __CLASS__ )
     {

@@ -23,13 +23,21 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * File implementation vor SVN Cli wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage SvnCliWrapper
+ * @version $Revision$
  */
 class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, vcsFetchable
 {
     /**
-     * @inheritdoc
+     * Get file contents
+     * 
+     * Get the contents of the current file.
+     * 
+     * @return string
      */
     public function getContents()
     {
@@ -37,7 +45,12 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get mime type
+     * 
+     * Get the mime type of the current file. If this information is not
+     * available, just return 'application/octet-stream'.
+     * 
+     * @return string
      */
     public function getMimeType()
     {
@@ -53,7 +66,30 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get blame information for resource
+     *
+     * The method should return author and revision information for each line,
+     * describing who when last changed the current resource. The returned
+     * array should look like:
+        
+     * <code>
+     *  array(
+     *      T_LINE_NUMBER => array(
+     *          'author'  => T_STRING,
+     *          'version' => T_STRING,
+     *      ),
+     *      ...
+     *  );
+     * </code>
+     *
+     * If some file in the repository has no blame information associated, like
+     * binary files, the method should return false.
+     *
+     * Optionally a version may be specified which defines a later version of
+     * the resource for which the blame information should be returned.
+     *
+     * @param mixed $version
+     * @return mixed
      */
     public function blame( $version = null )
     {
@@ -100,7 +136,12 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get content for version
+     *
+     * Get the contents of the current resource in the specified version.
+     *
+     * @param string $version 
+     * @return string
      */
     public function getVersionedContent( $version )
     {

@@ -49,15 +49,18 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
      */
     protected function initializeResouces() 
     {
-        if ( $this->resources !== null ) {
+        if ( $this->resources !== null )
+        {
             return;
         }
 
         $this->resources = array();
 
         $contents = dir( $this->root . $this->path );
-        while ( ( $path = $contents->read() ) !== false ) {
-            if ( in_array( $path, array( '.', '..', '.bzr' ) ) ) {
+        while ( ( $path = $contents->read() ) !== false )
+        {
+            if ( in_array( $path, array( '.', '..', '.bzr' ) ) )
+            {
                 continue;
             }
     

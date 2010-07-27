@@ -23,11 +23,15 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Base class for resources in the VCS wrapper.
  *
  * This class works as a base class for file and directory resources in the
  * wrapper implementations.
+ *
+ * @package VCSWrapper
+ * @subpackage Core
+ * @version $Revision$
  */
 abstract class vcsResource
 {

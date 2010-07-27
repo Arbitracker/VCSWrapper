@@ -48,10 +48,14 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      */
     protected function getResourceInfo() 
     {
-        if ($this->currentVersion !== null) {
+        if ( $this->currentVersion !== null )
+        {
             $info = vcsCache::get( $this->path, $this->currentVersion, 'info' );
         }
-        if ($this->currentVersion === null || $info === false) {
+
+        if ( $this->currentVersion === null ||
+             $info === false )
+        {
             $log = $this->getResourceLog();
 
             // Fecth for specified version, if set
@@ -70,13 +74,15 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     protected function getResourceLog() 
     {
         $log = vcsCache::get( $this->path, $this->currentVersion, 'log' );
-        if ($log === false) {
+        if ( $log === false )
+        {
             // Refetch the basic logrmation, and cache it.
             $process = new vcsHgCliProcess();
             $process->workingDirectory( $this->root );
 
             // Fetch for specified version, if set
-            if ( $this->currentVersion !== null ) {
+            if ( $this->currentVersion !== null )
+            {
                 $process->argument( '-r ' . $this->currentVersion );
             }
 
@@ -88,21 +94,26 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
 
             // Parse commit log
             $lines = explode( "\n", $process->stdoutOutput );
-            if (!$lines) {
+            if ( !$lines )
+            {
                 return array();
             }
+
             $lineCount  = count( $lines );
             $log        = array();
             $lastCommit = null;
-            foreach( $lines AS $line ) {
-                if ( !$line ) {
+            foreach( $lines as $line )
+            {
+                if ( !$line )
+                {
                     continue;
                 }
 
                 list( $node, $author, $date, $desc ) = explode( "\t", $line, 4 );
                 
                 $atPosition = strpos( $author, '@' );
-                if ( $atPosition ) {
+                if ( $atPosition )
+                {
                     $author = substr( $author, 0, $atPosition );
                 }
                 
@@ -134,8 +145,11 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     }
 
     /**
-     * Returns the current version.
+     * Get version string
      *
+     * Return a string representing the current version of the file or
+     * directory.
+     * 
      * @return string
      */
     public function getVersionString() 
@@ -145,7 +159,10 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     }
 
     /**
-     * Returns all version for this resource.
+     * Get available versions
+     *
+     * Get all available versions for the current resource. This method
+     * returns an array with all version strings.
      *
      * @return array
      */
@@ -163,14 +180,15 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     }
 
     /**
-     * Compares two versions.
+     * Compare two version strings
      *
-     * Returns -1 if the first version is lower than the second, 0 if they are 
-     * equal, and 1 if the second is lower.
+     * If $version1 is lower then $version2, an integer < 0, will be returned.
+     * In case $version1 is bigger / later then $version2 an integer > 0 will
+     * be returned. In case both versions are equal 0 will be returned.
      *
-     * @param string $version1
-     * @param string $version2
-     * @return integer 
+     * @param string $version1 
+     * @param string $version2 
+     * @return int
      */
     public function compareVersions( $version1, $version2 ) 
     {
@@ -187,9 +205,13 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     }
 
     /**
-     * Returns the author for the given resource.
+     * Get author 
      *
-     * @param string $version
+     * Return author information for the resource. Optionally the $version
+     * parameter may be passed to the method to specify a version the author
+     * information should be returned for.
+     *
+     * @param mixed $version 
      * @return string
      */
     public function getAuthor( $version = null ) 
@@ -197,7 +219,8 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) ) {
+        if ( !isset( $log[$version] ) )
+        {
             throw new vcsNoSuchVersionException( $this->path, $version );
         }
 
@@ -205,9 +228,12 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     }
 
     /**
-     * Returns the resource log for this resource.
+     * Get full revision log
      *
-     * @return string
+     * Return the full revision log for the given resource. The revision log
+     * should be returned as an array of vcsLogEntry objects.
+     *
+     * @return array
      */
     public function getLog() 
     {
@@ -215,10 +241,12 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     }
 
     /**
-     * Returns the log entry for he given version.
+     * Get revision log entry
      *
+     * Get the revision log entry for the spcified version.
+     * 
      * @param string $version
-     * @return string
+     * @return vcsLogEntry
      */
     public function getLogEntry( $version ) 
     {

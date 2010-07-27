@@ -18,13 +18,17 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package VCSWrapper
- * @subpackage Cache
+ * @subpackage Exception
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
 /**
  * Base exception for all exceptions inside the CVSWrapper
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 abstract class vcsException extends Exception
 {
@@ -32,6 +36,10 @@ abstract class vcsException extends Exception
 
 /**
  * Exception thrown, when a requested file could not be found.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsNoSuchFileException extends vcsException
 {
@@ -51,6 +59,10 @@ class vcsNoSuchFileException extends vcsException
  * Exception thrown, when something totally unexpected happens, for no
  * custom exception really makes sense, because the wrapper state cannot
  * be handled properly on application side.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsRuntimeException extends vcsException
 {
@@ -68,6 +80,10 @@ class vcsRuntimeException extends vcsException
 
 /**
  * Exception thrown, when the cache is used, but not initialized.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsCacheNotInitializedException extends vcsException
 {
@@ -85,6 +101,10 @@ class vcsCacheNotInitializedException extends vcsException
 /**
  * Exception thrown when a value is passed to the cache, which is not
  * cacheable.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsNotCacheableException extends vcsException
 {
@@ -102,6 +122,10 @@ class vcsNotCacheableException extends vcsException
 
 /**
  * Exception thrown when a checkout of a repository failed.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsCheckoutFailedException extends vcsException
 {
@@ -120,6 +144,10 @@ class vcsCheckoutFailedException extends vcsException
 /**
  * Exception thrown when a version is requested from a repository, which does
  * not exist.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsNoSuchVersionException extends vcsException
 {
@@ -139,6 +167,10 @@ class vcsNoSuchVersionException extends vcsException
 /**
  * Exception thrown when a ZIP archive could not be opened by the PHP class
  * ZipArchive, which just returns some failue code in this case.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsInvalidZipArchiveException extends vcsException
 {
@@ -190,6 +222,10 @@ class vcsInvalidZipArchiveException extends vcsException
 /**
  * Exception thrown when a checkout url could not be used to access a source
  * repository.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsInvalidRepositoryUrlException extends vcsException
 {
@@ -201,13 +237,17 @@ class vcsInvalidRepositoryUrlException extends vcsException
      */
     public function __construct( $url, $wrapper )
     {
-        parent::__construct( 'Invalid ' .$wrapper . ' repository url: "' . $url . '".' );
+        parent::__construct( 'Invalid ' . $wrapper . ' repository url: "' . $url . '".' );
     }
 }
 
 /**
  * Exception thrown when a file or directory is requested from a
  * repository, which is not part of the repository.
+ *
+ * @package VCSWrapper
+ * @subpackage Exception
+ * @version $Revision$
  */
 class vcsFileNotFoundException extends vcsException
 {

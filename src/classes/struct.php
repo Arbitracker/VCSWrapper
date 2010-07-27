@@ -26,6 +26,10 @@
 /**
  * Basic struct class with optional value validation when the __set method gets
  * overwritten in the child classes.
+ *
+ * @package VCSWrapper
+ * @subpackage Core
+ * @version $Revision$
  */
 class vcsBaseStruct implements arbitCacheable
 {
@@ -97,7 +101,8 @@ class vcsBaseStruct implements arbitCacheable
      * 
      * @ignore
      * @param array $properties 
-     * @return arbitBaseStruct
+     * @param string $class 
+     * @return vcsBaseStruct
      */
     public static function __set_state( array $properties, $class = __CLASS__ )
     {

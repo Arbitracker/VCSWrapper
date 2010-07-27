@@ -33,8 +33,10 @@
 class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vcsDiffable
 {
     /**
-     * Returns the contents of this file
-     *
+     * Get file contents
+     * 
+     * Get the contents of the current file.
+     * 
      * @return string
      */
     public function getContents()
@@ -43,9 +45,12 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
     }
 
     /**
-     * Returns the mimetype for this file.
-     *
-     * @return string Mimetype of this file
+     * Get mime type
+     * 
+     * Get the mime type of the current file. If this information is not
+     * available, just return 'application/octet-stream'.
+     * 
+     * @return string
      */
     public function getMimeType()
     {
@@ -54,21 +59,43 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
     }
 
     /**
-     * Returns blame information for each line in file.
+     * Get blame information for resource
      *
-     * @param string $version
-     * @return array(vcsBlameStruct)
+     * The method should return author and revision information for each line,
+     * describing who when last changed the current resource. The returned
+     * array should look like:
+        
+     * <code>
+     *  array(
+     *      T_LINE_NUMBER => array(
+     *          'author'  => T_STRING,
+     *          'version' => T_STRING,
+     *      ),
+     *      ...
+     *  );
+     * </code>
+     *
+     * If some file in the repository has no blame information associated, like
+     * binary files, the method should return false.
+     *
+     * Optionally a version may be specified which defines a later version of
+     * the resource for which the blame information should be returned.
+     *
+     * @param mixed $version
+     * @return mixed
      */
     public function blame( $version = null )
     {
         $version = ( $version === null ) ? $this->getVersionString() : $version;
 
-        if ( !in_array( $version, $this->getVersions(), true ) ) {
+        if ( !in_array( $version, $this->getVersions(), true ) )
+        {
             throw new vcsNoSuchVersionException( $this->path, $version );
         }
 
         $blame = vcsCache::get( $this->path, $version, 'blame' );
-        if ( $blame === false ) {
+        if ( $blame === false )
+        {
             $shortHashCache = array();
 
             // Refetch the basic blamermation, and cache it.
@@ -84,13 +111,16 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
 
             // Convert returned lines into diff structures
             $blame = array();
-            foreach ( $contents AS $line ) {
-                if ( !$line ) {
+            foreach ( $contents AS $line )
+            {
+                if ( !$line )
+                {
                     continue;
                 }
 
                 $emailEndPos = strpos( $line, '>' );
-                if ( !$emailEndPos ) {
+                if ( !$emailEndPos )
+                {
                     // todo: implement better parsing for the blame line
                     throw new vcsRuntimeException( "Could not parse line: $line" );
                 }
@@ -105,7 +135,8 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
 
                 $line = trim( substr( $line, $linePositionEnd + 1 ) );
 
-                if ( !isset( $shortHashCache[ $shortHash ] ) ) {
+                if ( !isset( $shortHashCache[ $shortHash ] ) )
+                {
                     // get the long revision from the short revision number
                     $process = new vcsHgCliProcess();
                     $process->workingDirectory( $this->root );
@@ -118,7 +149,8 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                     $spacePosition = strpos( $result, ' ' );
                     // if there is a space inside the revision, we have additional tags
                     // and we really want to remove them from the revision number
-                    if ( $spacePosition ) {
+                    if ( $spacePosition )
+                    {
                         $result = substr( $result, 0, $spacePosition );
                     }
 
@@ -147,25 +179,32 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
     }
 
     /**
-     * Returns the diff between two different versions.
+     * Get diff
      *
-     * @param string $version
-     * @param string $current
-     * @return vcsDiff
+     * Get the diff between the current version and the given version.
+     * Optionally you may specify another version then the current one as the
+     * diff base as the second parameter.
+     *
+     * @param string $version 
+     * @param string $current 
+     * @return vcsResource
      */
     public function getDiff( $version, $current = null )
     {
-        if ( !in_array( $version, $this->getVersions(), true ) ) {
+        if ( !in_array( $version, $this->getVersions(), true ) )
+        {
             throw new vcsNoSuchVersionException( $this->path, $version );
         }
 
         $diff = vcsCache::get( $this->path, $version, 'diff' );
-        if ($diff === false) {
+        if ($diff === false)
+        {
             // Refetch the basic content information, and cache it.
             $process = new vcsHgCliProcess();
             $process->workingDirectory( $this->root );
             $process->argument( 'diff' );
-            if ($current !== null) {
+            if ($current !== null)
+            {
                 $process->argument( '-r' . $current );
             }
             $process->argument( '-r' . $version );

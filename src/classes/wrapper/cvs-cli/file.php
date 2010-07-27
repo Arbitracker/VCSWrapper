@@ -25,11 +25,19 @@
 
 /**
  * File implementation vor CVS Cli wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage CvsCliWrapper
+ * @version $Revision$
  */
 class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, vcsFetchable, vcsDiffable
 {
     /**
-     * @inheritdoc
+     * Get file contents
+     * 
+     * Get the contents of the current file.
+     * 
+     * @return string
      */
     public function getContents()
     {
@@ -37,7 +45,12 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get mime type
+     * 
+     * Get the mime type of the current file. If this information is not
+     * available, just return 'application/octet-stream'.
+     * 
+     * @return string
      */
     public function getMimeType()
     {
@@ -46,7 +59,30 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get blame information for resource
+     *
+     * The method should return author and revision information for each line,
+     * describing who when last changed the current resource. The returned
+     * array should look like:
+        
+     * <code>
+     *  array(
+     *      T_LINE_NUMBER => array(
+     *          'author'  => T_STRING,
+     *          'version' => T_STRING,
+     *      ),
+     *      ...
+     *  );
+     * </code>
+     *
+     * If some file in the repository has no blame information associated, like
+     * binary files, the method should return false.
+     *
+     * Optionally a version may be specified which defines a later version of
+     * the resource for which the blame information should be returned.
+     *
+     * @param mixed $version
+     * @return mixed
      */
     public function blame( $version = null )
     {
@@ -65,13 +101,14 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
 
         // Refetch the basic blamermation, and cache it.
         $process = new vcsCvsCliProcess();
-        $process->workingDirectory( $this->root )
-                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
-                ->argument( 'annotate' )
-                ->argument( '-r' )
-                ->argument( $version )
-                ->argument( '.' . $this->path )
-                ->execute();
+        $process
+            ->workingDirectory( $this->root )
+            ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+            ->argument( 'annotate' )
+            ->argument( '-r' )
+            ->argument( $version )
+            ->argument( '.' . $this->path )
+            ->execute();
 
 
         $output   = $process->stdoutOutput;
@@ -102,7 +139,12 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get content for version
+     *
+     * Get the contents of the current resource in the specified version.
+     *
+     * @param string $version 
+     * @return string
      */
     public function getVersionedContent( $version )
     {
@@ -116,14 +158,15 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
         {
             // Refetch the basic content information, and cache it.
             $process = new vcsCvsCliProcess();
-            $process->workingDirectory( $this->root )
-                    ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
-                    ->argument( 'update' )
-                    ->argument( '-p' )
-                    ->argument( '-r' )
-                    ->argument( $version )
-                    ->argument( '.' . $this->path )
-                    ->execute();
+            $process
+                ->workingDirectory( $this->root )
+                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+                ->argument( 'update' )
+                ->argument( '-p' )
+                ->argument( '-r' )
+                ->argument( $version )
+                ->argument( '.' . $this->path )
+                ->execute();
 
             $output  = $process->stdoutOutput;
             $content = ltrim( substr( $output, strpos( $output, '***************' ) + 15 ) );
@@ -134,7 +177,15 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get diff
+     *
+     * Get the diff between the current version and the given version.
+     * Optionally you may specify another version then the current one as the
+     * diff base as the second parameter.
+     *
+     * @param string $version 
+     * @param string $current 
+     * @return vcsResource
      */
     public function getDiff( $version, $current = null )
     {
@@ -150,16 +201,17 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
         // WTF: Why is there a non zero exit code?
         $process->nonZeroExitCodeException = false;
         // Configure process instance
-        $process->workingDirectory( $this->root )
-                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
-                ->argument( 'diff' )
-                ->argument( '-u' )
-                ->argument( '-r' )
-                ->argument( $version )
-                ->argument( '-r' )
-                ->argument( $current )
-                ->argument( '.' . $this->path )
-                ->execute();
+        $process
+            ->workingDirectory( $this->root )
+            ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+            ->argument( 'diff' )
+            ->argument( '-u' )
+            ->argument( '-r' )
+            ->argument( $version )
+            ->argument( '-r' )
+            ->argument( $current )
+            ->argument( '.' . $this->path )
+            ->execute();
 
         $parser = new vcsUnifiedDiffParser();
         $diff   = $parser->parseString( $process->stdoutOutput );

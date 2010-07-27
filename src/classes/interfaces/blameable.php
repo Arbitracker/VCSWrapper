@@ -55,6 +55,7 @@ interface vcsBlameable extends vcsAuthored
      * Optionally a version may be specified which defines a later version of
      * the resource for which the blame information should be returned.
      *
+     * @param mixed $version
      * @return mixed
      */
     public function blame( $version = null );

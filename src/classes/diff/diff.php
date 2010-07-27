@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Basic struct containing all diff chunks for one file
+ *
+ * @package VCSWrapper
+ * @subpackage Diff
+ * @version $Revision$
  */
 class vcsDiff extends vcsBaseStruct
 {
@@ -61,7 +65,8 @@ class vcsDiff extends vcsBaseStruct
      * 
      * @ignore
      * @param array $properties 
-     * @return arbitBaseStruct
+     * @param string $class 
+     * @return vcsDiff
      */
     public static function __set_state( array $properties, $class = __CLASS__ )
     {

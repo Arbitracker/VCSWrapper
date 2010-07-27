@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Handler for CVS repositories
+ *
+ * @package VCSWrapper
+ * @subpackage CvsCliWrapper
+ * @version $Revision$
  */
 class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
 {
@@ -71,16 +75,17 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
         }
 
         $process = new vcsCvsCliProcess();
-        $process->argument( '-d' )
-                ->argument( $repoUrl )
-                ->argument( 'checkout' )
-                ->argument( '-P' )
-                ->argument( '-r' )
-                ->argument( $revision )
-                ->argument( '-d' )
-                ->argument( $this->root )
-                ->argument( $module )
-                ->execute();
+        $process
+            ->argument( '-d' )
+            ->argument( $repoUrl )
+            ->argument( 'checkout' )
+            ->argument( '-P' )
+            ->argument( '-r' )
+            ->argument( $revision )
+            ->argument( '-d' )
+            ->argument( $this->root )
+            ->argument( $module )
+            ->execute();
     }
 
 
@@ -104,13 +109,14 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
         }
 
         $process = new vcsCvsCliProcess();
-        $process->workingDirectory( $this->root )
-                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
-                ->argument( 'update' )
-                ->argument( '-Rd' )
-                ->argument( '-r' )
-                ->argument( $version )
-                ->execute();
+        $process
+            ->workingDirectory( $this->root )
+            ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+            ->argument( 'update' )
+            ->argument( '-Rd' )
+            ->argument( '-r' )
+            ->argument( $version )
+            ->execute();
 
         return ( preg_match( '#[\n\r]U #', $process->stdoutOutput ) > 0 );
     }

@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * A resource base class in the archive wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage ArchiveWrapper
+ * @version $Revision$
  */
 abstract class vcsArchiveResource extends vcsResource
 {

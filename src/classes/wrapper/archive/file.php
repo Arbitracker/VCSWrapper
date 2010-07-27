@@ -23,13 +23,21 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * File implementation vor archive wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage ArchiveWrapper
+ * @version $Revision$
  */
 class vcsArchiveFile extends vcsArchiveResource implements vcsFile
 {
     /**
-     * @inheritdoc
+     * Get file contents
+     * 
+     * Get the contents of the current file.
+     * 
+     * @return string
      */
     public function getContents()
     {
@@ -37,7 +45,12 @@ class vcsArchiveFile extends vcsArchiveResource implements vcsFile
     }
 
     /**
-     * @inheritdoc
+     * Get mime type
+     * 
+     * Get the mime type of the current file. If this information is not
+     * available, just return 'application/octet-stream'.
+     * 
+     * @return string
      */
     public function getMimeType()
     {

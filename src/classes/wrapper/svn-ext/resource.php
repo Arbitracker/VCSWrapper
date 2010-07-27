@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Resource implementation vor SVN Ext wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage SvnExtWrapper
+ * @version $Revision$
  */
 abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged, vcsDiffable
 {
@@ -102,6 +106,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      *
      * Get the value of an SVN property
      *
+     * @param string $property
      * @return string
      */
     protected function getResourceProperty( $property )
@@ -121,7 +126,12 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get version string
+     *
+     * Return a string representing the current version of the file or
+     * directory.
+     * 
+     * @return string
      */
     public function getVersionString()
     {
@@ -130,7 +140,12 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get available versions
+     *
+     * Get all available versions for the current resource. This method
+     * returns an array with all version strings.
+     *
+     * @return array
      */
     public function getVersions()
     {
@@ -145,7 +160,15 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Compare two version strings
+     *
+     * If $version1 is lower then $version2, an integer < 0, will be returned.
+     * In case $version1 is bigger / later then $version2 an integer > 0 will
+     * be returned. In case both versions are equal 0 will be returned.
+     *
+     * @param string $version1 
+     * @param string $version2 
+     * @return int
      */
     public function compareVersions( $version1, $version2 )
     {
@@ -153,7 +176,14 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get author 
+     *
+     * Return author information for the resource. Optionally the $version
+     * parameter may be passed to the method to specify a version the author
+     * information should be returned for.
+     *
+     * @param mixed $version 
+     * @return string
      */
     public function getAuthor( $version = null )
     {
@@ -169,7 +199,12 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get full revision log
+     *
+     * Return the full revision log for the given resource. The revision log
+     * should be returned as an array of vcsLogEntry objects.
+     *
+     * @return array
      */
     public function getLog()
     {
@@ -177,7 +212,12 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get revision log entry
+     *
+     * Get the revision log entry for the spcified version.
+     * 
+     * @param string $version
+     * @return vcsLogEntry
      */
     public function getLogEntry( $version )
     {
@@ -192,7 +232,15 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get diff
+     *
+     * Get the diff between the current version and the given version.
+     * Optionally you may specify another version then the current one as the
+     * diff base as the second parameter.
+     *
+     * @param string $version 
+     * @param string $current 
+     * @return vcsResource
      */
     public function getDiff( $version, $current = null )
     {
@@ -204,7 +252,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
             $diffContents = '';
             while ( !feof( $diffStream ) )
             {
-                $diffContents .= fread( $diffStream, 8192);
+                $diffContents .= fread( $diffStream, 8192 );
             }
             fclose( $diffStream );
 

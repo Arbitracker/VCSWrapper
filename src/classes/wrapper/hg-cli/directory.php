@@ -49,15 +49,18 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
      */
     protected function initializeResouces() 
     {
-        if ( $this->resources !== null ) {
+        if ( $this->resources !== null )
+        {
             return;
         }
 
         $this->resources = array();
 
         $contents = dir( $this->root . $this->path );
-        while ( ( $path = $contents->read() ) !== false ) {
-            if ( in_array( $path, array( '.', '..', '.hg' ) ) ) {
+        while ( ( $path = $contents->read() ) !== false )
+        {
+            if ( in_array( $path, array( '.', '..', '.hg' ) ) )
+            {
                 continue;
             }
     

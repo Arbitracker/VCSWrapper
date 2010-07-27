@@ -63,8 +63,10 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
         $user; 
         $password;
 
-        if ( is_dir( $this->root ) ) {
-            if ( count( glob( $this->root . '/*' ) ) ) {
+        if ( is_dir( $this->root ) )
+        {
+            if ( count( glob( $this->root . '/*' ) ) )
+            {
                 throw new vcsCheckoutFailedException( $url );
             }
 
@@ -108,12 +110,14 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
         $process->argument( 'update' );
         $process->execute();
 
-        if ($version !== null) {
+        if ( $version !== null )
+        {
             $process = new vcsBzrCliProcess();
             $process->workingDirectory( $this->root );
             $process->argument( 'revert' )->argument( '-r' . $version );
             $process->execute();
         }
+
         // Check if an update has happened
         $this->currentVersion = null;
         return ( $oldVersion !== $this->getVersionString() );
@@ -141,7 +145,8 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
             throw new vcsFileNotFoundException( $path );
         }
 
-        if ( $path === '/' ) {
+        if ( $path === '/' )
+        {
             return $this;
         }
 

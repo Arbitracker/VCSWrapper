@@ -33,8 +33,10 @@
 class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, vcsDiffable
 {
     /**
-     * Returns the contents of this file
-     *
+     * Get file contents
+     * 
+     * Get the contents of the current file.
+     * 
      * @return string
      */
     public function getContents()
@@ -43,9 +45,12 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * Returns the mimetype for this file.
-     *
-     * @return string Mimetype of this file
+     * Get mime type
+     * 
+     * Get the mime type of the current file. If this information is not
+     * available, just return 'application/octet-stream'.
+     * 
+     * @return string
      */
     public function getMimeType()
     {
@@ -54,21 +59,43 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * Returns blame information for each line in file.
+     * Get blame information for resource
      *
-     * @param string $version
-     * @return array(vcsBlameStruct)
+     * The method should return author and revision information for each line,
+     * describing who when last changed the current resource. The returned
+     * array should look like:
+        
+     * <code>
+     *  array(
+     *      T_LINE_NUMBER => array(
+     *          'author'  => T_STRING,
+     *          'version' => T_STRING,
+     *      ),
+     *      ...
+     *  );
+     * </code>
+     *
+     * If some file in the repository has no blame information associated, like
+     * binary files, the method should return false.
+     *
+     * Optionally a version may be specified which defines a later version of
+     * the resource for which the blame information should be returned.
+     *
+     * @param mixed $version
+     * @return mixed
      */
     public function blame( $version = null )
     {
         $version = ( $version === null ) ? $this->getVersionString() : $version;
 
-        if ( !in_array( $version, $this->getVersions(), true ) ) {
+        if ( !in_array( $version, $this->getVersions(), true ) )
+        {
             throw new vcsNoSuchVersionException( $this->path, $version );
         }
 
         $blame = vcsCache::get( $this->path, $version, 'blame' );
-        if ( $blame === false ) {
+        if ( $blame === false )
+        {
             $shortHashCache = array();
 
             // Refetch the basic blamermation, and cache it.
@@ -77,28 +104,34 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
 
             // Execute command
             $process->argument( 'xmlannotate' );
-            if ( $version !== null ) {
+            if ( $version !== null )
+            {
                 $process->argument( '-r' . $version );
             }
             $process->argument( new pbsPathArgument( '.' . $this->path ) );
             $return = $process->execute();
             
             $blame = array();
-            libxml_use_internal_errors(true);
-            try {
-                $xmlDoc = new SimpleXMLElement($process->stdoutOutput);
+            libxml_use_internal_errors( true );
+            try
+            {
+                $xmlDoc = new SimpleXMLElement( $process->stdoutOutput );
 
                 // Convert returned lines into diff structures
-                foreach ( $xmlDoc->entry AS $line ) {
-                    $user = $line["author"];
-                    $date = strtotime($line["date"]);
-                    $revno = $line["revno"];
-                    $line = $line;
+                foreach ( $xmlDoc->entry AS $line )
+                {
 
-                    $blame[] = new vcsBlameStruct( $line, $revno, $user, $date );
+                    $blame[] = new vcsBlameStruct(
+                        $line['author'],
+                        strtotime( $line['date'] ),
+                        $line['revno'],
+                        $line
+                    );
                 }
-            } catch (Exception $e) {
-                $blame[] = new vcsBlameStruct( "INVALID; BINARY FILE", $version, "", time());
+            }
+            catch ( Exception $e )
+            {
+                return false;
             }
 
             vcsCache::cache( $this->path, $version, 'blame', $blame );

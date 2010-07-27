@@ -65,7 +65,8 @@ class vcsBzrCliProcess extends pbsSystemProcess
      */
     protected static function checkVersion()
     {
-        if ( self::$checked === true ) {
+        if ( self::$checked === true )
+        {
             return true;
         }
 

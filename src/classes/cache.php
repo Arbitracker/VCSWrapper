@@ -23,7 +23,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Cache handler for VCS meta data
  *
  * Basic LRU (last recently used) cache, with a storage size limitation,
@@ -37,6 +37,10 @@
  * not happen automatically using the file system cache meta data storage, but
  * has to be triggered manually (cron or something). With the SQLite cache
  * metadata storage this will happen automatically.
+ *
+ * @package VCSWrapper
+ * @subpackage Cache
+ * @version $Revision$
  */
 class vcsCache
 {
@@ -112,8 +116,8 @@ class vcsCache
     public static function initialize( $path, $size = 1048576, $cleanupRate = .8 )
     {
         self::$path        = (string) $path;
-        self::$size        = (int)    $size;
-        self::$cleanupRate = (float)  $cleanupRate;
+        self::$size        = (int) $size;
+        self::$cleanupRate = (float) $cleanupRate;
 
         // Determine meta data handler to use for caching the cache metadata.
         if ( false && extension_loaded( 'sqlite3' ) )

@@ -25,6 +25,10 @@
 
 /**
  * Directory implementation vor CVS Cli wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage CvsCliWrapper
+ * @version $Revision$
  */
 class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
 {
@@ -36,7 +40,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     protected $resources = null;
 
     /**
-     * @inheritdoc
+     * Returns the current item inside this iterator
+     *
+     * @return mixed
      */
     public function current()
     {
@@ -49,7 +55,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns the next item of the iterator.
+     *
+     * @return mixed
      */
     public function next()
     {
@@ -62,7 +70,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns the key for the current pointer.
+     *
+     * @return integer
      */
     public function key()
     {
@@ -75,7 +85,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Checks if the current item is valid.
+     *
+     * @return boolean
      */
     public function valid()
     {
@@ -88,7 +100,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Set the internal pointer of an array to its first element.
+     *
+     * @return mixed
      */
     public function rewind()
     {
@@ -101,7 +115,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns the children for this instance.
+     *
+     * @return vcsDirectory
      */
     public function getChildren()
     {
@@ -114,7 +130,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns if this directory contains files of directories.
+     *
+     * @return boolean
      */
     public function hasChildren()
     {
@@ -152,9 +170,12 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
             }
 
             $resource = null;
-            if ( $fileInfo->isDir() === true ) {
+            if ( $fileInfo->isDir() === true )
+            {
                 $resource = new vcsCvsCliDirectory( $this->root, $this->path . $fileName . '/' );
-            } else {
+            }
+            else
+            {
                 $resource = new vcsCvsCliFile( $this->root, $this->path . $fileName );
             }
             $this->resources[] = $resource;

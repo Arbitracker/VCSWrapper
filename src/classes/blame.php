@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * VCS wrapper abstracted log entry
+ *
+ * @package VCSWrapper
+ * @subpackage Core
+ * @version $Revision$
  */
 class vcsBlameStruct extends vcsBaseStruct
 {
@@ -43,9 +47,9 @@ class vcsBlameStruct extends vcsBaseStruct
     /**
      * Construct struct from given values
      * 
+     * @param string $content 
      * @param string $version 
      * @param string $author 
-     * @param string $message 
      * @param int $date 
      * @return void
      */
@@ -64,7 +68,8 @@ class vcsBlameStruct extends vcsBaseStruct
      * 
      * @ignore
      * @param array $properties 
-     * @return arbitBaseStruct
+     * @param string $class 
+     * @return vcsBlameStruct
      */
     public static function __set_state( array $properties, $class = __CLASS__ )
     {

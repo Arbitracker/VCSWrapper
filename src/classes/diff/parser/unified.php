@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Parser for unified diffs
+ *
+ * @package VCSWrapper
+ * @subpackage Diff
+ * @version $Revision$
  */
 class vcsUnifiedDiffParser extends vcsDiffParser
 {

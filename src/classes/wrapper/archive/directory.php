@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Directory implementation for archive wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage ArchiveWrapper
+ * @version $Revision$
  */
 class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
 {
@@ -67,7 +71,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Return the current element
+     *
+     * @return mixed
      */
     public function current()
     {
@@ -80,7 +86,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Move forward to next element
+     *
+     * @return mixed
      */
     public function next()
     {
@@ -93,7 +101,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Return the key of the current element
+     *
+     * @return mixed
      */
     public function key()
     {
@@ -106,7 +116,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Checks if current position is valid
+     *
+     * @return bool
      */
     public function valid()
     {
@@ -119,7 +131,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
     }
     
     /**
-     * @inheritdoc
+     * Rewind the Iterator to the first element
+     *
+     * @return mixed
      */
     public function rewind()
     {
@@ -132,7 +146,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns an iterator for the current entry.
+     *
+     * @return Iterator
      */
     public function getChildren()
     {
@@ -145,7 +161,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
     }
     
     /**
-     * @inheritdoc
+     * Returns if an iterator can be created fot the current entry.
+     *
+     * @return bool
      */
     public function hasChildren()
     {

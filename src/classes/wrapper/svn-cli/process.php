@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Svn executable wrapper for system process class
+ *
+ * @package VCSWrapper
+ * @subpackage SvnCliWrapper
+ * @version $Revision$
  */
 class vcsSvnCliProcess extends pbsSystemProcess
 {

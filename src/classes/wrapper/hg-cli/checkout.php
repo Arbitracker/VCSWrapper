@@ -63,8 +63,10 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
         $user; 
         $password;
 
-        if ( is_dir( $this->root ) ) {
-            if ( count( glob( $this->root . '/*' ) ) ) {
+        if ( is_dir( $this->root ) )
+        {
+            if ( count( glob( $this->root . '/*' ) ) )
+            {
                 throw new vcsCheckoutFailedException( $url );
             }
 
@@ -110,7 +112,8 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
         $process = new vcsHgCliProcess();
         $process->workingDirectory( $this->root );
         $process->argument( 'update' );
-        if ( $version ) {
+        if ( $version )
+        {
             $process->argument( '-r' . $version );
         }
         $process->execute();

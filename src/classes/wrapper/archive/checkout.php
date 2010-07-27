@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Handler for archive based "checkouts"
+ *
+ * @package VCSWrapper
+ * @subpackage ArchiveWrapper
+ * @version $Revision$
  */
 abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsCheckout
 {

@@ -23,11 +23,15 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Cache metadata handler base class
  *
  * Base class for storing cache meta data, required for a basic size limited
  * LRU cache.
+ *
+ * @package VCSWrapper
+ * @subpackage Cache
+ * @version $Revision$
  */
 abstract class vcsCacheMetaData
 {

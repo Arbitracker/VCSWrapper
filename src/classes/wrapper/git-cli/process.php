@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Git executable wrapper for system process class
+ *
+ * @package VCSWrapper
+ * @subpackage GitCliWrapper
+ * @version $Revision$
  */
 class vcsGitCliProcess extends pbsSystemProcess
 {

@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * VCS wrapper abstracted log entry
+ *
+ * @package VCSWrapper
+ * @subpackage Core
+ * @version $Revision$
  */
 class vcsLogEntry extends vcsBaseStruct
 {
@@ -64,7 +68,8 @@ class vcsLogEntry extends vcsBaseStruct
      * 
      * @ignore
      * @param array $properties 
-     * @return arbitBaseStruct
+     * @param string $class 
+     * @return vcsLogEntry
      */
     public static function __set_state( array $properties, $class = __CLASS__ )
     {

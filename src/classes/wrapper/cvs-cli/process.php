@@ -25,6 +25,10 @@
 
 /**
  * This is a CVS executable wrapper for the system process class.
+ *
+ * @package VCSWrapper
+ * @subpackage CvsCliWrapper
+ * @version $Revision$
  */
 class vcsCvsCliProcess extends pbsSystemProcess
 {

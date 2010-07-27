@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Handler for ZIP archive based "checkouts"
+ *
+ * @package VCSWrapper
+ * @subpackage ArchiveWrapper
+ * @version $Revision$
  */
 class vcsZipArchiveCheckout extends vcsArchiveCheckout
 {
@@ -64,7 +68,7 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
         {
             rename( $file, $this->root . '/' . basename( $file ) );
         }
-        rmdir( $this->root . '/'. $root );
+        rmdir( $this->root . '/' . $root );
 
         // Finished Zip extraction
         $archive->close();

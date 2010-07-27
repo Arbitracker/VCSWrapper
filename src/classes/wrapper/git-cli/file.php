@@ -23,13 +23,21 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * File implementation vor Git Cli wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage GitCliWrapper
+ * @version $Revision$
  */
 class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, vcsDiffable
 {
     /**
-     * @inheritdoc
+     * Get file contents
+     * 
+     * Get the contents of the current file.
+     * 
+     * @return string
      */
     public function getContents()
     {
@@ -37,7 +45,12 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get mime type
+     * 
+     * Get the mime type of the current file. If this information is not
+     * available, just return 'application/octet-stream'.
+     * 
+     * @return string
      */
     public function getMimeType()
     {
@@ -46,7 +59,30 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get blame information for resource
+     *
+     * The method should return author and revision information for each line,
+     * describing who when last changed the current resource. The returned
+     * array should look like:
+        
+     * <code>
+     *  array(
+     *      T_LINE_NUMBER => array(
+     *          'author'  => T_STRING,
+     *          'version' => T_STRING,
+     *      ),
+     *      ...
+     *  );
+     * </code>
+     *
+     * If some file in the repository has no blame information associated, like
+     * binary files, the method should return false.
+     *
+     * Optionally a version may be specified which defines a later version of
+     * the resource for which the blame information should be returned.
+     *
+     * @param mixed $version
+     * @return mixed
      */
     public function blame( $version = null )
     {
@@ -64,7 +100,7 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
             $process->workingDirectory( $this->root );
 
             // Execute command
-            $return = $process->argument( 'blame' )->argument('-l')->argument( new pbsPathArgument( '.' . $this->path ) )->execute();
+            $return = $process->argument( 'blame' )->argument( '-l' )->argument( new pbsPathArgument( '.' . $this->path ) )->execute();
             $contents = preg_split( '(\r\n|\r|\n)', trim( $process->stdoutOutput ) );
 
             // Convert returned lines into diff structures
@@ -88,7 +124,15 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
     }
 
     /**
-     * @inheritdoc
+     * Get diff
+     *
+     * Get the diff between the current version and the given version.
+     * Optionally you may specify another version then the current one as the
+     * diff base as the second parameter.
+     *
+     * @param string $version 
+     * @param string $current 
+     * @return vcsResource
      */
     public function getDiff( $version, $current = null )
     {

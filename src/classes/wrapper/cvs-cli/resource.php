@@ -25,6 +25,10 @@
 
 /**
  * Resource implementation vor CVS Cli wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage CvsCliWrapper
+ * @version $Revision$
  */
 abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged
 {
@@ -86,12 +90,13 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
         $version = $this->currentVersion !== null ? $this->currentVersion : 'HEAD';
 
         $process = new vcsCvsCliProcess();
-        $process->workingDirectory( $this->root )
-                ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
-                ->argument( 'log' )
-                ->argument( '-r:' . $version )
-                ->argument( '.' . $this->path )
-                ->execute();
+        $process
+            ->workingDirectory( $this->root )
+            ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
+            ->argument( 'log' )
+            ->argument( '-r:' . $version )
+            ->argument( '.' . $this->path )
+            ->execute();
 
 
         $log = array();
@@ -137,19 +142,12 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * Get resource property
+     * Get version string
      *
-     * Get the value of an CVS property
-     *
+     * Return a string representing the current version of the file or
+     * directory.
+     * 
      * @return string
-     */
-    protected function getResourceProperty( $property )
-    {
-
-    }
-
-    /**
-     * @inheritdoc
      */
     public function getVersionString()
     {
@@ -161,7 +159,12 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get available versions
+     *
+     * Get all available versions for the current resource. This method
+     * returns an array with all version strings.
+     *
+     * @return array
      */
     public function getVersions()
     {
@@ -176,7 +179,15 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Compare two version strings
+     *
+     * If $version1 is lower then $version2, an integer < 0, will be returned.
+     * In case $version1 is bigger / later then $version2 an integer > 0 will
+     * be returned. In case both versions are equal 0 will be returned.
+     *
+     * @param string $version1 
+     * @param string $version2 
+     * @return int
      */
     public function compareVersions( $version1, $version2 )
     {
@@ -193,7 +204,14 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get author 
+     *
+     * Return author information for the resource. Optionally the $version
+     * parameter may be passed to the method to specify a version the author
+     * information should be returned for.
+     *
+     * @param mixed $version 
+     * @return string
      */
     public function getAuthor( $version = null )
     {
@@ -213,7 +231,12 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get full revision log
+     *
+     * Return the full revision log for the given resource. The revision log
+     * should be returned as an array of vcsLogEntry objects.
+     *
+     * @return array
      */
     public function getLog()
     {
@@ -221,7 +244,12 @@ abstract class vcsCvsCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * @inheritdoc
+     * Get revision log entry
+     *
+     * Get the revision log entry for the spcified version.
+     * 
+     * @param string $version
+     * @return vcsLogEntry
      */
     public function getLogEntry( $version )
     {

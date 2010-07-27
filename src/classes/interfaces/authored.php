@@ -38,6 +38,7 @@ interface vcsAuthored extends vcsVersioned
      * parameter may be passed to the method to specify a version the author
      * information should be returned for.
      *
+     * @param mixed $version 
      * @return string
      */
     public function getAuthor( $version = null );

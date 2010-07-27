@@ -23,8 +23,12 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
-/*
+/**
  * Directory implementation vor Git Cli wrapper
+ *
+ * @package VCSWrapper
+ * @subpackage GitCliWrapper
+ * @version $Revision$
  */
 class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
 {
@@ -52,10 +56,10 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
         $contents = dir( $this->root . $this->path );
         while ( ( $path = $contents->read() ) !== false )
         {
+            // Also mind svn:ignore here?
             if ( ( $path === '.' ) ||
                  ( $path === '..' ) ||
                  ( $path === '.git' ) )
-                 // Also mid svn:ignore here?
             {
                 continue;
             }
@@ -69,7 +73,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns the current item inside this iterator
+     *
+     * @return mixed
      */
     public function current()
     {
@@ -82,7 +88,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns the next item of the iterator.
+     *
+     * @return mixed
      */
     public function next()
     {
@@ -95,7 +103,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns the key for the current pointer.
+     *
+     * @return integer
      */
     public function key()
     {
@@ -108,7 +118,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Checks if the current item is valid.
+     *
+     * @return boolean
      */
     public function valid()
     {
@@ -121,7 +133,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     }
     
     /**
-     * @inheritdoc
+     * Set the internal pointer of an array to its first element.
+     *
+     * @return mixed
      */
     public function rewind()
     {
@@ -134,7 +148,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     }
 
     /**
-     * @inheritdoc
+     * Returns the children for this instance.
+     *
+     * @return vcsDirectory
      */
     public function getChildren()
     {
@@ -147,7 +163,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     }
     
     /**
-     * @inheritdoc
+     * Returns if this directory contains files of directories.
+     *
+     * @return boolean
      */
     public function hasChildren()
     {
