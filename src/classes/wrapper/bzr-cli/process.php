@@ -76,9 +76,10 @@ class vcsBzrCliProcess extends pbsSystemProcess
         {
             throw new vcsRuntimeException( 'Could not determine Bazaar version.' );
         }
-        if ( version_compare( $match[1], '1.1', '>=' ) )
+
+        if ( version_compare( $match[1], '1.1', '<' ) )
         {
-            return self::$checked = true;
+            throw new vcsRuntimeException( 'Bazaar is required in a minimum version of 1.1.' );
         }
 
         $process = new pbsSystemProcess( 'bzr' );
@@ -89,7 +90,7 @@ class vcsBzrCliProcess extends pbsSystemProcess
             throw new vcsRuntimeException( 'Missing required bazaar pluging "xmloutput".' );
         }
 
-        throw new vcsRuntimeException( 'Bazaar is required in a minimum version of 1.1.' );
+        return self::$checked = true;
     }
 }
 
