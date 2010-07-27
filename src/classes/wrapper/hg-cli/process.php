@@ -46,13 +46,13 @@ class vcsHgCliProcess extends pbsSystemProcess
      * @param string $executable
      * @return void
      */
-    public function __construct( $executable = 'env' ) 
+    public function __construct( $executable = 'hg' ) 
     {
         parent::__construct( $executable );
         self::checkVersion();
 
         $this->nonZeroExitCodeException = true;
-        $this->argument( 'hg' )->argument( '--noninteractive' );
+        $this->argument( '--noninteractive' );
     }
 
 

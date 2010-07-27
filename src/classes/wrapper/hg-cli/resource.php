@@ -83,7 +83,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
             // Execute log command
             $process->argument( 'log' );
             $process->argument( '--template' )->argument( '{node}\t{author|email}\t{date|isodate}\t{desc|urlescape}\n' );
-            $process->argument( '.' . $this->path );
+            $process->argument( new pbsPathArgument( '.' . $this->path ) );
             $process->execute();
 
             // Parse commit log

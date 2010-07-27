@@ -71,10 +71,13 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
             rmdir( $this->root );
         }
 
+        // Fix incorrect windows checkout URLs
+        $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
+
         $process = new vcsHgCliProcess();
-        $process->argument( 'clone' );      // clone
-        $process->argument( $url );         // repository url
-        $process->argument( $this->root );  // to directory
+        $process->argument( 'clone' );
+        $process->argument( str_replace( '\\', '/', $url ) );
+        $process->argument( new pbsPathArgument( $this->root ) );
         $return = $process->execute();
 
         // Cache basic revision information for checkout and update
@@ -133,11 +136,14 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
     {
         $fullPath = realpath( $this->root . $path );
 
-        if ( ( $fullPath === false ) || ( strpos( $fullPath, $this->root ) !== 0 ) ) {
+        if ( ( $fullPath === false ) ||
+             ( strpos( str_replace( '\\', '/', $fullPath ), str_replace( '\\', '/', $this->root ) ) !== 0 ) )
+        {
             throw new vcsFileNotFoundException( $path );
         }
 
-        if ( $path === '/' ) {
+        if ( $path === '/' )
+        {
             return $this;
         }
 
