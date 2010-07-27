@@ -69,6 +69,8 @@ class vcsGitCliCheckoutTests extends vcsTestCase
 
     public function testUpdateCheckoutWithUpdate()
     {
+        $this->markTestSkipped( 'Git does not allow the necessary commit anymore by default - thus we can\'t test this properly.' );
+
         $repDir = $this->createTempDir() . '/git';
         self::copyRecursive( realpath( dirname( __FILE__ ) . '/../data/git' ), $repDir );
 

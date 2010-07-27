@@ -42,13 +42,13 @@ class vcsGitCliProcess extends pbsSystemProcess
      * @param string $executable Executable to create system process for;
      * @return void
      */
-    public function __construct( $executable = 'env' )
+    public function __construct( $executable = 'git' )
     {
         parent::__construct( $executable );
         self::checkVersion();
 
         $this->nonZeroExitCodeException = true;
-        $this->argument( 'git' )->argument( '--no-pager' );
+        $this->argument( '--no-pager' );
     }
 
     /**
@@ -66,8 +66,8 @@ class vcsGitCliProcess extends pbsSystemProcess
             return true;
         }
 
-        $process = new pbsSystemProcess( 'env' );
-        $process->argument( 'git' )->argument( '--version' )->execute();
+        $process = new pbsSystemProcess( 'git' );
+        $process->argument( '--version' )->execute();
 
         if ( !preg_match( '(\\d+(?:\.\\d+)+)', $process->stdoutOutput, $match ) )
         {
