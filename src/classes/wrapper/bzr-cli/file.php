@@ -122,10 +122,10 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
                 {
 
                     $blame[] = new vcsBlameStruct(
-                        $line['author'],
-                        strtotime( $line['date'] ),
+                        $line,
                         $line['revno'],
-                        $line
+                        $line['author'],
+                        strtotime( $line['date'] )
                     );
                 }
             }
@@ -141,4 +141,5 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
     }
 
 }
+
 
