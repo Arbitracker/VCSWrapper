@@ -71,6 +71,7 @@ class vcsBzrCliProcess extends pbsSystemProcess
         }
 
         $process = new pbsSystemProcess( 'bzr' );
+        $process->nonZeroExitCodeException = true;
         $process->argument( '--version' )->execute();
 
         if ( !preg_match( '/\Bazaar \(bzr\) ([0-9.]*)/', $process->stdoutOutput, $match ) )
@@ -84,6 +85,7 @@ class vcsBzrCliProcess extends pbsSystemProcess
         }
 
         $process = new pbsSystemProcess( 'bzr' );
+        $process->nonZeroExitCodeException = true;
         $process->argument( 'plugins' )->execute();
 
         if ( strpos( $process->stdoutOutput, 'xmloutput' ) === false )

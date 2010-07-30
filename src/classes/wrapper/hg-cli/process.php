@@ -72,6 +72,7 @@ class vcsHgCliProcess extends pbsSystemProcess
         }
 
         $process = new pbsSystemProcess( 'env' );
+        $process->nonZeroExitCodeException = true;
         $process->argument( 'hg' )->argument( '--version' )->execute();
 
         if ( !preg_match( '/\(version (.*)\)/', $process->stdoutOutput, $match ) )

@@ -71,6 +71,7 @@ class vcsGitCliProcess extends pbsSystemProcess
         }
 
         $process = new pbsSystemProcess( 'git' );
+        $process->nonZeroExitCodeException = true;
         $process->argument( '--version' )->execute();
 
         if ( !preg_match( '(\\d+(?:\.\\d+)+)', $process->stdoutOutput, $match ) )
