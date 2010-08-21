@@ -26,6 +26,7 @@ if ( !defined( 'VCS_TEST' ) )
 require 'git-cli/checkout.php';
 require 'git-cli/directory.php';
 require 'git-cli/file.php';
+require 'git-cli/blame-regexp.php';
 
 /**
 * Test suite for vcs
@@ -45,6 +46,7 @@ class vcsGitCliTestSuite extends PHPUnit_Framework_TestSuite
         $this->addTest( vcsGitCliCheckoutTests::suite() );
         $this->addTest( vcsGitCliDirectoryTests::suite() );
         $this->addTest( vcsGitCliFileTests::suite() );
+        $this->addTest( vcsGitCliBlameRegexpTests::suite() );
     }
 
     /**
