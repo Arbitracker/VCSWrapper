@@ -107,10 +107,20 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        $process = new vcsGitCliProcess();
-        $process->workingDirectory( $this->root );
-        $process->argument( 'pull' )->argument( 'origin' );
-        $process->execute();
+        if ( $version === null )
+        {
+            $process = new vcsGitCliProcess();
+            $process->workingDirectory( $this->root );
+            $process->argument( 'pull' )->argument( 'origin' )->argument( 'master' );
+            $process->execute();
+        }
+        else
+        {
+            $process = new vcsGitCliProcess();
+            $process->workingDirectory( $this->root );
+            $process->argument( 'checkout' )->argument( $version );
+            $process->execute();
+        }
 
         // Check if an update has happened
         $this->currentVersion = null;
