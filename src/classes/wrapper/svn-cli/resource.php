@@ -40,6 +40,41 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
     protected $currentVersion = null;
 
     /**
+     * Username to access the repository
+     * 
+     * @var sting
+     */
+    protected $username;
+
+    /**
+     * Password to access the repository
+     * 
+     * @var sting
+     */
+    protected $password;
+
+    /**
+     * Construct file from local repository path and repository root
+     *
+     * Construct the resource from the repository root, which is used to store
+     * the actual repository contents, and the local paht inside the
+     * repository.
+     * 
+     * @param string $root 
+     * @param string $path 
+     * @param string $user
+     * @param string $password
+     * @return void
+     */
+    public function __construct( $root, $path, $user = null, $password = null )
+    {
+        parent::__construct( $root, $path );
+
+        $this->username = $user;
+        $this->password = $password;
+    }
+
+    /**
      * Get resource base information
      *
      * Get the base information, like version, author, etc for the current
@@ -53,7 +88,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
              ( ( $info = vcsCache::get( $this->path, $this->currentVersion, 'info' ) ) === false ) )
         {
             // Refetch the basic information, and cache it.
-            $process = new vcsSvnCliProcess();
+            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
             $process->argument( '--xml' );
 
             // Fetch for specified version, if set
@@ -84,7 +119,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
         if ( ( $log = vcsCache::get( $this->path, $this->currentVersion, 'log' ) ) === false )
         {
             // Refetch the basic logrmation, and cache it.
-            $process = new vcsSvnCliProcess();
+            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
             $process->argument( '--xml' );
 
             // Fecth for specified version, if set
@@ -131,7 +166,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
         if ( ( $value = vcsCache::get( $this->path, $this->currentVersion, $property ) ) === false )
         {
             // Refetch the basic mimeTypermation, and cache it.
-            $process = new vcsSvnCliProcess();
+            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
 
             // Fecth for specified version, if set
             if ( $this->currentVersion !== null )
@@ -283,7 +318,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
         if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
         {
             // Refetch the basic content information, and cache it.
-            $process = new vcsSvnCliProcess();
+            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
             $process->argument( '-r' . $version . ':' . $current );
 
             // Execute command

@@ -39,11 +39,13 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * used to store the repository contents.
      *
      * @param string $root
+     * @param string $user
+     * @param string $password
      * @return void
      */
-    public function __construct( $root )
+    public function __construct( $root, $user = null, $password = null )
     {
-        parent::__construct( $root, '/' );
+        parent::__construct( $root, '/', $user, $password );
     }
 
     /**
@@ -59,21 +61,13 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      */
     public function initialize( $url, $user = null, $password = null )
     {
-        $process = new vcsSvnCliProcess();
-
-        if ( $user !== null )
-        {
-            $process->argument( '--username' )->argument( $user );
-
-            if ( $password !== null )
-            {
-                $process->argument( '--password' )->argument( $password );
-            }
-        }
+        $user     = $user ? $user : $this->username;
+        $password = $password ? $password : $password;
 
         // Fix incorrect windows checkout URLs
         $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
 
+        $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
         $return = $process->argument( 'checkout' )->argument( str_replace( '\\', '/', $url ) )->argument( new pbsPathArgument( $this->root ) )->execute();
 
         // Cache basic revision information for checkout and update
@@ -98,7 +92,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        $process = new vcsSvnCliProcess();
+        $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
 
         if ( $version !== null )
         {
@@ -140,10 +134,10 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
                 return $this;
 
             case is_dir( $fullPath ):
-                return new vcsSvnCliDirectory( $this->root, $path );
+                return new vcsSvnCliDirectory( $this->root, $path, $this->username, $this->password );
 
             default:
-                return new vcsSvnCliFile( $this->root, $path );
+                return new vcsSvnCliFile( $this->root, $path, $this->username, $this->password );
         }
     }
 }

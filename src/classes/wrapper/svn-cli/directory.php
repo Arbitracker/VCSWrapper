@@ -65,8 +65,8 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
             }
     
             $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
-                new vcsSvnCliDirectory( $this->root, $this->path . $path . '/' ) :
-                new vcsSvnCliFile( $this->root, $this->path . $path )
+                new vcsSvnCliDirectory( $this->root, $this->path . $path . '/', $this->username, $this->password ) :
+                new vcsSvnCliFile( $this->root, $this->path . $path, $this->username, $this->password )
             );
         }
         $contents->close();
