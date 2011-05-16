@@ -17,7 +17,8 @@ foreach ( $files as $class => $file )
 
     if ( strpos( $file, '/external/' ) === false )
     {
-        PHPUnit_Util_Filter::addFileToWhitelist( $base . $file );
+
+        PHP_CodeCoverage_Filter::getInstance()->addFileToWhitelist( $base . $file );
     }
 }
 

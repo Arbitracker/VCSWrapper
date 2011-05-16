@@ -25,6 +25,8 @@ elseif ( count( $argv ) < 2 )
     $_SERVER['argv'] = array_merge( $argv, array( 'vcsTestSuite', 'tests/suite.php' ) );
 }
 
+require_once 'PHPUnit/Autoload.php';
+
 require dirname( __FILE__ ) . '/tests/runner/command.php';
 arbitTextUiCommand::main();
 
