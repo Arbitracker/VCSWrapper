@@ -125,7 +125,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
             // Fecth for specified version, if set
             if ( $this->currentVersion !== null )
             {
-                $process->argument( '-r0:' . $this->currentVersion );
+                $process->argument( '-r1:' . $this->currentVersion );
             }
 
             // Execute logr command
