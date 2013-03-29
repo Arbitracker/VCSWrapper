@@ -194,9 +194,9 @@ class vcsCache
         }
 
         if (!is_scalar($value) &&
-             !is_array($value) &&
-             (!$value instanceof arbitCacheable))
-        {
+            !is_array($value) &&
+            (!$value instanceof arbitCacheable) &&
+            (!$value instanceof \Arbit\Xml\Document)) {
             throw new vcsNotCacheableException($value);
         }
 
