@@ -1,35 +1,35 @@
 <?php
 
  return array (
-  0 => 
+  0 =>
   vcsDiff::__set_state(array(
-     'properties' => 
+     'properties' =>
     array (
       'from' => 'file',
       'to' => 'file',
-      'chunks' => 
+      'chunks' =>
       array (
-        0 => 
+        0 =>
         vcsDiffChunk::__set_state(array(
-           'properties' => 
+           'properties' =>
           array (
             'start' => 1,
             'startRange' => 1,
             'end' => 1,
             'endRange' => 2,
-            'lines' => 
+            'lines' =>
             array (
-              0 => 
+              0 =>
               vcsDiffLine::__set_state(array(
-                 'properties' => 
+                 'properties' =>
                 array (
                   'type' => 3,
                   'content' => 'Some test file',
                 ),
               )),
-              1 => 
+              1 =>
               vcsDiffLine::__set_state(array(
-                 'properties' => 
+                 'properties' =>
                 array (
                   'type' => 1,
                   'content' => 'A second line, in a later revision',

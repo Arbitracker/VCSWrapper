@@ -34,7 +34,7 @@ class vcsDiff extends vcsBaseStruct
 {
     /**
      * Array containing the structs properties.
-     * 
+     *
      * @var array
      */
     protected $properties = array(
@@ -45,10 +45,10 @@ class vcsDiff extends vcsBaseStruct
 
     /**
      * Construct diff from properties
-     * 
-     * @param string $from 
-     * @param string $to 
-     * @param array $chunks 
+     *
+     * @param string $from
+     * @param string $to
+     * @param array $chunks
      * @return void
      */
     public function __construct( $from = null, $to = null, array $chunks = array() )
@@ -62,10 +62,10 @@ class vcsDiff extends vcsBaseStruct
      * Recreate struct exported by var_export()
      *
      * Recreate struct exported by var_export()
-     * 
+     *
      * @ignore
-     * @param array $properties 
-     * @param string $class 
+     * @param array $properties
+     * @param string $class
      * @return vcsDiff
      */
     public static function __set_state( array $properties, $class = __CLASS__ )

@@ -41,13 +41,13 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
 
     /**
      * Initialize the resources array.
-     * 
+     *
      * Initilaize the array containing all child elements of the current
      * directly as vcsHgCliResource objects.
-     * 
+     *
      * @return array(vcsHgCliResource)
      */
-    protected function initializeResouces() 
+    protected function initializeResouces()
     {
         if ( $this->resources !== null )
         {
@@ -63,7 +63,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
             {
                 continue;
             }
-    
+
             $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
                 new vcsHgCliDirectory( $this->root, $this->path . $path . '/' ) :
                 new vcsHgCliFile( $this->root, $this->path . $path )
@@ -120,7 +120,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
 
         return $this->current() !== false;
     }
-    
+
     /**
      * Set the internal pointer of an array to its first element.
      *
@@ -138,13 +138,13 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
      *
      * @return vcsDirectory
      */
-    public function getChildren() 
+    public function getChildren()
     {
         $this->initializeResouces();
 
         return current( $this->resources );
     }
-    
+
     /**
      * Returns if this directory contains files of directories.
      *

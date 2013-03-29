@@ -35,20 +35,20 @@ class vcsBaseStruct implements arbitCacheable
 {
     /**
      * Array containing the structs properties.
-     * 
+     *
      * @var array
      */
     protected $properties = array();
 
     /**
      * Set property value
-     * 
+     *
      * Set property value. This does no value checks or whitelisting for
      * properties by default.
-     * 
+     *
      * @ignore
-     * @param string $property 
-     * @param mixed $value 
+     * @param string $property
+     * @param mixed $value
      * @return void
      */
     public function __set( $property, $value )
@@ -59,11 +59,11 @@ class vcsBaseStruct implements arbitCacheable
 
     /**
      * Read property from struct
-     * 
+     *
      * Read property from struct
-     * 
+     *
      * @ignore
-     * @param string $property 
+     * @param string $property
      * @return mixed
      */
     public function __get( $property )
@@ -80,11 +80,11 @@ class vcsBaseStruct implements arbitCacheable
 
     /**
      * Check if property exists in struct
-     * 
+     *
      * Check if property exists in struct
-     * 
+     *
      * @ignore
-     * @param string $property 
+     * @param string $property
      * @return mixed
      */
     public function __isset( $property )
@@ -98,10 +98,10 @@ class vcsBaseStruct implements arbitCacheable
      * Recreate struct exported by var_export()
      *
      * Recreate struct exported by var_export()
-     * 
+     *
      * @ignore
-     * @param array $properties 
-     * @param string $class 
+     * @param array $properties
+     * @param string $class
      * @return vcsBaseStruct
      */
     public static function __set_state( array $properties, $class = __CLASS__ )

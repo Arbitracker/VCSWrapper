@@ -38,7 +38,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
      * Construct the repository with the repository root path, which will be
      * used to store the repository contents.
      *
-     * @param string $root 
+     * @param string $root
      * @return void
      */
     public function __construct( $root )
@@ -60,7 +60,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
     public function initialize( $url, $user = null, $password = null )
     {
         // stupid, but surpresses phpcs warnings
-        $user; 
+        $user;
         $password;
 
         if ( is_dir( $this->root ) )
@@ -96,7 +96,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
      *
      * Optionally a version can be specified, in which case the repository
      * won't be updated to the latest version, but to the specified one.
-     * 
+     *
      * @param string $version
      * @return bool
      */
@@ -131,7 +131,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
      *
      * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
      * instance, depending on the given path.
-     * 
+     *
      * @param string $path
      * @return mixed
      */

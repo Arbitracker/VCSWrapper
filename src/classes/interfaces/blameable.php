@@ -38,7 +38,7 @@ interface vcsBlameable extends vcsAuthored
      * The method should return author and revision information for each line,
      * describing who when last changed the current resource. The returned
      * array should look like:
-        
+
      * <code>
      *  array(
      *      T_LINE_NUMBER => array(

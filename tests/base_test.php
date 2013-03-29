@@ -14,21 +14,21 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Temporary directory for cache contents
-     * 
+     *
      * @var string
      */
     protected $tempDir;
 
     /**
      * List of all temporary directories created
-     * 
+     *
      * @var array
      */
     protected $directories = array();
 
     /**
      * Create a unique temporary directory for cache contents.
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -131,8 +131,8 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
      * Remove directory
      *
      * Delete the given directory and all of its contents recusively.
-     * 
-     * @param string $dir 
+     *
+     * @param string $dir
      * @return void
      */
     protected function removeRecursively( $dir )
@@ -163,7 +163,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Remove the temporary cache directory if the test has failed.
-     * 
+     *
      * @return void
      */
     public function tearDown()

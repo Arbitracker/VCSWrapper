@@ -42,11 +42,11 @@ class vcsHgCliProcess extends \SystemProcess\SystemProcess
 
     /**
      * Class constructor taking the executable
-     * 
+     *
      * @param string $executable
      * @return void
      */
-    public function __construct( $executable = 'hg' ) 
+    public function __construct( $executable = 'hg' )
     {
         parent::__construct( $executable );
         self::checkVersion();
@@ -61,7 +61,7 @@ class vcsHgCliProcess extends \SystemProcess\SystemProcess
      *
      * Verify hat the version of the installed GIT binary is at least 1.6. Will
      * throw an exception, if the binary is not available or too old.
-     * 
+     *
      * @return void
      */
     protected static function checkVersion()

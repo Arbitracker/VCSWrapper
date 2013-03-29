@@ -108,9 +108,9 @@ class vcsCache
      * MBdefines, that everything except the most recently used 800 kB will be
      * purged.
      *
-     * @param string $path 
-     * @param int $size 
-     * @param float $cleanupRate 
+     * @param string $path
+     * @param int $size
+     * @param float $cleanupRate
      * @return void
      */
     public static function initialize( $path, $size = 1048576, $cleanupRate = .8 )
@@ -122,7 +122,7 @@ class vcsCache
         // Determine meta data handler to use for caching the cache metadata.
         if ( false && extension_loaded( 'sqlite3' ) )
         {
-            // SQLite metadata cache handler disabled for now, since it has 
+            // SQLite metadata cache handler disabled for now, since it has
             // lock issues.
             self::$metaDataHandler = new vcsCacheSqliteMetaData( self::$path );
         }
@@ -137,10 +137,10 @@ class vcsCache
      *
      * Create the file name for the cache item based on the three cache item
      * characteristica.
-     * 
-     * @param string $resource 
-     * @param string $version 
-     * @param string $key 
+     *
+     * @param string $resource
+     * @param string $version
+     * @param string $key
      * @return string
      */
     protected static function getFileName( $resource, $version, $key )
@@ -157,9 +157,9 @@ class vcsCache
      * This method returns false, if the item does not yet exist in the cache,
      * and the cached value otherwise.
      *
-     * @param string $resource 
-     * @param string $version 
-     * @param string $key 
+     * @param string $resource
+     * @param string $version
+     * @param string $key
      * @return mixed
      */
     public static function get( $resource, $version, $key )
@@ -186,10 +186,10 @@ class vcsCache
      * the given version. You may cache all scalar values, arrays and objects
      * which are implementing the interface arbitCacheable.
      *
-     * @param string $resource 
-     * @param string $version 
-     * @param string $key 
-     * @param mixed $value 
+     * @param string $resource
+     * @param string $version
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
     public static function cache( $resource, $version, $key, $value )

@@ -33,7 +33,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
 {
     /**
      * Current version of the given resource
-     * 
+     *
      * @var string
      */
     protected $currentVersion = null;
@@ -46,7 +46,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      *
      * @return vcsLogEntry
      */
-    protected function getResourceInfo() 
+    protected function getResourceInfo()
     {
         if ( $this->currentVersion !== null )
         {
@@ -71,7 +71,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      *
      * @return array
      */
-    protected function getResourceLog() 
+    protected function getResourceLog()
     {
         $log = vcsCache::get( $this->path, $this->currentVersion, 'log' );
         if ( $log === false )
@@ -110,13 +110,13 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
                 }
 
                 list( $node, $author, $date, $desc ) = explode( "\t", $line, 4 );
-                
+
                 $atPosition = strpos( $author, '@' );
                 if ( $atPosition )
                 {
                     $author = substr( $author, 0, $atPosition );
                 }
-                
+
                 $log[$node] = new vcsLogEntry( $node, $author, urldecode( $desc ), strtotime( $date ) );
             }
             $log = array_reverse( $log );
@@ -138,7 +138,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * @param string $property
      * @return string
      */
-    protected function getResourceProperty( $property ) 
+    protected function getResourceProperty( $property )
     {
         $property; // stupid, but surpresses phpcs warnings...
         return '';
@@ -149,10 +149,10 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      *
      * Return a string representing the current version of the file or
      * directory.
-     * 
+     *
      * @return string
      */
-    public function getVersionString() 
+    public function getVersionString()
     {
         $info = $this->getResourceInfo();
         return $info->version;
@@ -166,7 +166,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      *
      * @return array
      */
-    public function getVersions() 
+    public function getVersions()
     {
         $versions = array();
         $log = $this->getResourceLog();
@@ -186,11 +186,11 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * In case $version1 is bigger / later then $version2 an integer > 0 will
      * be returned. In case both versions are equal 0 will be returned.
      *
-     * @param string $version1 
-     * @param string $version2 
+     * @param string $version1
+     * @param string $version2
      * @return int
      */
-    public function compareVersions( $version1, $version2 ) 
+    public function compareVersions( $version1, $version2 )
     {
         $versions = $this->getVersions();
         $key1 = array_search( $version1, $versions );
@@ -205,16 +205,16 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
     }
 
     /**
-     * Get author 
+     * Get author
      *
      * Return author information for the resource. Optionally the $version
      * parameter may be passed to the method to specify a version the author
      * information should be returned for.
      *
-     * @param mixed $version 
+     * @param mixed $version
      * @return string
      */
-    public function getAuthor( $version = null ) 
+    public function getAuthor( $version = null )
     {
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
@@ -235,7 +235,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      *
      * @return array
      */
-    public function getLog() 
+    public function getLog()
     {
         return $this->getResourceLog();
     }
@@ -244,11 +244,11 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * Get revision log entry
      *
      * Get the revision log entry for the spcified version.
-     * 
+     *
      * @param string $version
      * @return vcsLogEntry
      */
-    public function getLogEntry( $version ) 
+    public function getLogEntry( $version )
     {
         $log = $this->getResourceLog();
 

@@ -34,17 +34,17 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
 {
     /**
      * Array with children resources of the directory, used for the iterator.
-     * 
+     *
      * @var array
      */
     protected $resources = null;
 
     /**
      * Initialize resources array
-     * 
+     *
      * Initilaize the array containing all child elements of the current
      * directly as vcsArchiveResource objects.
-     * 
+     *
      * @return array(vcsArchiveResource)
      */
     protected function initializeResouces()
@@ -61,7 +61,7 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
             {
                 continue;
             }
-    
+
             $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
                 new vcsArchiveDirectory( $this->root, $this->path . $path . '/' ) :
                 new vcsArchiveFile( $this->root, $this->path . $path )
@@ -129,7 +129,7 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
 
         return $this->current() !== false;
     }
-    
+
     /**
      * Rewind the Iterator to the first element
      *
@@ -159,7 +159,7 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
 
         return current( $this->resources );
     }
-    
+
     /**
      * Returns if an iterator can be created fot the current entry.
      *

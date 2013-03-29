@@ -257,7 +257,7 @@ class vcsSvnExtFileTests extends vcsTestCase
         $file = new vcsSvnExtFile( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( 1 );
-        
+
 
         $this->assertEquals(
             '/file',

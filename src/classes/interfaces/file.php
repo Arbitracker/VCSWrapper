@@ -35,19 +35,19 @@ interface vcsFile
 {
     /**
      * Get file contents
-     * 
+     *
      * Get the contents of the current file.
-     * 
+     *
      * @return string
      */
     public function getContents();
 
     /**
      * Get mime type
-     * 
+     *
      * Get the mime type of the current file. If this information is not
      * available, just return 'application/octet-stream'.
-     * 
+     *
      * @return string
      */
     public function getMimeType();

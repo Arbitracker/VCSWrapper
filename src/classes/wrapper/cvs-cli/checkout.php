@@ -129,7 +129,7 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
      *
      * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
      * instance, depending on the given path.
-     * 
+     *
      * @param string $path
      * @return mixed
      */

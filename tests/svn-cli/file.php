@@ -252,7 +252,7 @@ class vcsSvnCliFileTests extends vcsTestCase
         $file = new vcsSvnCliFile( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( 1 );
-        
+
 
         $this->assertEquals(
             '/file',

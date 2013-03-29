@@ -42,7 +42,7 @@ class vcsGitCliProcess extends \SystemProcess\SystemProcess
 
     /**
      * Class constructor taking the executable
-     * 
+     *
      * @param string $executable Executable to create system process for;
      * @return void
      */
@@ -60,7 +60,7 @@ class vcsGitCliProcess extends \SystemProcess\SystemProcess
      *
      * Verify hat the version of the installed GIT binary is at least 1.6. Will
      * throw an exception, if the binary is not available or too old.
-     * 
+     *
      * @return void
      */
     protected static function checkVersion()

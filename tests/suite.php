@@ -44,7 +44,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
 {
     /**
      * Basic constructor for test suite
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -65,7 +65,7 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
 
     /**
      * Return test suite
-     * 
+     *
      * @return prpTestSuite
      */
     public static function suite()

@@ -34,17 +34,17 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
 {
     /**
      * Array with children resources of the directory, used for the iterator.
-     * 
+     *
      * @var array
      */
     protected $resources = null;
 
     /**
      * Initialize resources array
-     * 
+     *
      * Initilaize the array containing all child elements of the current
      * directly as vcsSvnCliResource objects.
-     * 
+     *
      * @return array(vcsSvnCliResource)
      */
     protected function initializeResouces()
@@ -63,7 +63,7 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
             {
                 continue;
             }
-    
+
             $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
                 new vcsSvnCliDirectory( $this->root, $this->path . $path . '/', $this->username, $this->password ) :
                 new vcsSvnCliFile( $this->root, $this->path . $path, $this->username, $this->password )
@@ -131,7 +131,7 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
 
         return $this->current() !== false;
     }
-    
+
     /**
      * Set the internal pointer of an array to its first element.
      *
@@ -161,7 +161,7 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
 
         return current( $this->resources );
     }
-    
+
     /**
      * Returns if this directory contains files of directories.
      *

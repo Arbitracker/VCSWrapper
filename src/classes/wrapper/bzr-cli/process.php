@@ -42,11 +42,11 @@ class vcsBzrCliProcess extends \SystemProcess\SystemProcess
 
     /**
      * Class constructor taking the executable
-     * 
+     *
      * @param string $executable
      * @return void
      */
-    public function __construct( $executable = 'bzr' ) 
+    public function __construct( $executable = 'bzr' )
     {
         parent::__construct( $executable );
         self::checkVersion();
@@ -60,7 +60,7 @@ class vcsBzrCliProcess extends \SystemProcess\SystemProcess
      *
      * Verify that the version of the installed bzr binary is at least 1.1. Will
      * throw an exception, if the binary is not available or too old.
-     * 
+     *
      * @return void
      */
     protected static function checkVersion()

@@ -34,15 +34,15 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
 {
     /**
      * Database connection
-     * 
+     *
      * @var SQLite3
      */
     protected $db;
 
     /**
      * Construct cache from cache storage root
-     * 
-     * @param string $root 
+     *
+     * @param string $root
      * @return void
      */
     public function __construct( $root )
@@ -83,9 +83,9 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
      * handler, this method may call the cleanup on every write, or for a
      * meaningful percentage of writes. The cleanup() method will otherwise
      * also be called from outside.
-     * 
-     * @param string $path 
-     * @param int $size 
+     *
+     * @param string $path
+     * @param int $size
      * @param int $time
      * @return void
      */
@@ -107,8 +107,8 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
      *
      * Method call, when a cache file has been read. This method ist used to
      * basically update the LRU information of cache entries.
-     * 
-     * @param string $path 
+     *
+     * @param string $path
      * @param int $time
      * @return void
      */
@@ -130,9 +130,9 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
      * Check if the current cache size exceeds the given requested cache size.
      * If this is the case purge all cache items from the cache until the cache
      * is only filled up to $rate percentage.
-     * 
-     * @param int $size 
-     * @param flaot $rate 
+     *
+     * @param int $size
+     * @param flaot $rate
      * @return void
      */
     public function cleanup( $size, $rate )

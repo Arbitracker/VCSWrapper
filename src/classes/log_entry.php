@@ -34,7 +34,7 @@ class vcsLogEntry extends vcsBaseStruct
 {
     /**
      * Array containing the structs properties.
-     * 
+     *
      * @var array
      */
     protected $properties = array(
@@ -46,11 +46,11 @@ class vcsLogEntry extends vcsBaseStruct
 
     /**
      * Construct struct from given values
-     * 
-     * @param string $version 
-     * @param string $author 
-     * @param string $message 
-     * @param int $date 
+     *
+     * @param string $version
+     * @param string $author
+     * @param string $message
+     * @param int $date
      * @return void
      */
     public function __construct( $version = null, $author = null, $message = null, $date = null )
@@ -65,10 +65,10 @@ class vcsLogEntry extends vcsBaseStruct
      * Recreate struct exported by var_export()
      *
      * Recreate struct exported by var_export()
-     * 
+     *
      * @ignore
-     * @param array $properties 
-     * @param string $class 
+     * @param array $properties
+     * @param string $class
      * @return vcsLogEntry
      */
     public static function __set_state( array $properties, $class = __CLASS__ )

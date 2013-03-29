@@ -209,7 +209,7 @@ class vcsGitCliFileTests extends vcsTestCase
         $file = new vcsGitCliFile( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "43fb423f4ee079af2f3cba4e07eb8b10f4476815" );
-        
+
         $this->assertEquals(
             array(
                 new vcsDiffChunk(

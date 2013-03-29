@@ -34,7 +34,7 @@ class vcsDiffLine extends vcsBaseStruct
 {
     /**
      * Array containing the structs properties.
-     * 
+     *
      * @var array
      */
     protected $properties = array(
@@ -43,12 +43,12 @@ class vcsDiffLine extends vcsBaseStruct
     );
 
     /**
-     * A line in a diff, which is new in the destination file 
+     * A line in a diff, which is new in the destination file
      */
     const ADDED = 1;
 
     /**
-     * A line in a diff, which has been removed in the destination file 
+     * A line in a diff, which has been removed in the destination file
      */
     const REMOVED = 2;
 
@@ -59,9 +59,9 @@ class vcsDiffLine extends vcsBaseStruct
 
     /**
      * Construct diff from properties
-     * 
-     * @param int $type 
-     * @param string $content 
+     *
+     * @param int $type
+     * @param string $content
      * @return vcsDiffLine
      */
     public function __construct( $type = self::UNCHANGED, $content = null )
@@ -74,10 +74,10 @@ class vcsDiffLine extends vcsBaseStruct
      * Recreate struct exported by var_export()
      *
      * Recreate struct exported by var_export()
-     * 
+     *
      * @ignore
-     * @param array $properties 
-     * @param mixed $class 
+     * @param array $properties
+     * @param mixed $class
      * @return void
      */
     public static function __set_state( array $properties, $class = __CLASS__ )

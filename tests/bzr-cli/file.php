@@ -48,7 +48,7 @@ class vcsBzrCliFileTests extends vcsTestCase
     {
         // Restore system timezone
         ini_set( 'date.timezone', $this->timezone );
- 
+
         parent::tearDown();
     }
 
@@ -123,7 +123,7 @@ class vcsBzrCliFileTests extends vcsTestCase
         $file = new vcsBzrCliFile( $this->tempDir, '/file' );
 
         $log = $file->getLog();
-        
+
         $this->assertEquals(
             array(
                 "1" => new vcsLogEntry(
@@ -239,7 +239,7 @@ class vcsBzrCliFileTests extends vcsTestCase
         $file = new vcsBzrCliFile( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "1", "2" );
-        
+
         $this->assertEquals(
             array(
                 new vcsDiffChunk(

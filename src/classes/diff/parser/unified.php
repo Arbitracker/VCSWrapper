@@ -38,7 +38,7 @@ class vcsUnifiedDiffParser extends vcsDiffParser
      * Parse the diff, given as a string, into a vcsDiff objects. The different
      * diff objects are returned in an array.
      *
-     * @param string $string 
+     * @param string $string
      * @return array(vcsDiff)
      */
     public function parseString( $string )
@@ -48,7 +48,7 @@ class vcsUnifiedDiffParser extends vcsDiffParser
         $diffs     = array();
         $diff      = null;
         $collected = array();
-        
+
         for ( $i = 0; $i < $lineCount; ++$i )
         {
             if ( preg_match( '(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch ) &&
@@ -91,8 +91,8 @@ class vcsUnifiedDiffParser extends vcsDiffParser
      * Parse the unified diff for one file, which may consists of a finitie
      * amount of diff chunks.
      *
-     * @param vcsDiff $diff 
-     * @param array $lines 
+     * @param vcsDiff $diff
+     * @param array $lines
      * @return void
      */
     protected function parseFileDiff( vcsDiff $diff, array $lines )
@@ -143,7 +143,7 @@ class vcsUnifiedDiffParser extends vcsDiffParser
                 array_unshift( $lines, $last );
             }
         }
-        
+
         $diff->chunks = $chunks;
     }
 }

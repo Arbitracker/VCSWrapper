@@ -38,7 +38,7 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
      * Construct the repository with the repository root path, which will be
      * used to store the repository contents.
      *
-     * @param string $root 
+     * @param string $root
      * @return void
      */
     public function __construct( $root )
@@ -54,7 +54,7 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
      *
      * Optionally a version can be specified, in which case the repository
      * won't be updated to the latest version, but to the specified one.
-     * 
+     *
      * @param string $version
      * @return bool
      */
@@ -72,7 +72,7 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
      *
      * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
      * instance, depending on the given path.
-     * 
+     *
      * @param string $path
      * @return mixed
      */

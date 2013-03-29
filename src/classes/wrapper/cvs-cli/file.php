@@ -34,9 +34,9 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
 {
     /**
      * Get file contents
-     * 
+     *
      * Get the contents of the current file.
-     * 
+     *
      * @return string
      */
     public function getContents()
@@ -46,10 +46,10 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
 
     /**
      * Get mime type
-     * 
+     *
      * Get the mime type of the current file. If this information is not
      * available, just return 'application/octet-stream'.
-     * 
+     *
      * @return string
      */
     public function getMimeType()
@@ -64,7 +64,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      * The method should return author and revision information for each line,
      * describing who when last changed the current resource. The returned
      * array should look like:
-        
+
      * <code>
      *  array(
      *      T_LINE_NUMBER => array(
@@ -143,7 +143,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      *
      * Get the contents of the current resource in the specified version.
      *
-     * @param string $version 
+     * @param string $version
      * @return string
      */
     public function getVersionedContent( $version )
@@ -183,8 +183,8 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      * Optionally you may specify another version then the current one as the
      * diff base as the second parameter.
      *
-     * @param string $version 
-     * @param string $current 
+     * @param string $version
+     * @param string $current
      * @return vcsResource
      */
     public function getDiff( $version, $current = null )

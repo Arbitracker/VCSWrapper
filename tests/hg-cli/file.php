@@ -210,7 +210,7 @@ class vcsHgCliFileTests extends vcsTestCase
         $file = new vcsHgCliFile( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "9923e3bfe735ad54d67c38351400097e25aadabd" );
-        
+
         $this->assertEquals(
             array(
                 new vcsDiffChunk(

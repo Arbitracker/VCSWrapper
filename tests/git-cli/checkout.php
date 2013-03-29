@@ -86,7 +86,7 @@ class vcsGitCliCheckoutTests extends vcsTestCase
         $git = new vcsGitCliProcess();
         $git->workingDirectory( $this->tempDir . '/ci' );
         $git->argument( 'add' )->argument( 'another' )->execute();
-        
+
         $git = new vcsGitCliProcess();
         $git->workingDirectory( $this->tempDir . '/ci' );
         $git->argument( 'commit' )->argument( 'another' )->argument( '-m' )->argument( '- Test commit.' )->execute();

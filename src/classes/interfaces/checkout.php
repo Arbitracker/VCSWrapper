@@ -39,9 +39,9 @@ interface vcsCheckout extends vcsDirectory
      * Initialize repository from the given URL. Optionally username and
      * password may be passed to the method, if required for the repository.
      *
-     * @param string $url 
-     * @param string $user 
-     * @param string $password 
+     * @param string $url
+     * @param string $user
+     * @param string $password
      * @return void
      */
     public function initialize( $url, $user = null, $password = null );
@@ -54,7 +54,7 @@ interface vcsCheckout extends vcsDirectory
      *
      * Optionally a version can be specified, in which case the repository
      * won't be updated to the latest version, but to the specified one.
-     * 
+     *
      * @param string $version
      * @return bool
      */
@@ -68,7 +68,7 @@ interface vcsCheckout extends vcsDirectory
      *
      * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
      * instance, depending on the given path.
-     * 
+     *
      * @param string $path
      * @return mixed
      */

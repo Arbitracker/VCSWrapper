@@ -34,10 +34,10 @@ class vcsSvnCliProcess extends \SystemProcess\SystemProcess
 {
     /**
      * Class constructor taking the executable
-     * 
-     * @param string $executable 
-     * @param string $user 
-     * @param string $password 
+     *
+     * @param string $executable
+     * @param string $user
+     * @param string $password
      * @return void
      */
     public function __construct( $executable = 'svn', $user = null, $password = null )

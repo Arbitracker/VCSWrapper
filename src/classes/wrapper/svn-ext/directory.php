@@ -34,17 +34,17 @@ class vcsSvnExtDirectory extends vcsSvnExtResource implements vcsDirectory
 {
     /**
      * Array with children resources of the directory, used for the iterator.
-     * 
+     *
      * @var array
      */
     protected $resources = null;
 
     /**
      * Initialize resources array
-     * 
+     *
      * Initilaize the array containing all child elements of the current
      * directly as vcsSvnExtResource objects.
-     * 
+     *
      * @return array(vcsSvnExtResource)
      */
     protected function initializeResouces()
@@ -63,7 +63,7 @@ class vcsSvnExtDirectory extends vcsSvnExtResource implements vcsDirectory
             {
                 continue;
             }
-    
+
             $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
                 new vcsSvnExtDirectory( $this->root, $this->path . $path . '/' ) :
                 new vcsSvnExtFile( $this->root, $this->path . $path )
@@ -131,7 +131,7 @@ class vcsSvnExtDirectory extends vcsSvnExtResource implements vcsDirectory
 
         return $this->current() !== false;
     }
-    
+
     /**
      * Set the internal pointer of an array to its first element.
      *
@@ -161,7 +161,7 @@ class vcsSvnExtDirectory extends vcsSvnExtResource implements vcsDirectory
 
         return current( $this->resources );
     }
-    
+
     /**
      * Returns if this directory contains files of directories.
      *

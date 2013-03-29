@@ -38,8 +38,8 @@ interface vcsDiffable extends vcsVersioned
      * Optionally you may specify another version then the current one as the
      * diff base as the second parameter.
      *
-     * @param string $version 
-     * @param string $current 
+     * @param string $version
+     * @param string $current
      * @return vcsResource
      */
     public function getDiff( $version, $current = null );

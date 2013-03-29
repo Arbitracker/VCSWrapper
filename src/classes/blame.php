@@ -34,7 +34,7 @@ class vcsBlameStruct extends vcsBaseStruct
 {
     /**
      * Array containing the structs properties.
-     * 
+     *
      * @var array
      */
     protected $properties = array(
@@ -46,11 +46,11 @@ class vcsBlameStruct extends vcsBaseStruct
 
     /**
      * Construct struct from given values
-     * 
-     * @param string $content 
-     * @param string $version 
-     * @param string $author 
-     * @param int $date 
+     *
+     * @param string $content
+     * @param string $version
+     * @param string $author
+     * @param int $date
      * @return void
      */
     public function __construct( $content = null, $version = null, $author = null, $date = null )
@@ -65,10 +65,10 @@ class vcsBlameStruct extends vcsBaseStruct
      * Recreate struct exported by var_export()
      *
      * Recreate struct exported by var_export()
-     * 
+     *
      * @ignore
-     * @param array $properties 
-     * @param string $class 
+     * @param array $properties
+     * @param string $class
      * @return vcsBlameStruct
      */
     public static function __set_state( array $properties, $class = __CLASS__ )

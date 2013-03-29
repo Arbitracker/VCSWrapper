@@ -37,7 +37,7 @@ interface vcsVersioned
      *
      * Return a string representing the current version of the file or
      * directory.
-     * 
+     *
      * @return string
      */
     public function getVersionString();
@@ -59,8 +59,8 @@ interface vcsVersioned
      * In case $version1 is bigger / later then $version2 an integer > 0 will
      * be returned. In case both versions are equal 0 will be returned.
      *
-     * @param string $version1 
-     * @param string $version2 
+     * @param string $version1
+     * @param string $version2
      * @return int
      */
     public function compareVersions( $version1, $version2 );

@@ -41,14 +41,14 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
 
     /**
      * Username to access the repository
-     * 
+     *
      * @var sting
      */
     protected $username;
 
     /**
      * Password to access the repository
-     * 
+     *
      * @var sting
      */
     protected $password;
@@ -59,9 +59,9 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * Construct the resource from the repository root, which is used to store
      * the actual repository contents, and the local paht inside the
      * repository.
-     * 
-     * @param string $root 
-     * @param string $path 
+     *
+     * @param string $root
+     * @param string $path
      * @param string $user
      * @param string $password
      * @return void
@@ -189,7 +189,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      *
      * Return a string representing the current version of the file or
      * directory.
-     * 
+     *
      * @return string
      */
     public function getVersionString()
@@ -229,8 +229,8 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * In case $version1 is bigger / later then $version2 an integer > 0 will
      * be returned. In case both versions are equal 0 will be returned.
      *
-     * @param string $version1 
-     * @param string $version2 
+     * @param string $version1
+     * @param string $version2
      * @return int
      */
     public function compareVersions( $version1, $version2 )
@@ -239,13 +239,13 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
     }
 
     /**
-     * Get author 
+     * Get author
      *
      * Return author information for the resource. Optionally the $version
      * parameter may be passed to the method to specify a version the author
      * information should be returned for.
      *
-     * @param mixed $version 
+     * @param mixed $version
      * @return string
      */
     public function getAuthor( $version = null )
@@ -284,7 +284,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * Get revision log entry
      *
      * Get the revision log entry for the spcified version.
-     * 
+     *
      * @param string $version
      * @return vcsLogEntry
      */
@@ -307,8 +307,8 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * Optionally you may specify another version then the current one as the
      * diff base as the second parameter.
      *
-     * @param string $version 
-     * @param string $current 
+     * @param string $version
+     * @param string $current
      * @return vcsResource
      */
     public function getDiff( $version, $current = null )

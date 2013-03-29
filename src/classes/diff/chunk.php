@@ -34,7 +34,7 @@ class vcsDiffChunk extends vcsBaseStruct
 {
     /**
      * Array containing the structs properties.
-     * 
+     *
      * @var array
      */
     protected $properties = array(
@@ -47,12 +47,12 @@ class vcsDiffChunk extends vcsBaseStruct
 
     /**
      * Construct diff from properties
-     * 
-     * @param int $start 
-     * @param int $startRange 
-     * @param int $end 
-     * @param int $endRange 
-     * @param array $lines 
+     *
+     * @param int $start
+     * @param int $startRange
+     * @param int $end
+     * @param int $endRange
+     * @param array $lines
      * @return void
      */
     public function __construct( $start = null, $startRange = 1, $end = null, $endRange = 1, array $lines = array() )
@@ -68,10 +68,10 @@ class vcsDiffChunk extends vcsBaseStruct
      * Recreate struct exported by var_export()
      *
      * Recreate struct exported by var_export()
-     * 
+     *
      * @ignore
-     * @param array $properties 
-     * @param string $class 
+     * @param array $properties
+     * @param string $class
      * @return vcsDiffChunk
      */
     public static function __set_state( array $properties, $class = __CLASS__ )

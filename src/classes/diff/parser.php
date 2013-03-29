@@ -38,7 +38,7 @@ abstract class vcsDiffParser
      * Parse the diff, given as a string, into a vcsDiff objects. The different
      * diff objects are returned in an array.
      *
-     * @param string $string 
+     * @param string $string
      * @return array(vcsDiff)
      */
     abstract public function parseString( $string );
@@ -49,7 +49,7 @@ abstract class vcsDiffParser
      * Parse the diff, given as a file name, into a vcsDiff objects. The
      * different diff objects are returned in an array.
      *
-     * @param string $file 
+     * @param string $file
      * @return array(vcsDiff)
      */
     public function parseFile( $file )

@@ -46,7 +46,7 @@ interface vcsLogged extends vcsVersioned
      * Get revision log entry
      *
      * Get the revision log entry for the spcified version.
-     * 
+     *
      * @param string $version
      * @return vcsLogEntry
      */

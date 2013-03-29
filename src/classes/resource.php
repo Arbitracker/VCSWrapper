@@ -37,14 +37,14 @@ abstract class vcsResource
 {
     /**
      * Path to the repository root / checkout.
-     * 
+     *
      * @var string
      */
     protected $root;
 
     /**
      * Local repository path
-     * 
+     *
      * @var string
      */
     protected $path;
@@ -55,9 +55,9 @@ abstract class vcsResource
      * Construct the resource from the repository root, which is used to store
      * the actual repository contents, and the local paht inside the
      * repository.
-     * 
-     * @param string $root 
-     * @param string $path 
+     *
+     * @param string $root
+     * @param string $path
      * @return void
      */
     public function __construct( $root, $path )
@@ -70,7 +70,7 @@ abstract class vcsResource
      * Return the local path
      *
      * Returns the path to the resource in the local file system.
-     * 
+     *
      * @return string
      */
     public function getLocalPath()
@@ -83,7 +83,7 @@ abstract class vcsResource
      *
      * When a resources is casted to a string, return the local repository path
      * of the resource.
-     * 
+     *
      * @return string
      */
     public function __toString()

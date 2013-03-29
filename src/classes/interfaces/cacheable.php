@@ -31,8 +31,8 @@ interface arbitCacheable
 {
     /**
      * Recreate struct exported by var_export()
-     * 
-     * @param array $properties 
+     *
+     * @param array $properties
      * @return arbitCacheable
      */
     public static function __set_state( array $properties );

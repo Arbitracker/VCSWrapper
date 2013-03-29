@@ -34,7 +34,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
 {
     /**
      * Current version of the given resource
-     * 
+     *
      * @var string
      */
     protected $currentVersion = null;
@@ -47,7 +47,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      *
      * @return vcsLogEntry
      */
-    protected function getResourceInfo() 
+    protected function getResourceInfo()
     {
         if ( $this->currentVersion !== null )
         {
@@ -72,7 +72,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      *
      * @return array
      */
-    protected function getResourceLog() 
+    protected function getResourceLog()
     {
         $log = vcsCache::get( $this->path, $this->currentVersion, 'log' );
         if ( $log === false )
@@ -92,7 +92,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
             }
 
             $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
-            
+
             $process->execute();
 
             // Parse commit log
@@ -107,7 +107,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
                 $author = $entry->committer;
                 $date = strtotime( $entry->timestamp );
                 $desc = $entry->message;
-                
+
                 $newEntry = new vcsLogEntry( $revno, $author, $desc, $date );
                 $log[(string) $revno] = $newEntry;
             }
@@ -129,7 +129,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $property
      * @return string
      */
-    protected function getResourceProperty( $property ) 
+    protected function getResourceProperty( $property )
     {
         return '';
     }
@@ -139,7 +139,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      *
      * @return string
      */
-    public function getVersionString() 
+    public function getVersionString()
     {
         $info = $this->getResourceInfo();
         return $info->version;
@@ -150,7 +150,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      *
      * @return array
      */
-    public function getVersions() 
+    public function getVersions()
     {
         $versions = array();
         $log = $this->getResourceLog();
@@ -166,14 +166,14 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
     /**
      * Compares two versions.
      *
-     * Returns -1 if the first version is lower than the second, 0 if they are 
+     * Returns -1 if the first version is lower than the second, 0 if they are
      * equal, and 1 if the second is lower.
      *
      * @param string $version1
      * @param string $version2
-     * @return integer 
+     * @return integer
      */
-    public function compareVersions( $version1, $version2 ) 
+    public function compareVersions( $version1, $version2 )
     {
         $versions = $this->getVersions();
         $key1 = array_search( $version1, $versions );
@@ -194,7 +194,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $version
      * @return string
      */
-    public function getAuthor( $version = null ) 
+    public function getAuthor( $version = null )
     {
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
@@ -212,7 +212,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      *
      * @return string
      */
-    public function getLog() 
+    public function getLog()
     {
         return $this->getResourceLog();
     }
@@ -223,7 +223,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $version
      * @return string
      */
-    public function getLogEntry( $version ) 
+    public function getLogEntry( $version )
     {
         $log = $this->getResourceLog();
 

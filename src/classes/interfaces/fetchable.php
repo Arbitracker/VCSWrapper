@@ -36,7 +36,7 @@ interface vcsFetchable extends vcsVersioned
      *
      * Get the contents of the current resource in the specified version.
      *
-     * @param string $version 
+     * @param string $version
      * @return string
      */
     public function getVersionedContent( $version );

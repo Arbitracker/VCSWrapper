@@ -38,9 +38,9 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
      * Initialize repository from the given URL. Optionally username and
      * password may be passed to the method, if required for the repository.
      *
-     * @param string $url 
-     * @param string $user 
-     * @param string $password 
+     * @param string $url
+     * @param string $user
+     * @param string $password
      * @return void
      */
     public function initialize( $url, $user = null, $password = null )
@@ -80,7 +80,7 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
      * Often all files in an archive can be found in some subdirectory. We want
      * to detect which subdirectory this is to move all files to the root.
      *
-     * @param ZipArchive $archive 
+     * @param ZipArchive $archive
      * @return string
      */
     protected function findRepositoryRoot( ZipArchive $archive )
@@ -100,11 +100,11 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
 
     /**
      * Common start string
-     * 
+     *
      * Find and return the longest common start string of two strings.
-     * 
-     * @param string $string1 
-     * @param string $string2 
+     *
+     * @param string $string1
+     * @param string $string2
      * @return string
      */
     protected function commonStartString( $string1, $string2 )
