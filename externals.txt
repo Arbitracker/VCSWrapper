@@ -1,0 +1,4 @@
+svn /src/classes/external/system_process svn://pureenergy.cc/systemProcess/trunk/src/classes
+svn /src/classes/external/exceptions/system_process svn://pureenergy.cc/systemProcess/trunk/src/exceptions/systemProcess
+svn /src/classes/external/xml svn://arbitracker.org/arbit/projects/xml/trunk/src/classes
+svn /tests/runner svn://arbitracker.org/arbitTestRunner/trunk/src
