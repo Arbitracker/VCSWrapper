@@ -30,7 +30,7 @@
  * @subpackage MercurialCliWrapper
  * @version $Revision$
  */
-class vcsBzrCliProcess extends pbsSystemProcess
+class vcsBzrCliProcess extends \SystemProcess\SystemProcess
 {
     /**
      * Static property containg information, if the version of the bzr CLI
@@ -70,7 +70,7 @@ class vcsBzrCliProcess extends pbsSystemProcess
             return true;
         }
 
-        $process = new pbsSystemProcess( 'bzr' );
+        $process = new \SystemProcess\SystemProcess( 'bzr' );
         $process->nonZeroExitCodeException = true;
         $process->argument( '--version' )->execute();
 
@@ -84,7 +84,7 @@ class vcsBzrCliProcess extends pbsSystemProcess
             throw new vcsRuntimeException( 'Bazaar is required in a minimum version of 1.1.' );
         }
 
-        $process = new pbsSystemProcess( 'bzr' );
+        $process = new \SystemProcess\SystemProcess( 'bzr' );
         $process->nonZeroExitCodeException = true;
         $process->argument( 'plugins' )->execute();
 

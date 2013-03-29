@@ -105,7 +105,7 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
             $process->workingDirectory( $this->root );
 
             // Execute command
-            $return = $process->argument( 'blame' )->argument( '-l' )->argument( new pbsPathArgument( '.' . $this->path ) )->execute();
+            $return = $process->argument( 'blame' )->argument( '-l' )->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) )->execute();
             $contents = preg_split( '(\r\n|\r|\n)', trim( $process->stdoutOutput ) );
 
             // Convert returned lines into diff structures
@@ -155,7 +155,7 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
             $process = new vcsGitCliProcess();
             $process->workingDirectory( $this->root );
             $process->argument( 'diff' )->argument( '--no-ext-diff' );
-            $process->argument( $version . '..' . $current )->argument( new pbsPathArgument( '.' . $this->path ) )->execute();
+            $process->argument( $version . '..' . $current )->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) )->execute();
 
             // Parse resulting unified diff
             $parser = new vcsUnifiedDiffParser();

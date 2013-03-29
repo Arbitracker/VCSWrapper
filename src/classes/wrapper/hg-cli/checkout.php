@@ -79,7 +79,7 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
         $process = new vcsHgCliProcess();
         $process->argument( 'clone' );
         $process->argument( str_replace( '\\', '/', $url ) );
-        $process->argument( new pbsPathArgument( $this->root ) );
+        $process->argument( new \SystemProcess\Argument\PathArgument( $this->root ) );
         $return = $process->execute();
 
         // Cache basic revision information for checkout and update

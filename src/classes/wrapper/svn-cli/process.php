@@ -30,7 +30,7 @@
  * @subpackage SvnCliWrapper
  * @version $Revision$
  */
-class vcsSvnCliProcess extends pbsSystemProcess
+class vcsSvnCliProcess extends \SystemProcess\SystemProcess
 {
     /**
      * Class constructor taking the executable

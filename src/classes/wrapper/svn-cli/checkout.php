@@ -68,7 +68,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
 
         $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
-        $return = $process->argument( 'checkout' )->argument( str_replace( '\\', '/', $url ) )->argument( new pbsPathArgument( $this->root ) )->execute();
+        $return = $process->argument( 'checkout' )->argument( str_replace( '\\', '/', $url ) )->argument( new \SystemProcess\Argument\PathArgument( $this->root ) )->execute();
 
         // Cache basic revision information for checkout and update
         // currentVersion property.
@@ -99,7 +99,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
             $process->argument( '-r' . $version );
         }
 
-        $return = $process->argument( 'update' )->argument( new pbsPathArgument( $this->root ) )->execute();
+        $return = $process->argument( 'update' )->argument( new \SystemProcess\Argument\PathArgument( $this->root ) )->execute();
 
         // Check if an update has happened
         $this->currentVersion = null;

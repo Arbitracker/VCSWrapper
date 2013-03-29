@@ -114,7 +114,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
             // Execute command
             $process->argument( 'blame' );
             $process->argument( '-uvdcl' );
-            $process->argument( new pbsPathArgument( '.' . $this->path ) );
+            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
             $return = $process->execute();
             $contents = preg_split( '(\r\n|\r|\n)', trim( $process->stdoutOutput ) );
 
@@ -212,7 +212,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                 $process->argument( '-r' . $current );
             }
             $process->argument( '-r' . $version );
-            $process->argument( new pbsPathArgument( '.' . $this->path ) );
+            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
             $process->execute();
 
             // Parse resulting unified diff

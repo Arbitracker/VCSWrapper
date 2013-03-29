@@ -70,14 +70,14 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
         }
 
         $process = new vcsGitCliProcess();
-        $return = $process->argument( 'clone' )->argument( $url )->argument( new pbsPathArgument( $this->root ) )->execute();
+        $return = $process->argument( 'clone' )->argument( $url )->argument( new \SystemProcess\Argument\PathArgument( $this->root ) )->execute();
 
         // On windows GIT does not exit with a non-zero exit code on false 
         // checkouts, so we need to handle this ourselves
         if ( ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) &&
              ( strpos( $process->stderrOutput, 'fatal' ) !== false ) )
         {
-            throw new pbsSystemProcessNonZeroExitCodeException(
+            throw new \SystemProcess\SystemProcessNonZeroExitCodeException(
                 128,
                 $process->stdoutOutput,
                 $process->stderrOutput,

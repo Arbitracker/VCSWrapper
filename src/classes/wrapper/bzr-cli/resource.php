@@ -91,7 +91,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
                 $process->argument( '-r ' . $this->currentVersion );
             }
 
-            $process->argument( new pbsPathArgument( '.' . $this->path ) );
+            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
             
             $process->execute();
 
@@ -265,7 +265,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
                 $process->argument( "-r" . $version );
             }
 
-            $process->argument( new pbsPathArgument( '.' . $this->path ) );
+            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
             $process->execute();
 
             // Parse resulting unified diff

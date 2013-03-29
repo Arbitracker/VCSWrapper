@@ -30,7 +30,7 @@
  * @subpackage GitCliWrapper
  * @version $Revision$
  */
-class vcsGitCliProcess extends pbsSystemProcess
+class vcsGitCliProcess extends \SystemProcess\SystemProcess
 {
     /**
      * Static property containg information, if the version of the git CLI
@@ -70,7 +70,7 @@ class vcsGitCliProcess extends pbsSystemProcess
             return true;
         }
 
-        $process = new pbsSystemProcess( 'git' );
+        $process = new \SystemProcess\SystemProcess( 'git' );
         $process->nonZeroExitCodeException = true;
         $process->argument( '--version' )->execute();
 

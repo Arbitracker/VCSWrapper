@@ -45,7 +45,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      * Get the base information, like version, author, etc for the current
      * resource in the current version.
      *
-     * @return arbitXml
+     * @return \Arbit\Xml\Document
      */
     protected function getResourceInfo()
     {
@@ -74,7 +74,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      *
      * Get the full log for the current resource up tu the current revision
      *
-     * @return arbitXml
+     * @return \Arbit\Xml\Document
      */
     protected function getResourceLog()
     {

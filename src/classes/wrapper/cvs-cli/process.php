@@ -30,7 +30,7 @@
  * @subpackage CvsCliWrapper
  * @version $Revision$
  */
-class vcsCvsCliProcess extends pbsSystemProcess
+class vcsCvsCliProcess extends \SystemProcess\SystemProcess
 {
     /**
      * Class constructor taking the executable

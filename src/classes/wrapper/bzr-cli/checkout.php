@@ -80,7 +80,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
         $process->nonZeroExitCodeException = true;
         $process->argument( 'checkout' );
         $process->argument( str_replace( '\\', '/', $url ) );
-        $process->argument( new pbsPathArgument( $this->root ) );
+        $process->argument( new \SystemProcess\Argument\PathArgument( $this->root ) );
         $return = $process->execute();
 
         // Cache basic revision information for checkout and update

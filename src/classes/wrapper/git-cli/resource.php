@@ -45,7 +45,7 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
      * Get the base information, like version, author, etc for the current
      * resource in the current version.
      *
-     * @return arbitXml
+     * @return \Arbit\Xml\Document
      */
     protected function getResourceInfo()
     {
@@ -75,7 +75,7 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
      *
      * Get the full log for the current resource up tu the current revision
      *
-     * @return arbitXml
+     * @return \Arbit\Xml\Document
      */
     protected function getResourceLog()
     {
@@ -92,7 +92,7 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
             }
 
             // Execute log command
-            $process->argument( 'log' )->argument( '--pretty=format:%H;%cn;%ct;%s%n%b' )->argument( new pbsPathArgument( '.' . $this->path ) )->execute();
+            $process->argument( 'log' )->argument( '--pretty=format:%H;%cn;%ct;%s%n%b' )->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) )->execute();
 
             // Parse commit log
             $lines      = preg_split( '(\r\n|\r|\n)', $process->stdoutOutput );
@@ -143,7 +143,7 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
             }
 
             // Execute mimeTyper command
-            $return = $process->argument( 'propget' )->argument( 'svn:' . $property )->argument( new pbsPathArgument( $this->root . $this->path ) )->execute();
+            $return = $process->argument( 'propget' )->argument( 'svn:' . $property )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
 
             $value = trim( $process->stdoutOutput );
             vcsCache::cache( $this->path, $this->currentVersion, $property, $value );
@@ -292,7 +292,7 @@ abstract class vcsGitCliResource extends vcsResource implements vcsVersioned, vc
             $process = new vcsGitCliProcess();
             $process->workingDirectory( $this->root );
             $process->argument( 'diff' )->argument( '--no-ext-diff' );
-            $process->argument( $version . '..' . $current )->argument( new pbsPathArgument( '.' . $this->path ) )->execute();
+            $process->argument( $version . '..' . $current )->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) )->execute();
 
             // Parse resulting unified diff
             $parser = new vcsUnifiedDiffParser();

@@ -30,7 +30,7 @@
  * @subpackage MercurialCliWrapper
  * @version $Revision$
  */
-class vcsHgCliProcess extends pbsSystemProcess
+class vcsHgCliProcess extends \SystemProcess\SystemProcess
 {
     /**
      * Static property containg information, if the version of the hg CLI
@@ -71,7 +71,7 @@ class vcsHgCliProcess extends pbsSystemProcess
             return true;
         }
 
-        $process = new pbsSystemProcess( 'env' );
+        $process = new \SystemProcess\SystemProcess( 'env' );
         $process->nonZeroExitCodeException = true;
         $process->argument( 'hg' )->argument( '--version' )->execute();
 

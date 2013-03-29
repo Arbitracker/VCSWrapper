@@ -107,8 +107,8 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
             $process->argument( '--xml' );
 
             // Execute command
-            $return = $process->argument( 'blame' )->argument( new pbsPathArgument( $this->root . $this->path ) )->execute();
-            $xml = arbitXml::loadString( $process->stdoutOutput );
+            $return = $process->argument( 'blame' )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
+            $xml = \Arbit\Xml\Document::loadString( $process->stdoutOutput );
 
             // Check if blame information si available. Is absent fro binary
             // files.
@@ -157,7 +157,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
             $process->argument( '-r' . $version );
 
             // Execute command
-            $return = $process->argument( 'cat' )->argument( new pbsPathArgument( $this->root . $this->path ) )->execute();
+            $return = $process->argument( 'cat' )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
             vcsCache::cache( $this->path, $version, 'content', $content = $process->stdoutOutput );
         }
 

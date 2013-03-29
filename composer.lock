@@ -7,16 +7,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Arbitracker/system-process",
-                "reference": "4778d507e968dfdc90a812b20a782124c44d270e"
+                "reference": "e0065ac37debaad8d97670d9a63959292be49dfc"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Arbit\\SystemProcess": "src/main/php/"
+                    "SystemProcess": "src/main/php/"
                 }
             },
             "description": "System process execution library",
-            "time": "2013-03-29 13:10:44"
+            "time": "2013-03-29 17:21:12"
         },
         {
             "name": "Arbit/XML",
