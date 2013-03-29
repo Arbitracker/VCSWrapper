@@ -66,9 +66,9 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $password
      * @return void
      */
-    public function __construct( $root, $path, $user = null, $password = null )
+    public function __construct($root, $path, $user = null, $password = null)
     {
-        parent::__construct( $root, $path );
+        parent::__construct($root, $path);
 
         $this->username = $user;
         $this->password = $password;
@@ -84,24 +84,23 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceInfo()
     {
-        if ( ( $this->currentVersion === null ) ||
-             ( ( $info = vcsCache::get( $this->path, $this->currentVersion, 'info' ) ) === false ) )
+        if (($this->currentVersion === null) ||
+             (($info = vcsCache::get($this->path, $this->currentVersion, 'info')) === false))
         {
             // Refetch the basic information, and cache it.
-            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
-            $process->argument( '--xml' );
+            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+            $process->argument('--xml');
 
             // Fetch for specified version, if set
-            if ( $this->currentVersion !== null )
-            {
-                $process->argument( '-r' . $this->currentVersion );
+            if ($this->currentVersion !== null) {
+                $process->argument('-r' . $this->currentVersion);
             }
 
             // Execute info command
-            $return = $process->argument( 'info' )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
+            $return = $process->argument('info')->argument(new \SystemProcess\Argument\PathArgument($this->root . $this->path))->execute();
 
-            $info = \Arbit\Xml\Document::loadString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $info->entry[0]->commit[0]['revision'], 'info', $info );
+            $info = \Arbit\Xml\Document::loadString($process->stdoutOutput);
+            vcsCache::cache($this->path, $this->currentVersion = (string) $info->entry[0]->commit[0]['revision'], 'info', $info);
         }
 
         return $info;
@@ -116,38 +115,35 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceLog()
     {
-        if ( ( $log = vcsCache::get( $this->path, $this->currentVersion, 'log' ) ) === false )
-        {
+        if (($log = vcsCache::get($this->path, $this->currentVersion, 'log')) === false) {
             // Refetch the basic logrmation, and cache it.
-            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
-            $process->argument( '--xml' );
+            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+            $process->argument('--xml');
 
             // Fecth for specified version, if set
-            if ( $this->currentVersion !== null )
-            {
-                $process->argument( '-r1:' . $this->currentVersion );
+            if ($this->currentVersion !== null) {
+                $process->argument('-r1:' . $this->currentVersion);
             }
 
             // Execute logr command
-            $return = $process->argument( 'log' )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
+            $return = $process->argument('log')->argument(new \SystemProcess\Argument\PathArgument($this->root . $this->path))->execute();
 
             // Transform XML into object array
-            $xmlLog = \Arbit\Xml\Document::loadString( $process->stdoutOutput );
+            $xmlLog = \Arbit\Xml\Document::loadString($process->stdoutOutput);
             $log    = array();
-            foreach ( $xmlLog->logentry as $entry )
-            {
+            foreach ($xmlLog->logentry as $entry) {
                 $log[(string) $entry['revision']] = new vcsLogEntry(
                     $entry['revision'],
                     $entry->author,
                     $entry->msg,
-                    strtotime( $entry->date )
+                    strtotime($entry->date)
                 );
             }
-            uksort( $log, array( $this, 'compareVersions' ) );
-            $last = end( $log );
+            uksort($log, array($this, 'compareVersions'));
+            $last = end($log);
 
             // Cache extracted data
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $last->version, 'log', $log );
+            vcsCache::cache($this->path, $this->currentVersion = (string) $last->version, 'log', $log);
         }
 
         return $log;
@@ -161,24 +157,22 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $property
      * @return string
      */
-    protected function getResourceProperty( $property )
+    protected function getResourceProperty($property)
     {
-        if ( ( $value = vcsCache::get( $this->path, $this->currentVersion, $property ) ) === false )
-        {
+        if (($value = vcsCache::get($this->path, $this->currentVersion, $property)) === false) {
             // Refetch the basic mimeTypermation, and cache it.
-            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
+            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
 
             // Fecth for specified version, if set
-            if ( $this->currentVersion !== null )
-            {
-                $process->argument( '-r' . $this->currentVersion );
+            if ($this->currentVersion !== null) {
+                $process->argument('-r' . $this->currentVersion);
             }
 
             // Execute mimeTyper command
-            $return = $process->argument( 'propget' )->argument( 'svn:' . $property )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
+            $return = $process->argument('propget')->argument('svn:' . $property)->argument(new \SystemProcess\Argument\PathArgument($this->root . $this->path))->execute();
 
-            $value = trim( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $this->currentVersion, $property, $value );
+            $value = trim($process->stdoutOutput);
+            vcsCache::cache($this->path, $this->currentVersion, $property, $value);
         }
 
         return $value;
@@ -194,8 +188,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      */
     public function getVersionString()
     {
-        if ( $this->currentVersion === null )
-        {
+        if ($this->currentVersion === null) {
             $this->getResourceInfo();
         }
 
@@ -214,8 +207,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
     {
         $versions = array();
         $log = $this->getResourceLog();
-        foreach ( $log as $entry )
-        {
+        foreach ($log as $entry) {
             $versions[] = (string) $entry->version;
         }
 
@@ -233,7 +225,7 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $version2
      * @return int
      */
-    public function compareVersions( $version1, $version2 )
+    public function compareVersions($version1, $version2)
     {
         return $version1 - $version2;
     }
@@ -248,10 +240,9 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * @param mixed $version
      * @return string
      */
-    public function getAuthor( $version = null )
+    public function getAuthor($version = null)
     {
-        if ( $version === null )
-        {
+        if ($version === null) {
             $info = $this->getResourceInfo();
             return (string) $info->entry[0]->commit[0]->author;
         }
@@ -259,9 +250,8 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version]->author;
@@ -288,13 +278,12 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $version
      * @return vcsLogEntry
      */
-    public function getLogEntry( $version )
+    public function getLogEntry($version)
     {
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version];
@@ -311,30 +300,27 @@ abstract class vcsSvnCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $current
      * @return vcsResource
      */
-    public function getDiff( $version, $current = null )
+    public function getDiff($version, $current = null)
     {
-        $current = ( $current === null ) ? $this->getVersionString() : $current;
+        $current = ($current === null) ? $this->getVersionString() : $current;
 
-        if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
-        {
+        if (($diff = vcsCache::get($this->path, $version, 'diff')) === false) {
             // Refetch the basic content information, and cache it.
-            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
-            $process->argument( '-r' . $version . ':' . $current );
+            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+            $process->argument('-r' . $version . ':' . $current);
 
             // Execute command
-            $return = $process->argument( 'diff' )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
+            $return = $process->argument('diff')->argument(new \SystemProcess\Argument\PathArgument($this->root . $this->path))->execute();
             $parser = new vcsUnifiedDiffParser();
-            $diff   = $parser->parseString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $version, 'diff', $diff );
+            $diff   = $parser->parseString($process->stdoutOutput);
+            vcsCache::cache($this->path, $version, 'diff', $diff);
         }
 
-        foreach ( $diff as $fileDiff )
-        {
-            $fileDiff->from = substr( $fileDiff->from, strlen( $this->root ) );
-            $fileDiff->to   = substr( $fileDiff->to, strlen( $this->root ) );
+        foreach ($diff as $fileDiff) {
+            $fileDiff->from = substr($fileDiff->from, strlen($this->root));
+            $fileDiff->to   = substr($fileDiff->to, strlen($this->root));
         }
 
         return $diff;
     }
 }
-

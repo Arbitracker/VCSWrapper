@@ -43,32 +43,29 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null )
+    public function initialize($url, $user = null, $password = null)
     {
-        if ( !is_file( $url ) || !is_readable( $url ) )
-        {
-            throw new vcsNoSuchFileException( $url );
+        if (!is_file($url) || !is_readable($url)) {
+            throw new vcsNoSuchFileException($url);
         }
 
         // Try to extract given zip archive
         $archive = new ZipArchive();
-        $return  = $archive->open( $url );
-        if ( $return !== true )
-        {
-            throw new vcsInvalidZipArchiveException( $url, $return );
+        $return  = $archive->open($url);
+        if ($return !== true) {
+            throw new vcsInvalidZipArchiveException($url, $return);
         }
 
         // Extract, if archive has been opened successfully
-        $archive->extractTo( $this->root );
+        $archive->extractTo($this->root);
 
         // Move all files from the repository root to the checkout root.
-        $root  = $this->findRepositoryRoot( $archive );
-        $files = glob( $this->root . '/' . $root . '*' );
-        foreach ( $files as $file )
-        {
-            rename( $file, $this->root . '/' . basename( $file ) );
+        $root  = $this->findRepositoryRoot($archive);
+        $files = glob($this->root . '/' . $root . '*');
+        foreach ($files as $file) {
+            rename($file, $this->root . '/' . basename($file));
         }
-        rmdir( $this->root . '/' . $root );
+        rmdir($this->root . '/' . $root);
 
         // Finished Zip extraction
         $archive->close();
@@ -83,16 +80,15 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
      * @param ZipArchive $archive
      * @return string
      */
-    protected function findRepositoryRoot( ZipArchive $archive )
+    protected function findRepositoryRoot(ZipArchive $archive)
     {
         // Find root directory in zip file.
         $count    = $archive->numFiles;
-        $rootFile = $archive->statIndex( 0 );
+        $rootFile = $archive->statIndex(0);
         $root     = $rootFile['name'];
-        for ( $i = 1; $i < $count; ++$i )
-        {
-            $file = $archive->statIndex( $i );
-            $root = $this->commonStartString( $root, $file['name'] );
+        for ($i = 1; $i < $count; ++$i) {
+            $file = $archive->statIndex($i);
+            $root = $this->commonStartString($root, $file['name']);
         }
 
         return $root;
@@ -107,16 +103,14 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
      * @param string $string2
      * @return string
      */
-    protected function commonStartString( $string1, $string2 )
+    protected function commonStartString($string1, $string2)
     {
-        $length = min( strlen( $string1 ), strlen( $string2 ) );
+        $length = min(strlen($string1), strlen($string2));
         $common = '';
-        for ( $i = 0; $i < $length && $string1[$i] === $string2[$i]; ++$i )
-        {
+        for ($i = 0; $i < $length && $string1[$i] === $string2[$i]; ++$i) {
             $common .= $string1[$i];
         }
 
         return $common;
     }
 }
-

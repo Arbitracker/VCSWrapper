@@ -41,7 +41,7 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
      */
     public function getContents()
     {
-        return file_get_contents( $this->root . $this->path );
+        return file_get_contents($this->root . $this->path);
     }
 
     /**
@@ -54,10 +54,9 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
      */
     public function getMimeType()
     {
-        $mimeType = $this->getResourceProperty( 'mime-type' );
+        $mimeType = $this->getResourceProperty('mime-type');
 
-        if ( !empty( $mimeType ) )
-        {
+        if (!empty($mimeType)) {
             return $mimeType;
         }
 
@@ -91,38 +90,34 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
      * @param mixed $version
      * @return mixed
      */
-    public function blame( $version = null )
+    public function blame($version = null)
     {
-        $version = ( $version === null ) ? $this->getVersionString() : $version;
+        $version = ($version === null) ? $this->getVersionString() : $version;
 
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        if ( ( $blame = vcsCache::get( $this->path, $version, 'blame' ) ) === false )
-        {
+        if (($blame = vcsCache::get($this->path, $version, 'blame')) === false) {
             // Silence warning about binary files, and just use the return
             // value. There is no good way to know this beforehand. The
             // mime-type might be an indicator, but the list of possible
             // "binary" mime types is to long to really check for that.
-            $svnBlame = @svn_blame( $this->root . $this->path );
+            $svnBlame = @svn_blame($this->root . $this->path);
 
-            if ( ( $blame = $svnBlame ) !== false )
-            {
+            if (($blame = $svnBlame) !== false) {
                 $blame = array();
-                foreach ( $svnBlame as $entry )
-                {
+                foreach ($svnBlame as $entry) {
                     $blame[] = new vcsBlameStruct(
                         $entry['line'],
                         $entry['rev'],
                         $entry['author'],
-                        strtotime( $entry['date'] )
+                        strtotime($entry['date'])
                     );
                 }
             }
 
-            vcsCache::cache( $this->path, $version, 'blame', $blame );
+            vcsCache::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
@@ -136,21 +131,18 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
      * @param string $version
      * @return string
      */
-    public function getVersionedContent( $version )
+    public function getVersionedContent($version)
     {
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        if ( ( $content = vcsCache::get( $this->path, $version, 'content' ) ) === false )
-        {
+        if (($content = vcsCache::get($this->path, $version, 'content')) === false) {
             // Execute command
-            $content = svn_cat( $this->root . $this->path, $version );
-            vcsCache::cache( $this->path, $version, 'content', $content );
+            $content = svn_cat($this->root . $this->path, $version);
+            vcsCache::cache($this->path, $version, 'content', $content);
         }
 
         return $content;
     }
 }
-

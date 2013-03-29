@@ -16,10 +16,10 @@ class vcsGitCliCheckoutTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
@@ -34,12 +34,10 @@ class vcsGitCliCheckoutTests extends vcsTestCase
     {
         $repository = new vcsGitCliCheckout( $this->tempDir );
 
-        try
-        {
+        try {
             $repository->initialize( 'file:///hopefully/not/existing/git/repo' );
             $this->fail( 'Expected \SystemProcess\NonZeroExitCodeException.' );
-        } catch ( \SystemProcess\NonZeroExitCodeException $e )
-        { /* Expected */ }
+        } catch ( \SystemProcess\NonZeroExitCodeException $e ) { /* Expected */ }
 
     }
 
@@ -222,8 +220,7 @@ class vcsGitCliCheckoutTests extends vcsTestCase
         try {
             $repository->getLogEntry( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testIterateCheckoutContents()
@@ -232,8 +229,7 @@ class vcsGitCliCheckoutTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
 
         $files = array();
-        foreach ( $repository as $file )
-        {
+        foreach ( $repository as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -269,13 +265,10 @@ class vcsGitCliCheckoutTests extends vcsTestCase
         $repository = new vcsGitCliCheckout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
 
-        try
-        {
+        try {
             $repository->get( '/../' );
             $this->fail( 'Expected vcsFileNotFoundException.' );
-        }
-        catch ( vcsFileNotFoundException $e )
-        { /* Expected */ }
+        } catch ( vcsFileNotFoundException $e ) { /* Expected */ }
     }
 
     public function testGetDirectory()
@@ -300,4 +293,3 @@ class vcsGitCliCheckoutTests extends vcsTestCase
         );
     }
 }
-

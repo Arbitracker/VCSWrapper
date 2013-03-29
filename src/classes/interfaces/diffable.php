@@ -42,6 +42,5 @@ interface vcsDiffable extends vcsVersioned
      * @param string $current
      * @return vcsResource
      */
-    public function getDiff( $version, $current = null );
+    public function getDiff($version, $current = null);
 }
-

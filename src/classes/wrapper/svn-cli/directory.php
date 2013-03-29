@@ -53,20 +53,19 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
 
         // Build resources array, without constructing the objects yet, for
         // lazy construction of the object tree.
-        $contents = dir( $this->root . $this->path );
-        while ( ( $path = $contents->read() ) !== false )
-        {
+        $contents = dir($this->root . $this->path);
+        while (($path = $contents->read()) !== false) {
             // Also mind svn:ignore here?
-            if ( ( $path === '.' ) ||
-                 ( $path === '..' ) ||
-                 ( $path === '.svn' ) )
+            if (($path === '.') ||
+                 ($path === '..') ||
+                 ($path === '.svn'))
             {
                 continue;
             }
 
-            $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
-                new vcsSvnCliDirectory( $this->root, $this->path . $path . '/', $this->username, $this->password ) :
-                new vcsSvnCliFile( $this->root, $this->path . $path, $this->username, $this->password )
+            $this->resources[] = (is_dir($this->root . $this->path . $path) ?
+                new vcsSvnCliDirectory($this->root, $this->path . $path . '/', $this->username, $this->password) :
+                new vcsSvnCliFile($this->root, $this->path . $path, $this->username, $this->password)
             );
         }
         $contents->close();
@@ -79,12 +78,11 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function current()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return current( $this->resources );
+        return current($this->resources);
     }
 
     /**
@@ -94,12 +92,11 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function next()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return next( $this->resources );
+        return next($this->resources);
     }
 
     /**
@@ -109,12 +106,11 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function key()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return key( $this->resources );
+        return key($this->resources);
     }
 
     /**
@@ -124,8 +120,7 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function valid()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
@@ -139,12 +134,11 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function rewind()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return reset( $this->resources );
+        return reset($this->resources);
     }
 
     /**
@@ -154,12 +148,11 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function getChildren()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return current( $this->resources );
+        return current($this->resources);
     }
 
     /**
@@ -169,12 +162,10 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      */
     public function hasChildren()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return current( $this->resources ) instanceof vcsDirectory;
+        return current($this->resources) instanceof vcsDirectory;
     }
 }
-

@@ -53,7 +53,7 @@ class vcsLogEntry extends vcsBaseStruct
      * @param int $date
      * @return void
      */
-    public function __construct( $version = null, $author = null, $message = null, $date = null )
+    public function __construct($version = null, $author = null, $message = null, $date = null)
     {
         $this->version = (string) $version;
         $this->author  = (string) $author;
@@ -71,9 +71,8 @@ class vcsLogEntry extends vcsBaseStruct
      * @param string $class
      * @return vcsLogEntry
      */
-    public static function __set_state( array $properties, $class = __CLASS__ )
+    public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state( $properties, $class );
+        return vcsBaseStruct::__set_state($properties, $class);
     }
 }
-

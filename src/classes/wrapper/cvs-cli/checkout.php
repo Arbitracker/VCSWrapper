@@ -41,9 +41,9 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
-        parent::__construct( $root, '/' );
+        parent::__construct($root, '/');
     }
 
     /**
@@ -57,34 +57,29 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null )
+    public function initialize($url, $user = null, $password = null)
     {
-        $count = substr_count( $url, '#' );
-        if ( $count === 1 )
-        {
+        $count = substr_count($url, '#');
+        if ($count === 1) {
             $revision = null;
-            list( $repoUrl, $module ) = explode( '#', $url );
-        }
-        else if ( $count === 2 )
-        {
-            list( $repoUrl, $module, $revision ) = explode( '#', $url );
-        }
-        else
-        {
-            throw new vcsInvalidRepositoryUrlException( $url, 'cvs' );
+            list($repoUrl, $module) = explode('#', $url);
+        } elseif ($count === 2) {
+            list($repoUrl, $module, $revision) = explode('#', $url);
+        } else {
+            throw new vcsInvalidRepositoryUrlException($url, 'cvs');
         }
 
         $process = new vcsCvsCliProcess();
         $process
-            ->argument( '-d' )
-            ->argument( $repoUrl )
-            ->argument( 'checkout' )
-            ->argument( '-P' )
-            ->argument( '-r' )
-            ->argument( $revision )
-            ->argument( '-d' )
-            ->argument( $this->root )
-            ->argument( $module )
+            ->argument('-d')
+            ->argument($repoUrl)
+            ->argument('checkout')
+            ->argument('-P')
+            ->argument('-r')
+            ->argument($revision)
+            ->argument('-d')
+            ->argument($this->root)
+            ->argument($module)
             ->execute();
     }
 
@@ -101,24 +96,23 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
      * @param string $version
      * @return bool
      */
-    public function update( $version = null )
+    public function update($version = null)
     {
-        if ( $version === null )
-        {
+        if ($version === null) {
             $version = 'HEAD';
         }
 
         $process = new vcsCvsCliProcess();
         $process
-            ->workingDirectory( $this->root )
-            ->redirect( vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT )
-            ->argument( 'update' )
-            ->argument( '-Rd' )
-            ->argument( '-r' )
-            ->argument( $version )
+            ->workingDirectory($this->root)
+            ->redirect(vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT)
+            ->argument('update')
+            ->argument('-Rd')
+            ->argument('-r')
+            ->argument($version)
             ->execute();
 
-        return ( preg_match( '#[\n\r]U #', $process->stdoutOutput ) > 0 );
+        return (preg_match('#[\n\r]U #', $process->stdoutOutput) > 0);
     }
 
     /**
@@ -133,27 +127,25 @@ class vcsCvsCliCheckout extends vcsCvsCliDirectory implements vcsCheckout
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' )
+    public function get($path = '/')
     {
-        $fullPath = realpath( $this->root . $path );
+        $fullPath = realpath($this->root . $path);
 
-        if ( ( $fullPath === false ) ||
-             ( strpos( $fullPath, $this->root ) !== 0 ) )
+        if (($fullPath === false) ||
+             (strpos($fullPath, $this->root) !== 0))
         {
-            throw new vcsFileNotFoundException( $path );
+            throw new vcsFileNotFoundException($path);
         }
 
-        switch ( true )
-        {
-            case ( $path === '/' ):
+        switch (true) {
+            case ($path === '/'):
                 return $this;
 
-            case is_dir( $fullPath ):
-                return new vcsCvsCliDirectory( $this->root, $path );
+            case is_dir($fullPath):
+                return new vcsCvsCliDirectory($this->root, $path);
 
             default:
-                return new vcsCvsCliFile( $this->root, $path );
+                return new vcsCvsCliFile($this->root, $path);
         }
     }
 }
-

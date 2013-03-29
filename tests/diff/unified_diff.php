@@ -23,18 +23,17 @@ class vcsUnifiedDiffParserTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public static function getUnifiedDiffFiles()
     {
         if ( self::$diffs !== null ) return $diffs;
 
         $files = glob( dirname( __FILE__ ) . '/../data/diff/unified/s_*.diff' );
-        foreach ( $files as $file )
-        {
+        foreach ( $files as $file ) {
             self::$diffs[] = array(
                 $file,
                 substr( $file, 0, -4 ) . 'php'
@@ -49,8 +48,7 @@ class vcsUnifiedDiffParserTests extends vcsTestCase
      */
     public function testParseUnifiedDiff( $from, $to )
     {
-        if ( !is_file( $to ) )
-        {
+        if ( !is_file( $to ) ) {
             $this->markTestIncomplete( "Comparision file $to does not yet exist." );
         }
 
@@ -68,4 +66,3 @@ class vcsUnifiedDiffParserTests extends vcsTestCase
         );
     }
 }
-

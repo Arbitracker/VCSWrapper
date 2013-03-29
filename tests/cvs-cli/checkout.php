@@ -36,12 +36,10 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
     public function testInitializeInvalidCheckout()
     {
         $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        try
-        {
+        try {
             $checkout->initialize( '/hopefully/not/existing/cvs#repo' );
             $this->fail( 'Expected \SystemProcess\NonZeroExitCodeException.' );
-        } catch ( \SystemProcess\NonZeroExitCodeException $e )
-        { /* Expected */ }
+        } catch ( \SystemProcess\NonZeroExitCodeException $e ) { /* Expected */ }
     }
 
     public function testInitializeCheckout()
@@ -159,13 +157,10 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
         $checkout = new vcsCvsCliCheckout( $this->tempDir );
         $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
 
-        try
-        {
+        try {
             $checkout->get( '/../' );
             $this->fail( 'Expected vcsFileNotFoundException.' );
-        }
-        catch ( vcsFileNotFoundException $e )
-        { /* Expected */ }
+        } catch ( vcsFileNotFoundException $e ) { /* Expected */ }
     }
 
     public function testGetDirectory()

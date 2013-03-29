@@ -41,9 +41,9 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
-        parent::__construct( $root, '/' );
+        parent::__construct($root, '/');
     }
 
     /**
@@ -57,29 +57,27 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null )
+    public function initialize($url, $user = null, $password = null)
     {
         // stupid, but surpresses phpcs warnings
         $user;
         $password;
 
-        if ( is_dir( $this->root ) )
-        {
-            if ( count( glob( $this->root . '/*' ) ) )
-            {
-                throw new vcsCheckoutFailedException( $url );
+        if (is_dir($this->root)) {
+            if (count(glob($this->root . '/*'))) {
+                throw new vcsCheckoutFailedException($url);
             }
 
-            rmdir( $this->root );
+            rmdir($this->root);
         }
 
         // Fix incorrect windows checkout URLs
-        $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
+        $url = preg_replace('(^file://([A-Za-z]):)', 'file:///\\1:', $url);
 
         $process = new vcsHgCliProcess();
-        $process->argument( 'clone' );
-        $process->argument( str_replace( '\\', '/', $url ) );
-        $process->argument( new \SystemProcess\Argument\PathArgument( $this->root ) );
+        $process->argument('clone');
+        $process->argument(str_replace('\\', '/', $url));
+        $process->argument(new \SystemProcess\Argument\PathArgument($this->root));
         $return = $process->execute();
 
         // Cache basic revision information for checkout and update
@@ -105,22 +103,21 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
         $oldVersion = $this->getVersionString();
 
         $process = new vcsHgCliProcess();
-        $process->workingDirectory( $this->root );
-        $process->argument( 'pull' )->argument( 'default' );
+        $process->workingDirectory($this->root);
+        $process->argument('pull')->argument('default');
         $process->execute();
 
         $process = new vcsHgCliProcess();
-        $process->workingDirectory( $this->root );
-        $process->argument( 'update' );
-        if ( $version )
-        {
-            $process->argument( '-r' . $version );
+        $process->workingDirectory($this->root);
+        $process->argument('update');
+        if ($version) {
+            $process->argument('-r' . $version);
         }
         $process->execute();
 
         // Check if an update has happened
         $this->currentVersion = null;
-        return ( $oldVersion !== $this->getVersionString() );
+        return ($oldVersion !== $this->getVersionString());
     }
 
     /**
@@ -135,22 +132,20 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' )
+    public function get($path = '/')
     {
-        $fullPath = realpath( $this->root . $path );
+        $fullPath = realpath($this->root . $path);
 
-        if ( ( $fullPath === false ) ||
-             ( strpos( str_replace( '\\', '/', $fullPath ), str_replace( '\\', '/', $this->root ) ) !== 0 ) )
+        if (($fullPath === false) ||
+             (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException( $path );
+            throw new vcsFileNotFoundException($path);
         }
 
-        if ( $path === '/' )
-        {
+        if ($path === '/') {
             return $this;
         }
 
-        return is_dir( $fullPath ) ? new vcsHgCliDirectory( $this->root, $path ) : new vcsHgCliFile( $this->root, $path );
+        return is_dir($fullPath) ? new vcsHgCliDirectory($this->root, $path) : new vcsHgCliFile($this->root, $path);
     }
 }
-

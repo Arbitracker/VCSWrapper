@@ -16,10 +16,10 @@ class vcsSvnCliFileTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
@@ -87,8 +87,7 @@ class vcsSvnCliFileTests extends vcsTestCase
         try {
             $file->getAuthor( 'invalid' );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetLog()
@@ -142,8 +141,7 @@ class vcsSvnCliFileTests extends vcsTestCase
         try {
             $file->getLogEntry( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileContents()
@@ -191,8 +189,7 @@ class vcsSvnCliFileTests extends vcsTestCase
         try {
             $file->getVersionedContent( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileBlame()
@@ -241,8 +238,7 @@ class vcsSvnCliFileTests extends vcsTestCase
         try {
             $file->blame( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileDiff()
@@ -276,4 +272,3 @@ class vcsSvnCliFileTests extends vcsTestCase
         );
     }
 }
-

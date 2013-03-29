@@ -49,19 +49,18 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceInfo()
     {
-        if ( $this->currentVersion !== null )
-        {
-            $info = vcsCache::get( $this->path, $this->currentVersion, 'info' );
+        if ($this->currentVersion !== null) {
+            $info = vcsCache::get($this->path, $this->currentVersion, 'info');
         }
 
-        if ( $this->currentVersion === null ||
+        if ($this->currentVersion === null ||
              $info === false)
         {
             $log = $this->getResourceLog();
 
             // Fecth for specified version, if set
-            $info = $this->currentVersion !== null ? $log[$this->currentVersion] : end( $log );
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $info->version, 'info', $info );
+            $info = $this->currentVersion !== null ? $log[$this->currentVersion] : end($log);
+            vcsCache::cache($this->path, $this->currentVersion = (string) $info->version, 'info', $info);
         }
 
         return $info;
@@ -74,48 +73,45 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceLog()
     {
-        $log = vcsCache::get( $this->path, $this->currentVersion, 'log' );
-        if ( $log === false )
-        {
+        $log = vcsCache::get($this->path, $this->currentVersion, 'log');
+        if ($log === false) {
             // Refetch the basic logrmation, and cache it.
             $process = new vcsBzrCliProcess();
-            $process->workingDirectory( $this->root );
+            $process->workingDirectory($this->root);
 
             // Execute log command
-            $process->argument( 'xmllog' );
-            $process->argument( '--forward' ); // why reverse it when we can get them in order anyway?
-            $process->argument( '-q' ); // quiet, don't show extra status stuff
+            $process->argument('xmllog');
+            $process->argument('--forward'); // why reverse it when we can get them in order anyway?
+            $process->argument('-q'); // quiet, don't show extra status stuff
             // Fetch for specified version, if set
-            if ( $this->currentVersion !== null )
-            {
-                $process->argument( '-r ' . $this->currentVersion );
+            if ($this->currentVersion !== null) {
+                $process->argument('-r ' . $this->currentVersion);
             }
 
-            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
+            $process->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path));
 
             $process->execute();
 
             // Parse commit log
-            $xmlDoc = new SimpleXMLElement( $process->stdoutOutput );
+            $xmlDoc = new SimpleXMLElement($process->stdoutOutput);
 
-            $lineCount  = count( $xmlDoc->log );
+            $lineCount  = count($xmlDoc->log);
             $log        = array();
             $lastCommit = null;
-            foreach( $xmlDoc->log as $entry )
-            {
+            foreach($xmlDoc->log as $entry) {
                 $revno = $entry->revno;
                 $author = $entry->committer;
-                $date = strtotime( $entry->timestamp );
+                $date = strtotime($entry->timestamp);
                 $desc = $entry->message;
 
-                $newEntry = new vcsLogEntry( $revno, $author, $desc, $date );
+                $newEntry = new vcsLogEntry($revno, $author, $desc, $date);
                 $log[(string) $revno] = $newEntry;
             }
-            $last = end( $log );
+            $last = end($log);
 
             $this->currentVersion = (string) $last->version;
             // Cache extracted data
-            vcsCache::cache( $this->path, $this->currentVersion, 'log', $log );
+            vcsCache::cache($this->path, $this->currentVersion, 'log', $log);
         }
 
         return $log;
@@ -129,7 +125,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $property
      * @return string
      */
-    protected function getResourceProperty( $property )
+    protected function getResourceProperty($property)
     {
         return '';
     }
@@ -155,8 +151,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
         $versions = array();
         $log = $this->getResourceLog();
 
-        foreach ( $log as $entry )
-        {
+        foreach ($log as $entry) {
             $versions[] = (string) $entry->version;
         }
 
@@ -173,14 +168,14 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $version2
      * @return integer
      */
-    public function compareVersions( $version1, $version2 )
+    public function compareVersions($version1, $version2)
     {
         $versions = $this->getVersions();
-        $key1 = array_search( $version1, $versions );
-        $key2 = array_search( $version2, $versions );
+        $key1 = array_search($version1, $versions);
+        $key2 = array_search($version2, $versions);
 
-        if ( $key1 === false ||
-             $key2 === false )
+        if ($key1 === false ||
+             $key2 === false)
         {
             return 0;
         }
@@ -194,14 +189,13 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $version
      * @return string
      */
-    public function getAuthor( $version = null )
+    public function getAuthor($version = null)
     {
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version]->author;
@@ -223,13 +217,12 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $version
      * @return string
      */
-    public function getLogEntry( $version )
+    public function getLogEntry($version)
     {
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version];
@@ -241,40 +234,34 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * @param string $current
      * @return vcsDiff
      */
-    public function getDiff( $version, $current = null )
+    public function getDiff($version, $current = null)
     {
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        $diff = vcsCache::get( $this->path, $version, 'diff' );
-        if ( $diff === false )
-        {
+        $diff = vcsCache::get($this->path, $version, 'diff');
+        if ($diff === false) {
             // Refetch the basic content information, and cache it.
             $process = new vcsBzrCliProcess();
-            $process->workingDirectory( $this->root );
-            $process->argument( 'diff' );
+            $process->workingDirectory($this->root);
+            $process->argument('diff');
 
-            if ($current !== null)
-            {
-                $process->argument( '-r' . $version . ".." . $current );
-            }
-            else
-            {
-                $process->argument( "-r" . $version );
+            if ($current !== null) {
+                $process->argument('-r' . $version . ".." . $current);
+            } else {
+                $process->argument("-r" . $version);
             }
 
-            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
+            $process->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path));
             $process->execute();
 
             // Parse resulting unified diff
             $parser = new vcsUnifiedDiffParser();
-            $diff   = $parser->parseString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $version, 'diff', $diff );
+            $diff   = $parser->parseString($process->stdoutOutput);
+            vcsCache::cache($this->path, $version, 'diff', $diff);
         }
 
         return $diff;
     }
 }
-

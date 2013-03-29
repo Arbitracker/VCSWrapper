@@ -50,6 +50,5 @@ interface vcsLogged extends vcsVersioned
      * @param string $version
      * @return vcsLogEntry
      */
-    public function getLogEntry( $version );
+    public function getLogEntry($version);
 }
-

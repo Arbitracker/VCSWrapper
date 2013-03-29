@@ -41,9 +41,9 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
-        parent::__construct( $root, '/' );
+        parent::__construct($root, '/');
     }
 
     /**
@@ -57,24 +57,22 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null )
+    public function initialize($url, $user = null, $password = null)
     {
-        if ( $user !== null )
-        {
-            svn_auth_set_parameter( SVN_AUTH_PARAM_NON_INTERACTIVE, true );
-            svn_auth_set_parameter( SVN_AUTH_PARAM_DEFAULT_USERNAME, $user );
+        if ($user !== null) {
+            svn_auth_set_parameter(SVN_AUTH_PARAM_NON_INTERACTIVE, true);
+            svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_USERNAME, $user);
 
-            if ( $password !== null )
-            {
-                svn_auth_set_parameter( SVN_AUTH_PARAM_DEFAULT_PASSWORD, $password );
+            if ($password !== null) {
+                svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_PASSWORD, $password);
             }
         }
 
-        if ( ( svn_checkout( $url, $this->root ) === false ) ||
+        if ((svn_checkout($url, $this->root) === false) ||
                // To get the current revision number we need to also call update
-             ( $this->currentVersion = (string) svn_update( $this->root ) ) === false )
+             ($this->currentVersion = (string) svn_update($this->root)) === false)
         {
-            throw new vcsCheckoutFailedException( $url );
+            throw new vcsCheckoutFailedException($url);
         }
 
     }
@@ -91,22 +89,19 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
      * @param string $version
      * @return bool
      */
-    public function update( $version = null )
+    public function update($version = null)
     {
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        if ( $version !== null )
-        {
-            $this->currentVersion = (string) svn_update( $this->root, (int) $version );
-        }
-        else
-        {
-            $this->currentVersion = (string) svn_update( $this->root );
+        if ($version !== null) {
+            $this->currentVersion = (string) svn_update($this->root, (int) $version);
+        } else {
+            $this->currentVersion = (string) svn_update($this->root);
         }
 
         // Check if an update has happened
-        return ( $oldVersion !== $this->currentVersion );
+        return ($oldVersion !== $this->currentVersion);
     }
 
     /**
@@ -121,27 +116,25 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' )
+    public function get($path = '/')
     {
-        $fullPath = realpath( $this->root . $path );
+        $fullPath = realpath($this->root . $path);
 
-        if ( ( $fullPath === false ) ||
-             ( strpos( $fullPath, $this->root ) !== 0 ) )
+        if (($fullPath === false) ||
+             (strpos($fullPath, $this->root) !== 0))
         {
-            throw new vcsFileNotFoundException( $path );
+            throw new vcsFileNotFoundException($path);
         }
 
-        switch ( true )
-        {
-            case ( $path === '/' ):
+        switch (true) {
+            case ($path === '/'):
                 return $this;
 
-            case is_dir( $fullPath ):
-                return new vcsSvnExtDirectory( $this->root, $path );
+            case is_dir($fullPath):
+                return new vcsSvnExtDirectory($this->root, $path);
 
             default:
-                return new vcsSvnExtFile( $this->root, $path );
+                return new vcsSvnExtFile($this->root, $path);
         }
     }
 }
-

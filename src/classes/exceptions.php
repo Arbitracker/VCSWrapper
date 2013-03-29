@@ -49,9 +49,9 @@ class vcsNoSuchFileException extends vcsException
      * @param string $file
      * @return void
      */
-    public function __construct( $file )
+    public function __construct($file)
     {
-        parent::__construct( "The file '$file' could not be found." );
+        parent::__construct("The file '$file' could not be found.");
     }
 }
 
@@ -72,9 +72,9 @@ class vcsRuntimeException extends vcsException
      * @param string $message
      * @return void
      */
-    public function __construct( $message )
+    public function __construct($message)
     {
-        parent::__construct( "Runtime exception: $message" );
+        parent::__construct("Runtime exception: $message");
     }
 }
 
@@ -94,7 +94,7 @@ class vcsCacheNotInitializedException extends vcsException
      */
     public function __construct()
     {
-        parent::__construct( 'Cache has not been initialized.' );
+        parent::__construct('Cache has not been initialized.');
     }
 }
 
@@ -114,9 +114,9 @@ class vcsNotCacheableException extends vcsException
      * @param mixed $value
      * @return void
      */
-    public function __construct( $value )
+    public function __construct($value)
     {
-        parent::__construct( 'Value of type ' . gettype( $value ) . ' cannot be cached. Only arrays, scalar values and objects implementing arbitCacheable are allowed.' );
+        parent::__construct('Value of type ' . gettype($value) . ' cannot be cached. Only arrays, scalar values and objects implementing arbitCacheable are allowed.');
     }
 }
 
@@ -135,9 +135,9 @@ class vcsCheckoutFailedException extends vcsException
      * @param string $url
      * @return void
      */
-    public function __construct( $url )
+    public function __construct($url)
     {
-        parent::__construct( "Checkout of repository at '$url' failed." );
+        parent::__construct("Checkout of repository at '$url' failed.");
     }
 }
 
@@ -158,9 +158,9 @@ class vcsNoSuchVersionException extends vcsException
      * @param string $version
      * @return void
      */
-    public function __construct( $path, $version )
+    public function __construct($path, $version)
     {
-        parent::__construct( "There is no version '$version' of resource '$path'." );
+        parent::__construct("There is no version '$version' of resource '$path'.");
     }
 }
 
@@ -213,9 +213,9 @@ class vcsInvalidZipArchiveException extends vcsException
      * @param int $code
      * @return void
      */
-    public function __construct( $file, $code )
+    public function __construct($file, $code)
     {
-        parent::__construct( "Error extracting $file: " . $this->messages[$code] );
+        parent::__construct("Error extracting $file: " . $this->messages[$code]);
     }
 }
 
@@ -235,9 +235,9 @@ class vcsInvalidRepositoryUrlException extends vcsException
      * @param string $url
      * @param string $wrapper
      */
-    public function __construct( $url, $wrapper )
+    public function __construct($url, $wrapper)
     {
-        parent::__construct( 'Invalid ' . $wrapper . ' repository url: "' . $url . '".' );
+        parent::__construct('Invalid ' . $wrapper . ' repository url: "' . $url . '".');
     }
 }
 
@@ -256,9 +256,8 @@ class vcsFileNotFoundException extends vcsException
      *
      * @param string $file
      */
-    public function __construct( $file )
+    public function __construct($file)
     {
-        parent::__construct( "Could not locate '$file' inside the repository." );
+        parent::__construct("Could not locate '$file' inside the repository.");
     }
 }
-

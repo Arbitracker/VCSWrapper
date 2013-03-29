@@ -17,10 +17,10 @@ class vcsBzrCliCheckoutTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
@@ -35,12 +35,10 @@ class vcsBzrCliCheckoutTests extends vcsTestCase
     {
         $repository = new vcsBzrCliCheckout( $this->tempDir );
 
-        try
-        {
+        try {
             $repository->initialize( 'file:///hopefully/not/existing/bzr/repo' );
             $this->fail( 'Expected \SystemProcess\NonZeroExitCodeException.' );
-        } catch ( \SystemProcess\NonZeroExitCodeException $e )
-        { /* Expected */ }
+        } catch ( \SystemProcess\NonZeroExitCodeException $e ) { /* Expected */ }
 
     }
 
@@ -191,8 +189,7 @@ class vcsBzrCliCheckoutTests extends vcsTestCase
         try {
             $repository->getLogEntry( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testIterateCheckoutContents()
@@ -201,8 +198,7 @@ class vcsBzrCliCheckoutTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
 
         $files = array();
-        foreach ( $repository as $file )
-        {
+        foreach ( $repository as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -238,13 +234,10 @@ class vcsBzrCliCheckoutTests extends vcsTestCase
         $repository = new vcsBzrCliCheckout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
 
-        try
-        {
+        try {
             $repository->get( '/../' );
             $this->fail( 'Expected vcsFileNotFoundException.' );
-        }
-        catch ( vcsFileNotFoundException $e )
-        { /* Expected */ }
+        } catch ( vcsFileNotFoundException $e ) { /* Expected */ }
     }
 
     public function testGetDirectory()
@@ -269,4 +262,3 @@ class vcsBzrCliCheckoutTests extends vcsTestCase
         );
     }
 }
-

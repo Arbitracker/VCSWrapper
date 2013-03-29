@@ -39,6 +39,5 @@ interface vcsFetchable extends vcsVersioned
      * @param string $version
      * @return string
      */
-    public function getVersionedContent( $version );
+    public function getVersionedContent($version);
 }
-

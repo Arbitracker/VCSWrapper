@@ -46,9 +46,9 @@ class vcsBzrCliProcess extends \SystemProcess\SystemProcess
      * @param string $executable
      * @return void
      */
-    public function __construct( $executable = 'bzr' )
+    public function __construct($executable = 'bzr')
     {
-        parent::__construct( $executable );
+        parent::__construct($executable);
         self::checkVersion();
 
         $this->nonZeroExitCodeException = false;
@@ -65,35 +65,30 @@ class vcsBzrCliProcess extends \SystemProcess\SystemProcess
      */
     protected static function checkVersion()
     {
-        if ( self::$checked === true )
-        {
+        if (self::$checked === true) {
             return true;
         }
 
-        $process = new \SystemProcess\SystemProcess( 'bzr' );
+        $process = new \SystemProcess\SystemProcess('bzr');
         $process->nonZeroExitCodeException = true;
-        $process->argument( '--version' )->execute();
+        $process->argument('--version')->execute();
 
-        if ( !preg_match( '/\Bazaar \(bzr\) ([0-9.]*)/', $process->stdoutOutput, $match ) )
-        {
-            throw new vcsRuntimeException( 'Could not determine Bazaar version.' );
+        if (!preg_match('/\Bazaar \(bzr\) ([0-9.]*)/', $process->stdoutOutput, $match)) {
+            throw new vcsRuntimeException('Could not determine Bazaar version.');
         }
 
-        if ( version_compare( $match[1], '1.1', '<' ) )
-        {
-            throw new vcsRuntimeException( 'Bazaar is required in a minimum version of 1.1.' );
+        if (version_compare($match[1], '1.1', '<')) {
+            throw new vcsRuntimeException('Bazaar is required in a minimum version of 1.1.');
         }
 
-        $process = new \SystemProcess\SystemProcess( 'bzr' );
+        $process = new \SystemProcess\SystemProcess('bzr');
         $process->nonZeroExitCodeException = true;
-        $process->argument( 'plugins' )->execute();
+        $process->argument('plugins')->execute();
 
-        if ( strpos( $process->stdoutOutput, 'xmloutput' ) === false )
-        {
-            throw new vcsRuntimeException( 'Missing required bazaar pluging "xmloutput".' );
+        if (strpos($process->stdoutOutput, 'xmloutput') === false) {
+            throw new vcsRuntimeException('Missing required bazaar pluging "xmloutput".');
         }
 
         return self::$checked = true;
     }
 }
-

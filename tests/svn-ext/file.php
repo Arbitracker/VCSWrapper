@@ -16,15 +16,14 @@ class vcsSvnExtFileTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
-        if ( !extension_loaded( 'svn' ) )
-        {
+        if ( !extension_loaded( 'svn' ) ) {
             $this->markTestSkipped( 'Svn extension required to run this test.' );
         }
 
@@ -92,8 +91,7 @@ class vcsSvnExtFileTests extends vcsTestCase
         try {
             $file->getAuthor( 'invalid' );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetLog()
@@ -147,8 +145,7 @@ class vcsSvnExtFileTests extends vcsTestCase
         try {
             $file->getLogEntry( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileContents()
@@ -196,8 +193,7 @@ class vcsSvnExtFileTests extends vcsTestCase
         try {
             $file->getVersionedContent( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileBlame()
@@ -246,8 +242,7 @@ class vcsSvnExtFileTests extends vcsTestCase
         try {
             $file->blame( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileDiff()
@@ -281,4 +276,3 @@ class vcsSvnExtFileTests extends vcsTestCase
         );
     }
 }
-

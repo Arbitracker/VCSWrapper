@@ -38,11 +38,9 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
         $dir = new vcsCvsCliDirectory( $this->tempDir, '/' );
 
         $files = array();
-        foreach ( $dir as $file )
-        {
+        foreach ( $dir as $file ) {
             // Stupid, but cvs also checks out the not versions .svn folders
-            if ( strpos( (string) $file, '.svn' ) === false )
-            {
+            if ( strpos( (string) $file, '.svn' ) === false ) {
                 $files[] = (string) $file;
             }
         }
@@ -66,11 +64,9 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
-        foreach ( $iterator as $file )
-        {
+        foreach ( $iterator as $file ) {
             // Stupid, but cvs also checks out the not versions .svn folders
-            if ( strpos( (string) $file, '.svn' ) === false )
-            {
+            if ( strpos( (string) $file, '.svn' ) === false ) {
                 $files[] = (string) $file;
             }
         }
@@ -95,11 +91,9 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
         $dir = new vcsCvsCliDirectory( $this->tempDir, '/dir1/' );
 
         $files = array();
-        foreach ( $dir as $file )
-        {
+        foreach ( $dir as $file ) {
             // Stupid, but cvs also checks out the not versions .svn folders
-            if ( strpos( (string) $file, '.svn' ) === false )
-            {
+            if ( strpos( (string) $file, '.svn' ) === false ) {
                 $files[] = (string) $file;
             }
         }

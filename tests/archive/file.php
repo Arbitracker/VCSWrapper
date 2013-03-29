@@ -16,15 +16,14 @@ class vcsArchiveFileTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
-        if ( !class_exists( 'ZipArchive' ) )
-        {
+        if ( !class_exists( 'ZipArchive' ) ) {
             $this->markTestSkipped( 'Compile PHP with --enable-zip to get support for zip archive handling.' );
         }
 
@@ -71,4 +70,3 @@ class vcsArchiveFileTests extends vcsTestCase
         );
     }
 }
-

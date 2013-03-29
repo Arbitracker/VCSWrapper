@@ -17,10 +17,10 @@ class vcsHgCliFileTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
@@ -91,8 +91,7 @@ class vcsHgCliFileTests extends vcsTestCase
         try {
             $file->getAuthor( 'invalid' );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetLog()
@@ -137,8 +136,7 @@ class vcsHgCliFileTests extends vcsTestCase
         try {
             $file->getLogEntry( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileContents()
@@ -199,8 +197,7 @@ class vcsHgCliFileTests extends vcsTestCase
         try {
             $file->blame( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testGetFileDiff()
@@ -234,8 +231,6 @@ class vcsHgCliFileTests extends vcsTestCase
         try {
             $diff = $file->getDiff( "1" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 }
-

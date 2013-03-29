@@ -46,12 +46,11 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
      */
     public function current()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return current( $this->resources );
+        return current($this->resources);
     }
 
     /**
@@ -61,12 +60,11 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
      */
     public function next()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return next( $this->resources );
+        return next($this->resources);
     }
 
     /**
@@ -76,12 +74,11 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
      */
     public function key()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return key( $this->resources );
+        return key($this->resources);
     }
 
     /**
@@ -91,8 +88,7 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
      */
     public function valid()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
@@ -106,12 +102,11 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
      */
     public function rewind()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return reset( $this->resources );
+        return reset($this->resources);
     }
 
     /**
@@ -121,12 +116,11 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
      */
     public function getChildren()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return current( $this->resources );
+        return current($this->resources);
     }
 
     /**
@@ -136,12 +130,11 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
      */
     public function hasChildren()
     {
-        if ( $this->resources === null )
-        {
+        if ($this->resources === null) {
             $this->initializeResouces();
         }
 
-        return current( $this->resources ) instanceof vcsDirectory;
+        return current($this->resources) instanceof vcsDirectory;
     }
 
     /**
@@ -158,25 +151,21 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
 
         // Build resources array, without constructing the objects yet, for
         // lazy construction of the object tree.
-        $directory = new DirectoryIterator( $this->root . $this->path );
-        foreach ( $directory as $fileInfo )
-        {
+        $directory = new DirectoryIterator($this->root . $this->path);
+        foreach ($directory as $fileInfo) {
             $fileName = $fileInfo->getFilename();
-            if ( ( $fileName === '.' ) ||
-                 ( $fileName === '..' ) ||
-                 ( $fileName === 'CVS' ) )
+            if (($fileName === '.') ||
+                 ($fileName === '..') ||
+                 ($fileName === 'CVS'))
             {
                 continue;
             }
 
             $resource = null;
-            if ( $fileInfo->isDir() === true )
-            {
-                $resource = new vcsCvsCliDirectory( $this->root, $this->path . $fileName . '/' );
-            }
-            else
-            {
-                $resource = new vcsCvsCliFile( $this->root, $this->path . $fileName );
+            if ($fileInfo->isDir() === true) {
+                $resource = new vcsCvsCliDirectory($this->root, $this->path . $fileName . '/');
+            } else {
+                $resource = new vcsCvsCliFile($this->root, $this->path . $fileName);
             }
             $this->resources[] = $resource;
         }

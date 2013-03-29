@@ -74,30 +74,25 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
     * @param int $fileMode
     * @return void
     */
-    static public function copyRecursive( $source, $destination, $depth = -1, $dirMode = 0775, $fileMode = 0664 )
+    public static function copyRecursive( $source, $destination, $depth = -1, $dirMode = 0775, $fileMode = 0664 )
     {
         // Check if source file exists at all.
-        if ( !is_file( $source ) && !is_dir( $source ) )
-        {
+        if ( !is_file( $source ) && !is_dir( $source ) ) {
             throw new \RuntimeException( "File not found: $source" );
         }
 
         // Destination file should NOT exist
-        if ( is_file( $destination ) || is_dir( $destination ) )
-        {
+        if ( is_file( $destination ) || is_dir( $destination ) ) {
             throw new \RuntimeException( " Cannot write to $destination" );
         }
 
         // Copy
-        if ( is_dir( $source ) )
-        {
+        if ( is_dir( $source ) ) {
             mkdir( $destination );
             // To ignore umask, umask() should not be changed with
             // multithreaded servers...
             chmod( $destination, $dirMode );
-        }
-        elseif ( is_file( $source ) )
-        {
+        } elseif ( is_file( $source ) ) {
             copy( $source, $destination );
             chmod( $destination, $fileMode );
         }
@@ -111,8 +106,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
 
         // Recurse
         $dh = opendir( $source );
-        while ( ( $file = readdir( $dh ) ) !== false )
-        {
+        while ( ( $file = readdir( $dh ) ) !== false ) {
             if ( ( $file === '.' ) ||
                 ( $file === '..' ) )
             {
@@ -138,8 +132,7 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
     protected function removeRecursively( $dir )
     {
         $directory = dir( $dir );
-        while ( ( $path = $directory->read() ) !== false )
-        {
+        while ( ( $path = $directory->read() ) !== false ) {
             if ( ( $path === '.' ) ||
                  ( $path === '..' ) )
             {
@@ -147,12 +140,9 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
             }
             $path = $dir . '/' . $path;
 
-            if ( is_dir( $path ) )
-            {
+            if ( is_dir( $path ) ) {
                 $this->removeRecursively( $path );
-            }
-            else
-            {
+            } else {
                 unlink( $path );
             }
         }
@@ -168,16 +158,12 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        if ( !$this->hasFailed() )
-        {
-            foreach ( $this->directories as $dir )
-            {
-                if ( is_dir( $dir ) )
-                {
+        if ( !$this->hasFailed() ) {
+            foreach ( $this->directories as $dir ) {
+                if ( is_dir( $dir ) ) {
                     $this->removeRecursively( $dir );
                 }
             }
         }
     }
 }
-

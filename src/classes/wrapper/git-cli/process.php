@@ -46,13 +46,13 @@ class vcsGitCliProcess extends \SystemProcess\SystemProcess
      * @param string $executable Executable to create system process for;
      * @return void
      */
-    public function __construct( $executable = 'git' )
+    public function __construct($executable = 'git')
     {
-        parent::__construct( $executable );
+        parent::__construct($executable);
         self::checkVersion();
 
         $this->nonZeroExitCodeException = true;
-        $this->argument( '--no-pager' );
+        $this->argument('--no-pager');
     }
 
     /**
@@ -65,26 +65,22 @@ class vcsGitCliProcess extends \SystemProcess\SystemProcess
      */
     protected static function checkVersion()
     {
-        if ( self::$checked === true )
-        {
+        if (self::$checked === true) {
             return true;
         }
 
-        $process = new \SystemProcess\SystemProcess( 'git' );
+        $process = new \SystemProcess\SystemProcess('git');
         $process->nonZeroExitCodeException = true;
-        $process->argument( '--version' )->execute();
+        $process->argument('--version')->execute();
 
-        if ( !preg_match( '(\\d+(?:\.\\d+)+)', $process->stdoutOutput, $match ) )
-        {
-            throw new vcsRuntimeException( 'Could not determine GIT version.' );
+        if (!preg_match('(\\d+(?:\.\\d+)+)', $process->stdoutOutput, $match)) {
+            throw new vcsRuntimeException('Could not determine GIT version.');
         }
 
-        if ( version_compare( $match[0], '1.6', '>=' ) )
-        {
+        if (version_compare($match[0], '1.6', '>=')) {
             return self::$checked = true;
         }
 
-        throw new vcsRuntimeException( 'Git is required in a minimum version of 1.6.' );
+        throw new vcsRuntimeException('Git is required in a minimum version of 1.6.');
     }
 }
-

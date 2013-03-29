@@ -41,9 +41,9 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
-        parent::__construct( $root, '/' );
+        parent::__construct($root, '/');
     }
 
     /**
@@ -57,25 +57,23 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null )
+    public function initialize($url, $user = null, $password = null)
     {
-        if ( is_dir( $this->root ) )
-        {
-            if ( count( glob( $this->root . '/*' ) ) )
-            {
-                throw new vcsCheckoutFailedException( $url );
+        if (is_dir($this->root)) {
+            if (count(glob($this->root . '/*'))) {
+                throw new vcsCheckoutFailedException($url);
             }
 
-            rmdir( $this->root );
+            rmdir($this->root);
         }
 
         $process = new vcsGitCliProcess();
-        $return = $process->argument( 'clone' )->argument( $url )->argument( new \SystemProcess\Argument\PathArgument( $this->root ) )->execute();
+        $return = $process->argument('clone')->argument($url)->argument(new \SystemProcess\Argument\PathArgument($this->root))->execute();
 
         // On windows GIT does not exit with a non-zero exit code on false
         // checkouts, so we need to handle this ourselves
-        if ( ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) &&
-             ( strpos( $process->stderrOutput, 'fatal' ) !== false ) )
+        if ((strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') &&
+             (strpos($process->stderrOutput, 'fatal') !== false))
         {
             throw new \SystemProcess\SystemProcessNonZeroExitCodeException(
                 128,
@@ -102,29 +100,26 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
      * @param string $version
      * @return bool
      */
-    public function update( $version = null )
+    public function update($version = null)
     {
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        if ( $version === null )
-        {
+        if ($version === null) {
             $process = new vcsGitCliProcess();
-            $process->workingDirectory( $this->root );
-            $process->argument( 'pull' )->argument( 'origin' )->argument( 'master' );
+            $process->workingDirectory($this->root);
+            $process->argument('pull')->argument('origin')->argument('master');
             $process->execute();
-        }
-        else
-        {
+        } else {
             $process = new vcsGitCliProcess();
-            $process->workingDirectory( $this->root );
-            $process->argument( 'checkout' )->argument( $version );
+            $process->workingDirectory($this->root);
+            $process->argument('checkout')->argument($version);
             $process->execute();
         }
 
         // Check if an update has happened
         $this->currentVersion = null;
-        return ( $oldVersion !== $this->getVersionString() );
+        return ($oldVersion !== $this->getVersionString());
     }
 
     /**
@@ -139,27 +134,25 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' )
+    public function get($path = '/')
     {
-        $fullPath = realpath( $this->root . $path );
+        $fullPath = realpath($this->root . $path);
 
-        if ( ( $fullPath === false ) ||
-             ( strpos( str_replace( '\\', '/', $fullPath ), str_replace( '\\', '/', $this->root ) ) !== 0 ) )
+        if (($fullPath === false) ||
+             (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException( $path );
+            throw new vcsFileNotFoundException($path);
         }
 
-        switch ( true )
-        {
-            case ( $path === '/' ):
+        switch (true) {
+            case ($path === '/'):
                 return $this;
 
-            case is_dir( $fullPath ):
-                return new vcsGitCliDirectory( $this->root, $path );
+            case is_dir($fullPath):
+                return new vcsGitCliDirectory($this->root, $path);
 
             default:
-                return new vcsGitCliFile( $this->root, $path );
+                return new vcsGitCliFile($this->root, $path);
         }
     }
 }
-

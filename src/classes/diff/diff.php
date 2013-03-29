@@ -51,7 +51,7 @@ class vcsDiff extends vcsBaseStruct
      * @param array $chunks
      * @return void
      */
-    public function __construct( $from = null, $to = null, array $chunks = array() )
+    public function __construct($from = null, $to = null, array $chunks = array())
     {
         $this->from   = $from;
         $this->to     = $to;
@@ -68,9 +68,8 @@ class vcsDiff extends vcsBaseStruct
      * @param string $class
      * @return vcsDiff
      */
-    public static function __set_state( array $properties, $class = __CLASS__ )
+    public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state( $properties, $class );
+        return vcsBaseStruct::__set_state($properties, $class);
     }
 }
-

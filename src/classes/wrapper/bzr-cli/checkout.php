@@ -41,9 +41,9 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
-        parent::__construct( $root, '/' );
+        parent::__construct($root, '/');
     }
 
     /**
@@ -57,30 +57,28 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null )
+    public function initialize($url, $user = null, $password = null)
     {
         // stupid, but surpresses phpcs warnings
         $user;
         $password;
 
-        if ( is_dir( $this->root ) )
-        {
-            if ( count( glob( $this->root . '/*' ) ) )
-            {
-                throw new vcsCheckoutFailedException( $url );
+        if (is_dir($this->root)) {
+            if (count(glob($this->root . '/*'))) {
+                throw new vcsCheckoutFailedException($url);
             }
 
-            rmdir( $this->root );
+            rmdir($this->root);
         }
 
         // Fix incorrect windows checkout URLs
-        $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
+        $url = preg_replace('(^file://([A-Za-z]):)', 'file:///\\1:', $url);
 
         $process = new vcsBzrCliProcess();
         $process->nonZeroExitCodeException = true;
-        $process->argument( 'checkout' );
-        $process->argument( str_replace( '\\', '/', $url ) );
-        $process->argument( new \SystemProcess\Argument\PathArgument( $this->root ) );
+        $process->argument('checkout');
+        $process->argument(str_replace('\\', '/', $url));
+        $process->argument(new \SystemProcess\Argument\PathArgument($this->root));
         $return = $process->execute();
 
         // Cache basic revision information for checkout and update
@@ -106,21 +104,20 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
         $oldVersion = $this->getVersionString();
 
         $process = new vcsBzrCliProcess();
-        $process->workingDirectory( $this->root );
-        $process->argument( 'update' );
+        $process->workingDirectory($this->root);
+        $process->argument('update');
         $process->execute();
 
-        if ( $version !== null )
-        {
+        if ($version !== null) {
             $process = new vcsBzrCliProcess();
-            $process->workingDirectory( $this->root );
-            $process->argument( 'revert' )->argument( '-r' . $version );
+            $process->workingDirectory($this->root);
+            $process->argument('revert')->argument('-r' . $version);
             $process->execute();
         }
 
         // Check if an update has happened
         $this->currentVersion = null;
-        return ( $oldVersion !== $this->getVersionString() );
+        return ($oldVersion !== $this->getVersionString());
     }
 
     /**
@@ -135,22 +132,20 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' )
+    public function get($path = '/')
     {
-        $fullPath = realpath( $this->root . $path );
+        $fullPath = realpath($this->root . $path);
 
-        if ( ( $fullPath === false ) ||
-             ( strpos( str_replace( '\\', '/', $fullPath ), str_replace( '\\', '/', $this->root ) ) !== 0 ) )
+        if (($fullPath === false) ||
+             (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException( $path );
+            throw new vcsFileNotFoundException($path);
         }
 
-        if ( $path === '/' )
-        {
+        if ($path === '/') {
             return $this;
         }
 
-        return is_dir( $fullPath ) ? new vcsBzrCliDirectory( $this->root, $path ) : new vcsBzrCliFile( $this->root, $path );
+        return is_dir($fullPath) ? new vcsBzrCliDirectory($this->root, $path) : new vcsBzrCliFile($this->root, $path);
     }
 }
-

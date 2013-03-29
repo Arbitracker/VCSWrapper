@@ -55,7 +55,7 @@ class vcsDiffChunk extends vcsBaseStruct
      * @param array $lines
      * @return void
      */
-    public function __construct( $start = null, $startRange = 1, $end = null, $endRange = 1, array $lines = array() )
+    public function __construct($start = null, $startRange = 1, $end = null, $endRange = 1, array $lines = array())
     {
         $this->start      = (int) $start;
         $this->startRange = (int) $startRange;
@@ -74,9 +74,8 @@ class vcsDiffChunk extends vcsBaseStruct
      * @param string $class
      * @return vcsDiffChunk
      */
-    public static function __set_state( array $properties, $class = __CLASS__ )
+    public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state( $properties, $class );
+        return vcsBaseStruct::__set_state($properties, $class);
     }
 }
-

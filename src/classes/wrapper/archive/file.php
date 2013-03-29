@@ -41,7 +41,7 @@ class vcsArchiveFile extends vcsArchiveResource implements vcsFile
      */
     public function getContents()
     {
-        return file_get_contents( $this->root . $this->path );
+        return file_get_contents($this->root . $this->path);
     }
 
     /**
@@ -57,4 +57,3 @@ class vcsArchiveFile extends vcsArchiveResource implements vcsFile
         return 'application/octet-stream';
     }
 }
-

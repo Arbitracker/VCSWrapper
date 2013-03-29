@@ -41,7 +41,7 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
      */
     public function getContents()
     {
-        return file_get_contents( $this->root . $this->path );
+        return file_get_contents($this->root . $this->path);
     }
 
     /**
@@ -84,62 +84,53 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
      * @param mixed $version
      * @return mixed
      */
-    public function blame( $version = null )
+    public function blame($version = null)
     {
-        $version = ( $version === null ) ? $this->getVersionString() : $version;
+        $version = ($version === null) ? $this->getVersionString() : $version;
 
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        $blame = vcsCache::get( $this->path, $version, 'blame' );
-        if ( $blame === false )
-        {
+        $blame = vcsCache::get($this->path, $version, 'blame');
+        if ($blame === false) {
             $shortHashCache = array();
 
             // Refetch the basic blamermation, and cache it.
             $process = new vcsBzrCliProcess();
-            $process->workingDirectory( $this->root );
+            $process->workingDirectory($this->root);
 
             // Execute command
-            $process->argument( 'xmlannotate' );
-            if ( $version !== null )
-            {
-                $process->argument( '-r' . $version );
+            $process->argument('xmlannotate');
+            if ($version !== null) {
+                $process->argument('-r' . $version);
             }
-            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
+            $process->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path));
             $return = $process->execute();
 
             $blame = array();
-            libxml_use_internal_errors( true );
-            try
-            {
-                $xmlDoc = new SimpleXMLElement( $process->stdoutOutput );
+            libxml_use_internal_errors(true);
+            try {
+                $xmlDoc = new SimpleXMLElement($process->stdoutOutput);
 
                 // Convert returned lines into diff structures
-                foreach ( $xmlDoc->entry AS $line )
-                {
+                foreach ($xmlDoc->entry AS $line) {
 
                     $blame[] = new vcsBlameStruct(
                         $line,
                         $line['revno'],
                         $line['author'],
-                        strtotime( $line['date'] )
+                        strtotime($line['date'])
                     );
                 }
-            }
-            catch ( Exception $e )
-            {
+            } catch (Exception $e) {
                 return false;
             }
 
-            vcsCache::cache( $this->path, $version, 'blame', $blame );
+            vcsCache::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
     }
 
 }
-
-

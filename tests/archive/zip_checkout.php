@@ -16,15 +16,14 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
-        if ( !class_exists( 'ZipArchive' ) )
-        {
+        if ( !class_exists( 'ZipArchive' ) ) {
             $this->markTestSkipped( 'Compile PHP with --enable-zip to get support for zip archive handling.' );
         }
 
@@ -39,12 +38,10 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
 
-        try
-        {
+        try {
             $repository->initialize( 'file:///hopefully/not/existing/svn/repo' );
             $this->fail( 'Expected vcsNoSuchFileException.' );
-        } catch ( vcsNoSuchFileException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchFileException $e ) { /* Expected */ }
 
     }
 
@@ -52,12 +49,10 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
     {
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
 
-        try
-        {
+        try {
             $repository->initialize( __FILE__ );
             $this->fail( 'Expected vcsInvalidZipArchiveException.' );
-        } catch ( vcsInvalidZipArchiveException $e )
-        { /* Expected */ }
+        } catch ( vcsInvalidZipArchiveException $e ) { /* Expected */ }
 
     }
 
@@ -91,8 +86,7 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
         $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
 
         $files = array();
-        foreach ( $repository as $file )
-        {
+        foreach ( $repository as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -128,13 +122,10 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
         $repository = new vcsZipArchiveCheckout( $this->tempDir );
         $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
 
-        try
-        {
+        try {
             $repository->get( '/../' );
             $this->fail( 'Expected vcsFileNotFoundException.' );
-        }
-        catch ( vcsFileNotFoundException $e )
-        { /* Expected */ }
+        } catch ( vcsFileNotFoundException $e ) { /* Expected */ }
     }
 
     public function testGetDirectory()
@@ -159,4 +150,3 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
         );
     }
 }
-

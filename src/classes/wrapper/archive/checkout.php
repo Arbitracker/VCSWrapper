@@ -41,9 +41,9 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
-        parent::__construct( $root, '/' );
+        parent::__construct($root, '/');
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
      * @param string $version
      * @return bool
      */
-    public function update( $version = null )
+    public function update($version = null)
     {
         // There is nothing to update
         return false;
@@ -76,27 +76,25 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' )
+    public function get($path = '/')
     {
-        $fullPath = realpath( $this->root . $path );
+        $fullPath = realpath($this->root . $path);
 
-        if ( ( $fullPath === false ) ||
-             ( strpos( $fullPath, $this->root ) !== 0 ) )
+        if (($fullPath === false) ||
+             (strpos($fullPath, $this->root) !== 0))
         {
-            throw new vcsFileNotFoundException( $path );
+            throw new vcsFileNotFoundException($path);
         }
 
-        switch ( true )
-        {
-            case ( $path === '/' ):
+        switch (true) {
+            case ($path === '/'):
                 return $this;
 
-            case is_dir( $fullPath ):
-                return new vcsArchiveDirectory( $this->root, $path );
+            case is_dir($fullPath):
+                return new vcsArchiveDirectory($this->root, $path);
 
             default:
-                return new vcsArchiveFile( $this->root, $path );
+                return new vcsArchiveFile($this->root, $path);
         }
     }
 }
-

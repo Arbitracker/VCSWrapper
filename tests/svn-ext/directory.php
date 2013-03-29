@@ -16,15 +16,14 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
-        if ( !extension_loaded( 'svn' ) )
-        {
+        if ( !extension_loaded( 'svn' ) ) {
             $this->markTestSkipped( 'Svn extension required to run this test.' );
         }
 
@@ -43,8 +42,7 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
         $dir = new vcsSvnExtDirectory( $this->tempDir, '/' );
 
         $files = array();
-        foreach ( $dir as $file )
-        {
+        foreach ( $dir as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -69,8 +67,7 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
-        foreach ( $iterator as $file )
-        {
+        foreach ( $iterator as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -95,8 +92,7 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
         $dir = new vcsSvnExtDirectory( $this->tempDir, '/dir1/' );
 
         $files = array();
-        foreach ( $dir as $file )
-        {
+        foreach ( $dir as $file ) {
             $files[] = (string) $file;
         }
 
@@ -137,4 +133,3 @@ class vcsSvnExtDirectoryTests extends vcsTestCase
         );
     }
 }
-

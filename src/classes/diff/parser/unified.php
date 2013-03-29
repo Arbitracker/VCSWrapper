@@ -41,33 +41,29 @@ class vcsUnifiedDiffParser extends vcsDiffParser
      * @param string $string
      * @return array(vcsDiff)
      */
-    public function parseString( $string )
+    public function parseString($string)
     {
-        $lines     = preg_split( '(\r\n|\r|\n)', $string );
-        $lineCount = count( $lines );
+        $lines     = preg_split('(\r\n|\r|\n)', $string);
+        $lineCount = count($lines);
         $diffs     = array();
         $diff      = null;
         $collected = array();
 
-        for ( $i = 0; $i < $lineCount; ++$i )
-        {
-            if ( preg_match( '(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch ) &&
-                 preg_match( '(^\\+\\+\\+\\s+(?P<file>\\S+))', $lines[$i + 1], $toMatch ) )
+        for ($i = 0; $i < $lineCount; ++$i) {
+            if (preg_match('(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch) &&
+                 preg_match('(^\\+\\+\\+\\s+(?P<file>\\S+))', $lines[$i + 1], $toMatch))
             {
                 // If a diff already has started, parse the colected lines for
                 // the affected diff.
-                if ( $diff !== null )
-                {
-                    $this->parseFileDiff( $diff, $collected );
+                if ($diff !== null) {
+                    $this->parseFileDiff($diff, $collected);
                     $diffs[]   = $diff;
                     $collected = array();
                 }
 
-                $diff = new vcsDiff( $fromMatch['file'], $toMatch['file'] );
+                $diff = new vcsDiff($fromMatch['file'], $toMatch['file']);
                 ++$i;
-            }
-            else
-            {
+            } else {
                 // Collect all lines, which do not indicate a starting diff.
                 $collected[] = $lines[$i];
             }
@@ -75,10 +71,10 @@ class vcsUnifiedDiffParser extends vcsDiffParser
 
         // We reached the end of the diff, perhaps there are still lines to
         // calcualte a diff from?
-        if ( count( $collected ) &&
-             ( $diff !== null ) )
+        if (count($collected) &&
+             ($diff !== null))
         {
-            $this->parseFileDiff( $diff, $collected );
+            $this->parseFileDiff($diff, $collected);
             $diffs[] = $diff;
         }
 
@@ -95,41 +91,37 @@ class vcsUnifiedDiffParser extends vcsDiffParser
      * @param array $lines
      * @return void
      */
-    protected function parseFileDiff( vcsDiff $diff, array $lines )
+    protected function parseFileDiff(vcsDiff $diff, array $lines)
     {
         $chunks = array();
-        while ( count( $lines ) )
-        {
+        while (count($lines)) {
             // Skip lines until we hit a range specification
-            while ( !preg_match( '(^@@\\s+-(?P<start>\\d+)(?:,\\s*(?P<startrange>\\d+))?\\s+\\+(?P<end>\\d+)(?:,\\s*(?P<endrange>\\d+))?\\s+@@)', $last = array_shift( $lines ), $match ) )
-            {
+            while (!preg_match('(^@@\\s+-(?P<start>\\d+)(?:,\\s*(?P<startrange>\\d+))?\\s+\\+(?P<end>\\d+)(?:,\\s*(?P<endrange>\\d+))?\\s+@@)', $last = array_shift($lines), $match)) {
                 // If we reached the end, break
-                if ( $last === null )
-                {
+                if ($last === null) {
                     break 2;
                 }
             }
 
             $chunk = new vcsDiffChunk(
                 $match['start'],
-                ( isset( $match['startrange'] ) ? max( 1, $match['startrange'] ) : 1 ),
+                (isset($match['startrange']) ? max(1, $match['startrange']) : 1),
                 $match['end'],
-                ( isset( $match['endrange'] ) ? max( 1, $match['endrange'] ) : 1 )
+                (isset($match['endrange']) ? max(1, $match['endrange']) : 1)
             );
 
             // Read following diff lines
             $diffLines = array();
             $last      = null;
-            while ( count( $lines ) &&
-                    ( preg_match( '(^(?P<type>[+ -])(?P<line>.*))', $last = array_shift( $lines ), $match ) ||
-                      ( strpos( $last, '\\ No newline at end of file' ) === 0 ) ) )
+            while (count($lines) &&
+                    (preg_match('(^(?P<type>[+ -])(?P<line>.*))', $last = array_shift($lines), $match) ||
+                      (strpos($last, '\\ No newline at end of file') === 0)))
             {
                 // We ignore the missing newlines for now
-                if ( count( $match ) )
-                {
+                if (count($match)) {
                     $diffLines[] = new vcsDiffLine(
-                        ( $match['type'] === '+' ? vcsDiffLine::ADDED :
-                            ( $match['type'] === '-' ? vcsDiffLine::REMOVED : vcsDiffLine::UNCHANGED ) ),
+                        ($match['type'] === '+' ? vcsDiffLine::ADDED :
+                            ($match['type'] === '-' ? vcsDiffLine::REMOVED : vcsDiffLine::UNCHANGED)),
                         $match['line']
                     );
                 }
@@ -138,13 +130,11 @@ class vcsUnifiedDiffParser extends vcsDiffParser
             $chunks[]     = $chunk;
 
             // Repreprend last not matching line
-            if ( $last !== null )
-            {
-                array_unshift( $lines, $last );
+            if ($last !== null) {
+                array_unshift($lines, $last);
             }
         }
 
         $diff->chunks = $chunks;
     }
 }
-

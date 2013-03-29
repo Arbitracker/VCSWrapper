@@ -43,9 +43,9 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * @param string $password
      * @return void
      */
-    public function __construct( $root, $user = null, $password = null )
+    public function __construct($root, $user = null, $password = null)
     {
-        parent::__construct( $root, '/', $user, $password );
+        parent::__construct($root, '/', $user, $password);
     }
 
     /**
@@ -59,16 +59,16 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null )
+    public function initialize($url, $user = null, $password = null)
     {
         $user     = $user ? $user : $this->username;
         $password = $password ? $password : $password;
 
         // Fix incorrect windows checkout URLs
-        $url = preg_replace( '(^file://([A-Za-z]):)', 'file:///\\1:', $url );
+        $url = preg_replace('(^file://([A-Za-z]):)', 'file:///\\1:', $url);
 
-        $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
-        $return = $process->argument( 'checkout' )->argument( str_replace( '\\', '/', $url ) )->argument( new \SystemProcess\Argument\PathArgument( $this->root ) )->execute();
+        $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+        $return = $process->argument('checkout')->argument(str_replace('\\', '/', $url))->argument(new \SystemProcess\Argument\PathArgument($this->root))->execute();
 
         // Cache basic revision information for checkout and update
         // currentVersion property.
@@ -87,23 +87,22 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * @param string $version
      * @return bool
      */
-    public function update( $version = null )
+    public function update($version = null)
     {
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
+        $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
 
-        if ( $version !== null )
-        {
-            $process->argument( '-r' . $version );
+        if ($version !== null) {
+            $process->argument('-r' . $version);
         }
 
-        $return = $process->argument( 'update' )->argument( new \SystemProcess\Argument\PathArgument( $this->root ) )->execute();
+        $return = $process->argument('update')->argument(new \SystemProcess\Argument\PathArgument($this->root))->execute();
 
         // Check if an update has happened
         $this->currentVersion = null;
-        return ( $oldVersion !== $this->getVersionString() );
+        return ($oldVersion !== $this->getVersionString());
     }
 
     /**
@@ -118,27 +117,25 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' )
+    public function get($path = '/')
     {
-        $fullPath = realpath( $this->root . $path );
+        $fullPath = realpath($this->root . $path);
 
-        if ( ( $fullPath === false ) ||
-             ( strpos( str_replace( '\\', '/', $fullPath ), str_replace( '\\', '/', $this->root ) ) !== 0 ) )
+        if (($fullPath === false) ||
+             (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException( $path );
+            throw new vcsFileNotFoundException($path);
         }
 
-        switch ( true )
-        {
-            case ( $path === '/' ):
+        switch (true) {
+            case ($path === '/'):
                 return $this;
 
-            case is_dir( $fullPath ):
-                return new vcsSvnCliDirectory( $this->root, $path, $this->username, $this->password );
+            case is_dir($fullPath):
+                return new vcsSvnCliDirectory($this->root, $path, $this->username, $this->password);
 
             default:
-                return new vcsSvnCliFile( $this->root, $path, $this->username, $this->password );
+                return new vcsSvnCliFile($this->root, $path, $this->username, $this->password);
         }
     }
 }
-

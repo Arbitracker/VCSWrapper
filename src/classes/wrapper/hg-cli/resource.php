@@ -48,19 +48,18 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      */
     protected function getResourceInfo()
     {
-        if ( $this->currentVersion !== null )
-        {
-            $info = vcsCache::get( $this->path, $this->currentVersion, 'info' );
+        if ($this->currentVersion !== null) {
+            $info = vcsCache::get($this->path, $this->currentVersion, 'info');
         }
 
-        if ( $this->currentVersion === null ||
-             $info === false )
+        if ($this->currentVersion === null ||
+             $info === false)
         {
             $log = $this->getResourceLog();
 
             // Fecth for specified version, if set
-            $info = $this->currentVersion !== null ? $log[$this->currentVersion] : end( $log );
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $info->version, 'info', $info );
+            $info = $this->currentVersion !== null ? $log[$this->currentVersion] : end($log);
+            vcsCache::cache($this->path, $this->currentVersion = (string) $info->version, 'info', $info);
         }
 
         return $info;
@@ -73,58 +72,52 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      */
     protected function getResourceLog()
     {
-        $log = vcsCache::get( $this->path, $this->currentVersion, 'log' );
-        if ( $log === false )
-        {
+        $log = vcsCache::get($this->path, $this->currentVersion, 'log');
+        if ($log === false) {
             // Refetch the basic logrmation, and cache it.
             $process = new vcsHgCliProcess();
-            $process->workingDirectory( $this->root );
+            $process->workingDirectory($this->root);
 
             // Fetch for specified version, if set
-            if ( $this->currentVersion !== null )
-            {
-                $process->argument( '-r ' . $this->currentVersion );
+            if ($this->currentVersion !== null) {
+                $process->argument('-r ' . $this->currentVersion);
             }
 
             // Execute log command
-            $process->argument( 'log' );
-            $process->argument( '--template' )->argument( '{node}\t{author|email}\t{date|isodate}\t{desc|urlescape}\n' );
-            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
+            $process->argument('log');
+            $process->argument('--template')->argument('{node}\t{author|email}\t{date|isodate}\t{desc|urlescape}\n');
+            $process->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path));
             $process->execute();
 
             // Parse commit log
-            $lines = explode( "\n", $process->stdoutOutput );
-            if ( !$lines )
-            {
+            $lines = explode("\n", $process->stdoutOutput);
+            if (!$lines) {
                 return array();
             }
 
-            $lineCount  = count( $lines );
+            $lineCount  = count($lines);
             $log        = array();
             $lastCommit = null;
-            foreach( $lines as $line )
-            {
-                if ( !$line )
-                {
+            foreach($lines as $line) {
+                if (!$line) {
                     continue;
                 }
 
-                list( $node, $author, $date, $desc ) = explode( "\t", $line, 4 );
+                list($node, $author, $date, $desc) = explode("\t", $line, 4);
 
-                $atPosition = strpos( $author, '@' );
-                if ( $atPosition )
-                {
-                    $author = substr( $author, 0, $atPosition );
+                $atPosition = strpos($author, '@');
+                if ($atPosition) {
+                    $author = substr($author, 0, $atPosition);
                 }
 
-                $log[$node] = new vcsLogEntry( $node, $author, urldecode( $desc ), strtotime( $date ) );
+                $log[$node] = new vcsLogEntry($node, $author, urldecode($desc), strtotime($date));
             }
-            $log = array_reverse( $log );
-            $last = end( $log );
+            $log = array_reverse($log);
+            $last = end($log);
 
             $this->currentVersion = (string) $last->version;
             // Cache extracted data
-            vcsCache::cache( $this->path, $this->currentVersion, 'log', $log );
+            vcsCache::cache($this->path, $this->currentVersion, 'log', $log);
         }
 
         return $log;
@@ -138,7 +131,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * @param string $property
      * @return string
      */
-    protected function getResourceProperty( $property )
+    protected function getResourceProperty($property)
     {
         $property; // stupid, but surpresses phpcs warnings...
         return '';
@@ -171,8 +164,7 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
         $versions = array();
         $log = $this->getResourceLog();
 
-        foreach ( $log as $entry )
-        {
+        foreach ($log as $entry) {
             $versions[] = (string) $entry->version;
         }
 
@@ -190,14 +182,13 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * @param string $version2
      * @return int
      */
-    public function compareVersions( $version1, $version2 )
+    public function compareVersions($version1, $version2)
     {
         $versions = $this->getVersions();
-        $key1 = array_search( $version1, $versions );
-        $key2 = array_search( $version2, $versions );
+        $key1 = array_search($version1, $versions);
+        $key2 = array_search($version2, $versions);
 
-        if ($key1 === false || $key2 === false)
-        {
+        if ($key1 === false || $key2 === false) {
             return 0;
         }
 
@@ -214,14 +205,13 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * @param mixed $version
      * @return string
      */
-    public function getAuthor( $version = null )
+    public function getAuthor($version = null)
     {
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version]->author;
@@ -248,16 +238,14 @@ abstract class vcsHgCliResource extends vcsResource implements vcsVersioned, vcs
      * @param string $version
      * @return vcsLogEntry
      */
-    public function getLogEntry( $version )
+    public function getLogEntry($version)
     {
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version];
     }
 }
-

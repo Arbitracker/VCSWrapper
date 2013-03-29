@@ -45,14 +45,13 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
-        parent::__construct( $root );
+        parent::__construct($root);
 
         // Check for existance of meta data storage file
-        if ( !file_exists( $storage = ( $this->root . '/cacheSize' ) ) )
-        {
-            file_put_contents( $storage, '0' );
+        if (!file_exists($storage = ($this->root . '/cacheSize'))) {
+            file_put_contents($storage, '0');
         }
 
         $this->storage = $storage;
@@ -74,19 +73,19 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
      * @param int $time
      * @return void
      */
-    public function created( $path, $size, $time = null )
+    public function created($path, $size, $time = null)
     {
         // If no time has been given, default to current time.
-        $time = ( $time === null ) ? time() : $time;
+        $time = ($time === null) ? time() : $time;
 
         // Update acces time of file
-        touch( $this->root . $path, $time );
+        touch($this->root . $path, $time);
 
         // Store additional file size.
         //
         // There may be edit conflicts, but those should be minor and seldom,
         // so we just ignore them. :)
-        file_put_contents( $this->storage, file_get_contents( $this->storage ) + $size );
+        file_put_contents($this->storage, file_get_contents($this->storage) + $size);
     }
 
     /**
@@ -99,13 +98,13 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
      * @param int $time
      * @return void
      */
-    public function accessed( $path, $time = null )
+    public function accessed($path, $time = null)
     {
         // If no time has been given, default to current time.
-        $time = ( $time === null ) ? time() : $time;
+        $time = ($time === null) ? time() : $time;
 
         // Update acces time of file
-        touch( $this->root . $path, $time );
+        touch($this->root . $path, $time);
     }
 
     /**
@@ -119,11 +118,10 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
      * @param flaot $rate
      * @return void
      */
-    public function cleanup( $size, $rate )
+    public function cleanup($size, $rate)
     {
         // Check if cache size exceeds cache limit
-        if ( ( $cacheSize = (int) file_get_contents( $this->storage ) ) <= $size )
-        {
+        if (($cacheSize = (int) file_get_contents($this->storage)) <= $size) {
             return false;
         }
 
@@ -131,18 +129,17 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
         // the cache - may take quite some time.
         clearstatcache();
         $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator( $this->root, RecursiveDirectoryIterator::CURRENT_AS_FILEINFO )
+            new RecursiveDirectoryIterator($this->root, RecursiveDirectoryIterator::CURRENT_AS_FILEINFO)
         );
 
         $ctimes   = array();
         $filedata = array();
-        foreach ( $iterator as $file )
-        {
-            if ( $file->isFile() &&
-                 ( $file->getFilename() !== basename( $this->storage ) ) )
+        foreach ($iterator as $file) {
+            if ($file->isFile() &&
+                 ($file->getFilename() !== basename($this->storage)))
             {
                 $ctimes[]   = $file->getCTime();
-                $filedata[] = array( realpath( $file->getPathname() ), $file->getSize() );
+                $filedata[] = array(realpath($file->getPathname()), $file->getSize());
             }
         }
 
@@ -155,20 +152,17 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
         // Remove files until we reached the maximum cache size
         $maxSize = $size * $rate;
         $reduced = 0;
-        foreach ( $filedata as $file )
-        {
+        foreach ($filedata as $file) {
             $reduced += $file[1];
-            unlink( $file[0] );
+            unlink($file[0]);
 
             // Abort deletion loop, if we reached the lower border
-            if ( ( $cacheSize - $reduced ) < $maxSize )
-            {
+            if (($cacheSize - $reduced) < $maxSize) {
                 break;
             }
         }
 
         // Write new cache size to storage file
-        file_put_contents( $this->storage, file_get_contents( $this->storage ) - $reduced );
+        file_put_contents($this->storage, file_get_contents($this->storage) - $reduced);
     }
 }
-

@@ -49,21 +49,18 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceInfo()
     {
-        if ( ( $this->currentVersion === null ) ||
-             ( ( $info = vcsCache::get( $this->path, $this->currentVersion, 'info' ) ) === false ) )
+        if (($this->currentVersion === null) ||
+             (($info = vcsCache::get($this->path, $this->currentVersion, 'info')) === false))
         {
             // Fecth for specified version, if set
-            if ( $this->currentVersion !== null )
-            {
-                $info = svn_info( $this->root . $this->path, $this->currentVersion );
-            }
-            else
-            {
-                $info = svn_info( $this->root . $this->path );
+            if ($this->currentVersion !== null) {
+                $info = svn_info($this->root . $this->path, $this->currentVersion);
+            } else {
+                $info = svn_info($this->root . $this->path);
             }
 
             $info = $info[0];
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $info['last_changed_rev'], 'info', $info );
+            vcsCache::cache($this->path, $this->currentVersion = (string) $info['last_changed_rev'], 'info', $info);
         }
 
         return $info;
@@ -78,24 +75,22 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceLog()
     {
-        if ( ( $log = vcsCache::get( $this->path, $this->currentVersion, 'log' ) ) === false )
-        {
-            $svnLog = svn_log( $this->root . $this->path );
+        if (($log = vcsCache::get($this->path, $this->currentVersion, 'log')) === false) {
+            $svnLog = svn_log($this->root . $this->path);
 
             $log = array();
-            foreach ( $svnLog as $nr => $entry )
-            {
+            foreach ($svnLog as $nr => $entry) {
                 $log[$entry['rev']] = new vcsLogEntry(
                     $entry['rev'],
                     $entry['author'],
                     $entry['msg'],
-                    strtotime( $entry['date'] )
+                    strtotime($entry['date'])
                 );
             }
-            uksort( $log, array( $this, 'compareVersions' ) );
-            $last = end( $log );
+            uksort($log, array($this, 'compareVersions'));
+            $last = end($log);
 
-            vcsCache::cache( $this->path, $this->currentVersion = (string) $last->version, 'log', $log );
+            vcsCache::cache($this->path, $this->currentVersion = (string) $last->version, 'log', $log);
         }
 
         return $log;
@@ -109,17 +104,16 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      * @param string $property
      * @return string
      */
-    protected function getResourceProperty( $property )
+    protected function getResourceProperty($property)
     {
         // There currently seems no way to get the property contents inside a
         // checkout.
         return null;
 
-        if ( ( $value = vcsCache::get( $this->path, $this->currentVersion, $property ) ) === false )
-        {
-            $rep   = svn_repos_open( $this->root );
-            $value = svn_fs_node_prop( $rep, $this->path, 'svn:' . $property );
-            vcsCache::cache( $this->path, $this->currentVersion, $property, $value );
+        if (($value = vcsCache::get($this->path, $this->currentVersion, $property)) === false) {
+            $rep   = svn_repos_open($this->root);
+            $value = svn_fs_node_prop($rep, $this->path, 'svn:' . $property);
+            vcsCache::cache($this->path, $this->currentVersion, $property, $value);
         }
 
         return $value;
@@ -151,8 +145,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
     {
         $versions = array();
         $log = $this->getResourceLog();
-        foreach ( $log as $entry )
-        {
+        foreach ($log as $entry) {
             $versions[] = (string) $entry->version;
         }
 
@@ -170,7 +163,7 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      * @param string $version2
      * @return int
      */
-    public function compareVersions( $version1, $version2 )
+    public function compareVersions($version1, $version2)
     {
         return $version1 - $version2;
     }
@@ -185,14 +178,13 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      * @param mixed $version
      * @return string
      */
-    public function getAuthor( $version = null )
+    public function getAuthor($version = null)
     {
         $version = $version === null ? $this->getVersionString() : $version;
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version]->author;
@@ -219,13 +211,12 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      * @param string $version
      * @return vcsLogEntry
      */
-    public function getLogEntry( $version )
+    public function getLogEntry($version)
     {
         $log = $this->getResourceLog();
 
-        if ( !isset( $log[$version] ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!isset($log[$version])) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
         return $log[$version];
@@ -242,33 +233,29 @@ abstract class vcsSvnExtResource extends vcsResource implements vcsVersioned, vc
      * @param string $current
      * @return vcsResource
      */
-    public function getDiff( $version, $current = null )
+    public function getDiff($version, $current = null)
     {
-        $current = ( $current === null ) ? $this->getVersionString() : $current;
+        $current = ($current === null) ? $this->getVersionString() : $current;
 
-        if ( ( $diff = vcsCache::get( $this->path, $version, 'diff' ) ) === false )
-        {
-            list( $diffStream, $errors ) = svn_diff( $this->root . $this->path, $version, $this->root . $this->path, $current );
+        if (($diff = vcsCache::get($this->path, $version, 'diff')) === false) {
+            list($diffStream, $errors) = svn_diff($this->root . $this->path, $version, $this->root . $this->path, $current);
             $diffContents = '';
-            while ( !feof( $diffStream ) )
-            {
-                $diffContents .= fread( $diffStream, 8192 );
+            while (!feof($diffStream)) {
+                $diffContents .= fread($diffStream, 8192);
             }
-            fclose( $diffStream );
+            fclose($diffStream);
 
             // Execute command
             $parser = new vcsUnifiedDiffParser();
-            $diff   = $parser->parseString( $diffContents );
-            vcsCache::cache( $this->path, $version, 'diff', $diff );
+            $diff   = $parser->parseString($diffContents);
+            vcsCache::cache($this->path, $version, 'diff', $diff);
         }
 
-        foreach ( $diff as $fileDiff )
-        {
-            $fileDiff->from = substr( $fileDiff->from, strlen( $this->root ) );
-            $fileDiff->to   = substr( $fileDiff->to, strlen( $this->root ) );
+        foreach ($diff as $fileDiff) {
+            $fileDiff->from = substr($fileDiff->from, strlen($this->root));
+            $fileDiff->to   = substr($fileDiff->to, strlen($this->root));
         }
 
         return $diff;
     }
 }
-

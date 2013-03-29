@@ -46,13 +46,13 @@ class vcsHgCliProcess extends \SystemProcess\SystemProcess
      * @param string $executable
      * @return void
      */
-    public function __construct( $executable = 'hg' )
+    public function __construct($executable = 'hg')
     {
-        parent::__construct( $executable );
+        parent::__construct($executable);
         self::checkVersion();
 
         $this->nonZeroExitCodeException = true;
-        $this->argument( '--noninteractive' );
+        $this->argument('--noninteractive');
     }
 
 
@@ -66,25 +66,21 @@ class vcsHgCliProcess extends \SystemProcess\SystemProcess
      */
     protected static function checkVersion()
     {
-        if ( self::$checked === true )
-        {
+        if (self::$checked === true) {
             return true;
         }
 
-        $process = new \SystemProcess\SystemProcess( 'env' );
+        $process = new \SystemProcess\SystemProcess('env');
         $process->nonZeroExitCodeException = true;
-        $process->argument( 'hg' )->argument( '--version' )->execute();
+        $process->argument('hg')->argument('--version')->execute();
 
-        if ( !preg_match( '/\(version (.*)\)/', $process->stdoutOutput, $match ) )
-        {
-            throw new vcsRuntimeException( 'Could not determine Mercurial version.' );
+        if (!preg_match('/\(version (.*)\)/', $process->stdoutOutput, $match)) {
+            throw new vcsRuntimeException('Could not determine Mercurial version.');
         }
-        if ( version_compare( $match[1], '1.3', '>=' ) )
-        {
+        if (version_compare($match[1], '1.3', '>=')) {
             return self::$checked = true;
         }
 
-        throw new vcsRuntimeException( 'Mercurial is required in a minimum version of 1.3.' );
+        throw new vcsRuntimeException('Mercurial is required in a minimum version of 1.3.');
     }
 }
-

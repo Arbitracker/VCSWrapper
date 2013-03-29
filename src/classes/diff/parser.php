@@ -41,7 +41,7 @@ abstract class vcsDiffParser
      * @param string $string
      * @return array(vcsDiff)
      */
-    abstract public function parseString( $string );
+    abstract public function parseString($string);
 
     /**
      * Parse diff file
@@ -52,9 +52,8 @@ abstract class vcsDiffParser
      * @param string $file
      * @return array(vcsDiff)
      */
-    public function parseFile( $file )
+    public function parseFile($file)
     {
-        return $this->parseString( file_get_contents( $file ) );
+        return $this->parseString(file_get_contents($file));
     }
 }
-

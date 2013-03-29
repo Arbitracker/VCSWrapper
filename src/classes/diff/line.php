@@ -64,7 +64,7 @@ class vcsDiffLine extends vcsBaseStruct
      * @param string $content
      * @return vcsDiffLine
      */
-    public function __construct( $type = self::UNCHANGED, $content = null )
+    public function __construct($type = self::UNCHANGED, $content = null)
     {
         $this->type    = $type;
         $this->content = $content;
@@ -80,9 +80,8 @@ class vcsDiffLine extends vcsBaseStruct
      * @param mixed $class
      * @return void
      */
-    public static function __set_state( array $properties, $class = __CLASS__ )
+    public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state( $properties, $class );
+        return vcsBaseStruct::__set_state($properties, $class);
     }
 }
-

@@ -38,4 +38,3 @@
 interface vcsDirectory extends RecursiveIterator
 {
 }
-

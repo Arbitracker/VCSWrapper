@@ -9,11 +9,9 @@
 /*
  * Set file whitelist for phpunit
  */
-if ( !defined( 'VCS_TEST' ) )
-{
+if ( !defined( 'VCS_TEST' ) ) {
     $files = include ( $base = dirname(  __FILE__ ) . '/../src/classes/' ) . 'autoload.php';
-    foreach ( $files as $class => $file )
-    {
+    foreach ( $files as $class => $file ) {
         require_once $base . $file;
     }
 
@@ -57,4 +55,3 @@ class vcsArchiveTestSuite extends PHPUnit_Framework_TestSuite
         return new vcsArchiveTestSuite( __CLASS__ );
     }
 }
-

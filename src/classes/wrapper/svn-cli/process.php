@@ -40,22 +40,19 @@ class vcsSvnCliProcess extends \SystemProcess\SystemProcess
      * @param string $password
      * @return void
      */
-    public function __construct( $executable = 'svn', $user = null, $password = null )
+    public function __construct($executable = 'svn', $user = null, $password = null)
     {
-        parent::__construct( $executable );
+        parent::__construct($executable);
 
         $this->nonZeroExitCodeException = true;
-        $this->argument( '--non-interactive' );
+        $this->argument('--non-interactive');
 
-        if ( $user !== null )
-        {
-            $this->argument( '--username' )->argument( $user );
+        if ($user !== null) {
+            $this->argument('--username')->argument($user);
 
-            if ( $password !== null )
-            {
-                $this->argument( '--password' )->argument( $password );
+            if ($password !== null) {
+                $this->argument('--password')->argument($password);
             }
         }
     }
 }
-

@@ -11,12 +11,10 @@
  */
 define( 'VCS_TEST', __FILE__ );
 $files = include ( $base = dirname(  __FILE__ ) . '/../src/classes/' ) . 'autoload.php';
-foreach ( $files as $class => $file )
-{
+foreach ( $files as $class => $file ) {
     require_once $base . $file;
 
-    if ( strpos( $file, '/external/' ) === false )
-    {
+    if ( strpos( $file, '/external/' ) === false ) {
 
         PHP_CodeCoverage_Filter::getInstance()->addFileToWhitelist( $base . $file );
     }
@@ -73,4 +71,3 @@ class vcsTestSuite extends PHPUnit_Framework_TestSuite
         return new vcsTestSuite( __CLASS__ );
     }
 }
-

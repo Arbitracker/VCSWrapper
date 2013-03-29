@@ -41,6 +41,5 @@ interface vcsAuthored extends vcsVersioned
      * @param mixed $version
      * @return string
      */
-    public function getAuthor( $version = null );
+    public function getAuthor($version = null);
 }
-

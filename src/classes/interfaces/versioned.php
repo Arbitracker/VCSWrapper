@@ -63,6 +63,5 @@ interface vcsVersioned
      * @param string $version2
      * @return int
      */
-    public function compareVersions( $version1, $version2 );
+    public function compareVersions($version1, $version2);
 }
-

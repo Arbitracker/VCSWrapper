@@ -16,15 +16,14 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
-        if ( !extension_loaded( 'svn' ) )
-        {
+        if ( !extension_loaded( 'svn' ) ) {
             $this->markTestSkipped( 'Svn extension required to run this test.' );
         }
 
@@ -39,14 +38,12 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
     {
         $repository = new vcsSvnExtCheckout( $this->tempDir );
 
-        try
-        {
+        try {
             // Silence error to skip PHPUnits error conversion and test custom
             // error handling.
             @$repository->initialize( 'file:///hopefully/not/existing/svn/repo' );
             $this->fail( 'Expected vcsCheckoutFailedException.' );
-        } catch ( vcsCheckoutFailedException $e )
-        { /* Expected */ }
+        } catch ( vcsCheckoutFailedException $e ) { /* Expected */ }
 
     }
 
@@ -243,8 +240,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
         try {
             $repository->getLogEntry( "no_such_version" );
             $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e )
-        { /* Expected */ }
+        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
     }
 
     public function testIterateCheckoutContents()
@@ -253,8 +249,7 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
         $files = array();
-        foreach ( $repository as $file )
-        {
+        foreach ( $repository as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -291,13 +286,10 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
         $repository = new vcsSvnExtCheckout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
 
-        try
-        {
+        try {
             $repository->get( '/../' );
             $this->fail( 'Expected vcsFileNotFoundException.' );
-        }
-        catch ( vcsFileNotFoundException $e )
-        { /* Expected */ }
+        } catch ( vcsFileNotFoundException $e ) { /* Expected */ }
     }
 
     public function testGetDirectory()
@@ -322,4 +314,3 @@ class vcsSvnExtCheckoutTests extends vcsTestCase
         );
     }
 }
-

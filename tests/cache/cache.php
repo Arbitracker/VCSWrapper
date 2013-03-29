@@ -29,18 +29,17 @@ class vcsCacheTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function testCacheNotInitialized()
     {
         try {
             vcsCache::get( '/foo', 1, 'data' );
             $this->fail( 'Expected vcsCacheNotInitializedException.' );
-        } catch ( vcsCacheNotInitializedException $e )
-        { /* Expected */ }
+        } catch ( vcsCacheNotInitializedException $e ) { /* Expected */ }
     }
 
     public function testValueNotInCache()
@@ -57,13 +56,11 @@ class vcsCacheTests extends vcsTestCase
         $values = array( 1, .1, 'foo', true );
         vcsCache::initialize( $this->tempDir, 100, .8 );
 
-        foreach ( $values as $nr => $value )
-        {
+        foreach ( $values as $nr => $value ) {
             vcsCache::cache( '/foo', (string) $nr, 'data', $value );
         }
 
-        foreach ( $values as $nr => $value )
-        {
+        foreach ( $values as $nr => $value ) {
             $this->assertSame(
                 $value,
                 vcsCache::get( '/foo', $nr, 'data' ),
@@ -92,9 +89,7 @@ class vcsCacheTests extends vcsTestCase
         try {
             vcsCache::cache( '/foo', '1', 'data', $this );
             $this->fail( 'Expected vcsNotCacheableException.' );
-        }
-        catch ( vcsNotCacheableException $e )
-        { /* Expected */ }
+        } catch ( vcsNotCacheableException $e ) { /* Expected */ }
     }
 
     public function testCacheCacheableObject()
@@ -114,8 +109,7 @@ class vcsCacheTests extends vcsTestCase
         $values = array( 1, .1, 'foo', true );
         vcsCache::initialize( $this->tempDir, 50, .8 );
 
-        foreach ( $values as $nr => $value )
-        {
+        foreach ( $values as $nr => $value ) {
             vcsCache::cache( '/foo', (string) $nr, 'data', $value );
         }
         vcsCache::forceCleanup();
@@ -138,4 +132,3 @@ class vcsCacheTests extends vcsTestCase
         );
     }
 }
-

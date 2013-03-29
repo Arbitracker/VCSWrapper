@@ -51,7 +51,7 @@ class vcsBaseStruct implements arbitCacheable
      * @param mixed $value
      * @return void
      */
-    public function __set( $property, $value )
+    public function __set($property, $value)
     {
         // Just set without any checks.
         $this->properties[$property] = $value;
@@ -66,13 +66,12 @@ class vcsBaseStruct implements arbitCacheable
      * @param string $property
      * @return mixed
      */
-    public function __get( $property )
+    public function __get($property)
     {
         // Check if the property exists at all - use array_key_exists, to let
         // this check pass, even if the property is set to null.
-        if ( !array_key_exists( $property, $this->properties ) )
-        {
-            throw new arbitPropertyException( $property );
+        if (!array_key_exists($property, $this->properties)) {
+            throw new arbitPropertyException($property);
         }
 
         return $this->properties[$property];
@@ -87,11 +86,11 @@ class vcsBaseStruct implements arbitCacheable
      * @param string $property
      * @return mixed
      */
-    public function __isset( $property )
+    public function __isset($property)
     {
         // Check if the property exists at all - use array_key_exists, to let
         // this check pass, even if the property is set to null.
-        return array_key_exists( $property, $this->properties );
+        return array_key_exists($property, $this->properties);
     }
 
     /**
@@ -104,16 +103,14 @@ class vcsBaseStruct implements arbitCacheable
      * @param string $class
      * @return vcsBaseStruct
      */
-    public static function __set_state( array $properties, $class = __CLASS__ )
+    public static function __set_state(array $properties, $class = __CLASS__)
     {
         $struct = new $class();
 
-        foreach ( $properties as $key => $value )
-        {
+        foreach ($properties as $key => $value) {
             $struct->$key = $value;
         }
 
         return $struct;
     }
 }
-

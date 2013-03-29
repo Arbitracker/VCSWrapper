@@ -38,12 +38,11 @@ class vcsCvsCliProcess extends \SystemProcess\SystemProcess
      * @param string $executable Executable to create system process for;
      * @return void
      */
-    public function __construct( $executable = 'env' )
+    public function __construct($executable = 'env')
     {
-        parent::__construct( $executable );
+        parent::__construct($executable);
 
         $this->nonZeroExitCodeException = true;
-        $this->argument( 'cvs' );
+        $this->argument('cvs');
     }
 }
-

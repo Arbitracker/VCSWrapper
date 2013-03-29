@@ -16,10 +16,10 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function testStoreCreationDate()
     {
@@ -127,4 +127,3 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
         );
     }
 }
-

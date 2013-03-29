@@ -48,13 +48,12 @@ abstract class vcsCacheMetaData
      * @param string $root
      * @return void
      */
-    public function __construct( $root )
+    public function __construct($root)
     {
         $this->root = $root;
 
-        if ( !is_dir( $root ) )
-        {
-            mkdir( $root, 0777, true );
+        if (!is_dir($root)) {
+            mkdir($root, 0777, true);
         }
     }
 
@@ -74,7 +73,7 @@ abstract class vcsCacheMetaData
      * @param int $time
      * @return void
      */
-    abstract public function created( $path, $size, $time = null );
+    abstract public function created($path, $size, $time = null);
 
     /**
      * A cache file has been accessed
@@ -86,7 +85,7 @@ abstract class vcsCacheMetaData
      * @param int $time
      * @return void
      */
-    abstract public function accessed( $path, $time = null );
+    abstract public function accessed($path, $time = null);
 
     /**
      * Cleanup cache
@@ -99,6 +98,5 @@ abstract class vcsCacheMetaData
      * @param flaot $rate
      * @return void
      */
-    abstract public function cleanup( $size, $rate );
+    abstract public function cleanup($size, $rate);
 }
-

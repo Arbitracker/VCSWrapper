@@ -17,10 +17,10 @@ class vcsBzrCliDirectoryTests extends vcsTestCase
      *
      * @return PHPUnit_Framework_TestSuite
      */
-	public static function suite()
-	{
-		return new PHPUnit_Framework_TestSuite( __CLASS__ );
-	}
+    public static function suite()
+    {
+        return new PHPUnit_Framework_TestSuite( __CLASS__ );
+    }
 
     public function setUp()
     {
@@ -39,8 +39,7 @@ class vcsBzrCliDirectoryTests extends vcsTestCase
         $dir = new vcsBzrCliDirectory( $this->tempDir, '/' );
 
         $files = array();
-        foreach ( $dir as $file )
-        {
+        foreach ( $dir as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -64,8 +63,7 @@ class vcsBzrCliDirectoryTests extends vcsTestCase
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
-        foreach ( $iterator as $file )
-        {
+        foreach ( $iterator as $file ) {
             $files[] = (string) $file;
         }
         sort( $files );
@@ -90,8 +88,7 @@ class vcsBzrCliDirectoryTests extends vcsTestCase
         $dir = new vcsBzrCliDirectory( $this->tempDir, '/dir1/' );
 
         $files = array();
-        foreach ( $dir as $file )
-        {
+        foreach ( $dir as $file ) {
             $files[] = (string) $file;
         }
 
@@ -103,4 +100,3 @@ class vcsBzrCliDirectoryTests extends vcsTestCase
         );
     }
 }
-

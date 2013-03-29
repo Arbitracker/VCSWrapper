@@ -41,7 +41,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      */
     public function getContents()
     {
-        return file_get_contents( $this->root . $this->path );
+        return file_get_contents($this->root . $this->path);
     }
 
     /**
@@ -54,10 +54,9 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      */
     public function getMimeType()
     {
-        $mimeType = $this->getResourceProperty( 'mime-type' );
+        $mimeType = $this->getResourceProperty('mime-type');
 
-        if ( !empty( $mimeType ) )
-        {
+        if (!empty($mimeType)) {
             return $mimeType;
         }
 
@@ -91,45 +90,41 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      * @param mixed $version
      * @return mixed
      */
-    public function blame( $version = null )
+    public function blame($version = null)
     {
-        $version = ( $version === null ) ? $this->getVersionString() : $version;
+        $version = ($version === null) ? $this->getVersionString() : $version;
 
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        if ( ( $blame = vcsCache::get( $this->path, $version, 'blame' ) ) === false )
-        {
+        if (($blame = vcsCache::get($this->path, $version, 'blame')) === false) {
             // Refetch the basic blamermation, and cache it.
-            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
-            $process->argument( '--xml' );
+            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+            $process->argument('--xml');
 
             // Execute command
-            $return = $process->argument( 'blame' )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
-            $xml = \Arbit\Xml\Document::loadString( $process->stdoutOutput );
+            $return = $process->argument('blame')->argument(new \SystemProcess\Argument\PathArgument($this->root . $this->path))->execute();
+            $xml = \Arbit\Xml\Document::loadString($process->stdoutOutput);
 
             // Check if blame information si available. Is absent fro binary
             // files.
-            if ( !$xml->target )
-            {
+            if (!$xml->target) {
                 return false;
             }
 
             $blame = array();
-            $contents = preg_split( '(\r\n|\r|\n)', $this->getVersionedContent( $version ) );
-            foreach ( $xml->target[0]->entry as $nr => $entry )
-            {
+            $contents = preg_split('(\r\n|\r|\n)', $this->getVersionedContent($version));
+            foreach ($xml->target[0]->entry as $nr => $entry) {
                 $blame[] = new vcsBlameStruct(
                     $contents[$nr],
                     $entry->commit[0]['revision'],
                     $entry->commit[0]->author,
-                    strtotime( $entry->commit[0]->date )
+                    strtotime($entry->commit[0]->date)
                 );
             }
 
-            vcsCache::cache( $this->path, $version, 'blame', $blame );
+            vcsCache::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
@@ -143,25 +138,22 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
      * @param string $version
      * @return string
      */
-    public function getVersionedContent( $version )
+    public function getVersionedContent($version)
     {
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        if ( ( $content = vcsCache::get( $this->path, $version, 'content' ) ) === false )
-        {
+        if (($content = vcsCache::get($this->path, $version, 'content')) === false) {
             // Refetch the basic content information, and cache it.
-            $process = new vcsSvnCliProcess( 'svn', $this->username, $this->password );
-            $process->argument( '-r' . $version );
+            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+            $process->argument('-r' . $version);
 
             // Execute command
-            $return = $process->argument( 'cat' )->argument( new \SystemProcess\Argument\PathArgument( $this->root . $this->path ) )->execute();
-            vcsCache::cache( $this->path, $version, 'content', $content = $process->stdoutOutput );
+            $return = $process->argument('cat')->argument(new \SystemProcess\Argument\PathArgument($this->root . $this->path))->execute();
+            vcsCache::cache($this->path, $version, 'content', $content = $process->stdoutOutput);
         }
 
         return $content;
     }
 }
-

@@ -60,7 +60,7 @@ abstract class vcsResource
      * @param string $path
      * @return void
      */
-    public function __construct( $root, $path )
+    public function __construct($root, $path)
     {
         $this->root = $root;
         $this->path = $path;
@@ -91,4 +91,3 @@ abstract class vcsResource
         return $this->path;
     }
 }
-

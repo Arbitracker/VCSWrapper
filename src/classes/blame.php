@@ -53,7 +53,7 @@ class vcsBlameStruct extends vcsBaseStruct
      * @param int $date
      * @return void
      */
-    public function __construct( $content = null, $version = null, $author = null, $date = null )
+    public function __construct($content = null, $version = null, $author = null, $date = null)
     {
         $this->content = (string) $content;
         $this->version = (string) $version;
@@ -71,9 +71,8 @@ class vcsBlameStruct extends vcsBaseStruct
      * @param string $class
      * @return vcsBlameStruct
      */
-    public static function __set_state( array $properties, $class = __CLASS__ )
+    public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state( $properties, $class );
+        return vcsBaseStruct::__set_state($properties, $class);
     }
 }
-

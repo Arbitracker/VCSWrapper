@@ -58,6 +58,5 @@ interface vcsBlameable extends vcsAuthored
      * @param mixed $version
      * @return mixed
      */
-    public function blame( $version = null );
+    public function blame($version = null);
 }
-

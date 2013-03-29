@@ -35,6 +35,5 @@ interface arbitCacheable
      * @param array $properties
      * @return arbitCacheable
      */
-    public static function __set_state( array $properties );
+    public static function __set_state(array $properties);
 }
-

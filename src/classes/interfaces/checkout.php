@@ -44,7 +44,7 @@ interface vcsCheckout extends vcsDirectory
      * @param string $password
      * @return void
      */
-    public function initialize( $url, $user = null, $password = null );
+    public function initialize($url, $user = null, $password = null);
 
     /**
      * Update repository
@@ -58,7 +58,7 @@ interface vcsCheckout extends vcsDirectory
      * @param string $version
      * @return bool
      */
-    public function update( $version = null );
+    public function update($version = null);
 
     /**
      * Get checkout item
@@ -72,6 +72,5 @@ interface vcsCheckout extends vcsDirectory
      * @param string $path
      * @return mixed
      */
-    public function get( $path = '/' );
+    public function get($path = '/');
 }
-

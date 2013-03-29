@@ -50,7 +50,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
      */
     public function getContents()
     {
-        return file_get_contents( $this->root . $this->path );
+        return file_get_contents($this->root . $this->path);
     }
 
     /**
@@ -93,43 +93,38 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
      * @param mixed $version
      * @return mixed
      */
-    public function blame( $version = null )
+    public function blame($version = null)
     {
-        $version = ( $version === null ) ? $this->getVersionString() : $version;
+        $version = ($version === null) ? $this->getVersionString() : $version;
 
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        $blame = vcsCache::get( $this->path, $version, 'blame' );
-        if ( $blame === false )
-        {
+        $blame = vcsCache::get($this->path, $version, 'blame');
+        if ($blame === false) {
             $shortHashCache = array();
 
             // Refetch the basic blamermation, and cache it.
             $process = new vcsHgCliProcess();
-            $process->workingDirectory( $this->root );
+            $process->workingDirectory($this->root);
 
             // Execute command
-            $process->argument( 'blame' );
-            $process->argument( '-uvdcl' );
-            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
+            $process->argument('blame');
+            $process->argument('-uvdcl');
+            $process->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path));
             $return = $process->execute();
-            $contents = preg_split( '(\r\n|\r|\n)', trim( $process->stdoutOutput ) );
+            $contents = preg_split('(\r\n|\r|\n)', trim($process->stdoutOutput));
 
             // Convert returned lines into diff structures
             $blame = array();
-            foreach ( $contents AS $line )
-            {
-                if ( !$line )
-                {
+            foreach ($contents AS $line) {
+                if (!$line) {
                     continue;
                 }
 
-                if ( preg_match( self::BLAME_REGEXP, $line, $match ) === 0 )
-                {
-                    throw new vcsRuntimeException( "Could not parse line: $line" );
+                if (preg_match(self::BLAME_REGEXP, $line, $match) === 0) {
+                    throw new vcsRuntimeException("Could not parse line: $line");
                 }
 
                 $user       = $match['user'];
@@ -138,23 +133,21 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                 $shortHash  = $match['hash'];
                 $lineNumber = $match['line'];
 
-                if ( !isset( $shortHashCache[ $shortHash ] ) )
-                {
+                if (!isset($shortHashCache[ $shortHash ])) {
                     // get the long revision from the short revision number
                     $process = new vcsHgCliProcess();
-                    $process->workingDirectory( $this->root );
-                    $process->argument( 'id' );
-                    $process->argument( '--debug' );
-                    $process->argument( '-r' . $shortHash );
+                    $process->workingDirectory($this->root);
+                    $process->argument('id');
+                    $process->argument('--debug');
+                    $process->argument('-r' . $shortHash);
                     $process->execute();
 
-                    $result = trim( $process->stdoutOutput );
-                    $spacePosition = strpos( $result, ' ' );
+                    $result = trim($process->stdoutOutput);
+                    $spacePosition = strpos($result, ' ');
                     // if there is a space inside the revision, we have additional tags
                     // and we really want to remove them from the revision number
-                    if ( $spacePosition )
-                    {
-                        $result = substr( $result, 0, $spacePosition );
+                    if ($spacePosition) {
+                        $result = substr($result, 0, $spacePosition);
                     }
 
                     $shortHashCache[ $shortHash ] = $result;
@@ -164,19 +157,16 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
 
                 // lets start the little work. we need the alias part of the
                 // email inside the username
-                if ( preg_match( '(<(?P<alias>\S+)@\S+\.\S+>$)', $user, $match ) )
-                {
+                if (preg_match('(<(?P<alias>\S+)@\S+\.\S+>$)', $user, $match)) {
                     $alias = $match['alias'];
-                }
-                else
-                {
+                } else {
                     $alias = $user;
                 }
 
-                $blame[] = new vcsBlameStruct( $line, $revision, $alias, strtotime( $date ) );
+                $blame[] = new vcsBlameStruct($line, $revision, $alias, strtotime($date));
             }
 
-            vcsCache::cache( $this->path, $version, 'blame', $blame );
+            vcsCache::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
@@ -193,36 +183,31 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
      * @param string $current
      * @return vcsResource
      */
-    public function getDiff( $version, $current = null )
+    public function getDiff($version, $current = null)
     {
-        if ( !in_array( $version, $this->getVersions(), true ) )
-        {
-            throw new vcsNoSuchVersionException( $this->path, $version );
+        if (!in_array($version, $this->getVersions(), true)) {
+            throw new vcsNoSuchVersionException($this->path, $version);
         }
 
-        $diff = vcsCache::get( $this->path, $version, 'diff' );
-        if ( $diff === false )
-        {
+        $diff = vcsCache::get($this->path, $version, 'diff');
+        if ($diff === false) {
             // Refetch the basic content information, and cache it.
             $process = new vcsHgCliProcess();
-            $process->workingDirectory( $this->root );
-            $process->argument( 'diff' );
-            if ($current !== null)
-            {
-                $process->argument( '-r' . $current );
+            $process->workingDirectory($this->root);
+            $process->argument('diff');
+            if ($current !== null) {
+                $process->argument('-r' . $current);
             }
-            $process->argument( '-r' . $version );
-            $process->argument( new \SystemProcess\Argument\PathArgument( '.' . $this->path ) );
+            $process->argument('-r' . $version);
+            $process->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path));
             $process->execute();
 
             // Parse resulting unified diff
             $parser = new vcsUnifiedDiffParser();
-            $diff   = $parser->parseString( $process->stdoutOutput );
-            vcsCache::cache( $this->path, $version, 'diff', $diff );
+            $diff   = $parser->parseString($process->stdoutOutput);
+            vcsCache::cache($this->path, $version, 'diff', $diff);
         }
 
         return $diff;
     }
 }
-
-

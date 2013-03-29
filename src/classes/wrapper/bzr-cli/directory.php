@@ -49,24 +49,21 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
      */
     protected function initializeResouces()
     {
-        if ( $this->resources !== null )
-        {
+        if ($this->resources !== null) {
             return;
         }
 
         $this->resources = array();
 
-        $contents = dir( $this->root . $this->path );
-        while ( ( $path = $contents->read() ) !== false )
-        {
-            if ( in_array( $path, array( '.', '..', '.bzr' ) ) )
-            {
+        $contents = dir($this->root . $this->path);
+        while (($path = $contents->read()) !== false) {
+            if (in_array($path, array('.', '..', '.bzr'))) {
                 continue;
             }
 
-            $this->resources[] = ( is_dir( $this->root . $this->path . $path ) ?
-                new vcsBzrCliDirectory( $this->root, $this->path . $path . '/' ) :
-                new vcsBzrCliFile( $this->root, $this->path . $path )
+            $this->resources[] = (is_dir($this->root . $this->path . $path) ?
+                new vcsBzrCliDirectory($this->root, $this->path . $path . '/') :
+                new vcsBzrCliFile($this->root, $this->path . $path)
             );
         }
 
@@ -82,7 +79,7 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return current( $this->resources );
+        return current($this->resources);
     }
 
     /**
@@ -94,7 +91,7 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return next( $this->resources );
+        return next($this->resources);
     }
 
     /**
@@ -106,7 +103,7 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return key( $this->resources );
+        return key($this->resources);
     }
 
     /**
@@ -130,7 +127,7 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return reset( $this->resources );
+        return reset($this->resources);
     }
 
     /**
@@ -142,7 +139,7 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return current( $this->resources );
+        return current($this->resources);
     }
 
     /**
@@ -154,7 +151,6 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return current( $this->resources ) instanceof vcsDirectory;
+        return current($this->resources) instanceof vcsDirectory;
     }
 }
-
