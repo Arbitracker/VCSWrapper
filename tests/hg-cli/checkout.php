@@ -38,8 +38,8 @@ class vcsHgCliCheckoutTests extends vcsTestCase
         try
         {
             $repository->initialize( 'file:///hopefully/not/existing/hg/repo' );
-            $this->fail( 'Expected pbsSystemProcessNonZeroExitCodeException.' );
-        } catch ( pbsSystemProcessNonZeroExitCodeException $e )
+            $this->fail( 'Expected \SystemProcess\NonZeroExitCodeException.' );
+        } catch ( \SystemProcess\NonZeroExitCodeException $e )
         { /* Expected */ }
 
     }

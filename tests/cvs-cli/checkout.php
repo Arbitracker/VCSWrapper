@@ -39,8 +39,8 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
         try
         {
             $checkout->initialize( '/hopefully/not/existing/cvs#repo' );
-            $this->fail( 'Expected pbsSystemProcessNonZeroExitCodeException.' );
-        } catch ( pbsSystemProcessNonZeroExitCodeException $e )
+            $this->fail( 'Expected \SystemProcess\NonZeroExitCodeException.' );
+        } catch ( \SystemProcess\NonZeroExitCodeException $e )
         { /* Expected */ }
     }
 

@@ -65,12 +65,6 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
     *
     * You may optionally define modes used to create files and directories.
     *
-    * @throws ezcBaseFileNotFoundException
-    *      If the $sourceDir directory is not a directory or does not exist.
-    * @throws ezcBaseFilePermissionException
-    *      If the $sourceDir directory could not be opened for reading, or the
-    *      destination is not writeable.
-    *
     * @copyright Copyright (C) 2005-2008 eZ systems as. All rights reserved.
     * @license http://ez.no/licenses/new_bsd New BSD License
     * @param string $source
@@ -85,13 +79,13 @@ class vcsTestCase extends PHPUnit_Framework_TestCase
         // Check if source file exists at all.
         if ( !is_file( $source ) && !is_dir( $source ) )
         {
-            throw new ezcBaseFileNotFoundException( $source );
+            throw new \RuntimeException( "File not found: $source" );
         }
 
         // Destination file should NOT exist
         if ( is_file( $destination ) || is_dir( $destination ) )
         {
-            throw new ezcBaseFilePermissionException( $destination, ezcBaseFileException::WRITE );
+            throw new \RuntimeException( " Cannot write to $destination" );
         }
 
         // Copy
