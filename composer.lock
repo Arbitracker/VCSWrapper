@@ -1,0 +1,55 @@
+{
+    "hash": "5d3fc5b4e4945750db3e6aaa2bb98ee4",
+    "packages": [
+        {
+            "name": "Arbit/SystemProcess",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Arbitracker/system-process",
+                "reference": "4778d507e968dfdc90a812b20a782124c44d270e"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Arbit\\SystemProcess": "src/main/php/"
+                }
+            },
+            "description": "System process execution library",
+            "time": "2013-03-29 13:10:44"
+        },
+        {
+            "name": "Arbit/XML",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Arbitracker/XML",
+                "reference": "cca2e65b92913b644c90957f1db1879f13797b5b"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Arbit\\Xml": "src/php/"
+                }
+            },
+            "description": "XML reader with a SimpleXML like API.",
+            "time": "2012-07-29 17:18:07"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
