@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="VCSWrapper TestSuite">
+            <directory>tests/</directory>
+            <file>tests/cvs-cli/file.php</file>
+            <file>tests/cvs-cli/directory.php</file>
+            <file>tests/cvs-cli/checkout.php</file>
+            <file>tests/svn-cli/file.php</file>
+            <file>tests/svn-cli/directory.php</file>
+            <file>tests/svn-cli/checkout.php</file>
+            <file>tests/diff/unified_diff.php</file>
+            <file>tests/cache/sqlite_metadata.php</file>
+            <file>tests/cache/cache.php</file>
+            <file>tests/cache/filesystem_metadata.php</file>
+            <file>tests/git-cli/file.php</file>
+            <file>tests/git-cli/blame-regexp.php</file>
+            <file>tests/git-cli/directory.php</file>
+            <file>tests/git-cli/checkout.php</file>
+            <file>tests/data/diff/unified/s_002_insert.php</file>
+            <file>tests/data/diff/unified/s_007_multiple_files.php</file>
+            <file>tests/data/diff/unified/s_005_no_newline.php</file>
+            <file>tests/data/diff/unified/s_001_empty.php</file>
+            <file>tests/data/diff/unified/s_004_comments.php</file>
+            <file>tests/data/diff/unified/s_006_multiple.php</file>
+            <file>tests/data/diff/unified/s_003_delete.php</file>
+            <file>tests/svn-ext/file.php</file>
+            <file>tests/svn-ext/directory.php</file>
+            <file>tests/svn-ext/checkout.php</file>
+            <file>tests/archive/file.php</file>
+            <file>tests/archive/directory.php</file>
+            <file>tests/archive/zip_checkout.php</file>
+            <file>tests/base_test.php</file>
+            <file>tests/hg-cli/file.php</file>
+            <file>tests/hg-cli/directory.php</file>
+            <file>tests/hg-cli/checkout.php</file>
+            <file>tests/bzr-cli/file.php</file>
+            <file>tests/bzr-cli/directory.php</file>
+            <file>tests/bzr-cli/checkout.php</file>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>src/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
