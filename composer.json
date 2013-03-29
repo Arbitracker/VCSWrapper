@@ -18,6 +18,6 @@
         "vendor-dir": "src/library"
     },
     "autoload":    {
-        "classmap": ["src/classes/"]
+        "classmap": ["src/main/php/"]
     }
 }
