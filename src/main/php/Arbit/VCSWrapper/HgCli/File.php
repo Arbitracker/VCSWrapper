@@ -100,7 +100,7 @@ class File extends \Arbit\VCSWrapper\HgCli\Resource implements \Arbit\VCSWrapper
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         $blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame');
@@ -188,7 +188,7 @@ class File extends \Arbit\VCSWrapper\HgCli\Resource implements \Arbit\VCSWrapper
     public function getDiff($version, $current = null)
     {
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         $diff = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'diff');

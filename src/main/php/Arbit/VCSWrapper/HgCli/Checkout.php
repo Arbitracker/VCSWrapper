@@ -141,7 +141,7 @@ class Checkout extends \Arbit\VCSWrapper\HgCli\Directory implements \Arbit\VCSWr
         if (($fullPath === false) ||
              (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new \Arbit\VCSWrapper\FileNotFoundException($path);
+            throw new \RuntimeException("File not found $path.");
         }
 
         if ($path === '/') {

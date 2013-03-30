@@ -91,7 +91,7 @@ class File extends \Arbit\VCSWrapper\BzrCli\Resource implements \Arbit\VCSWrappe
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         $blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame');

@@ -92,7 +92,7 @@ class File extends \Arbit\VCSWrapper\CvsCli\Resource implements \Arbit\VCSWrappe
 
         $versions = $this->getVersions();
         if (!in_array($version, $versions, true)) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         if (($blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame')) !== false) {
@@ -149,7 +149,7 @@ class File extends \Arbit\VCSWrapper\CvsCli\Resource implements \Arbit\VCSWrappe
     {
         $versions = $this->getVersions();
         if (!in_array($version, $versions, true)) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         if (($content = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'content')) === false) {

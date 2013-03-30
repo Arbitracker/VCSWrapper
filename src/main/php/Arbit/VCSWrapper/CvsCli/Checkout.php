@@ -68,7 +68,7 @@ class Checkout extends \Arbit\VCSWrapper\CvsCli\Directory implements \Arbit\VCSW
         } elseif ($count === 2) {
             list($repoUrl, $module, $revision) = explode('#', $url);
         } else {
-            throw new \UnexpectedValueException($url, 'cvs');
+            throw new \UnexpectedValueException("No valid VCS url $url");
         }
 
         $process = new \Arbit\VCSWrapper\CvsCli\Process();
@@ -136,7 +136,7 @@ class Checkout extends \Arbit\VCSWrapper\CvsCli\Directory implements \Arbit\VCSW
         if (($fullPath === false) ||
              (strpos($fullPath, $this->root) !== 0))
         {
-            throw new \Arbit\VCSWrapper\FileNotFoundException($path);
+            throw new \RuntimeException("File not found $path.");
         }
 
         switch (true) {

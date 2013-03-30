@@ -126,7 +126,7 @@ class Checkout extends \Arbit\VCSWrapper\SvnCli\Directory implements \Arbit\VCSW
         if (($fullPath === false) ||
              (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new \Arbit\VCSWrapper\FileNotFoundException($path);
+            throw new \RuntimeException("File not found $path.");
         }
 
         switch (true) {

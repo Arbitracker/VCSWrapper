@@ -97,7 +97,7 @@ class File extends \Arbit\VCSWrapper\SvnExt\Resource implements \Arbit\VCSWrappe
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         if (($blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame')) === false) {
@@ -136,7 +136,7 @@ class File extends \Arbit\VCSWrapper\SvnExt\Resource implements \Arbit\VCSWrappe
     public function getVersionedContent($version)
     {
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         if (($content = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'content')) === false) {

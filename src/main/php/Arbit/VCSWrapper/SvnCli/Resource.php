@@ -253,7 +253,7 @@ abstract class Resource extends \Arbit\VCSWrapper\Resource implements \Arbit\VCS
         $log = $this->getResourceLog();
 
         if (!isset($log[$version])) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         return $log[$version]->author;
@@ -285,7 +285,7 @@ abstract class Resource extends \Arbit\VCSWrapper\Resource implements \Arbit\VCS
         $log = $this->getResourceLog();
 
         if (!isset($log[$version])) {
-            throw new \UnexpectedValueException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         return $log[$version];
