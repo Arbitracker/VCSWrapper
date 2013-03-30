@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\GitCli;
+
 /**
  * File implementation vor Git Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage GitCliWrapper
  * @version $Revision$
  */
-class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, vcsDiffable
+class File extends \Arbit\VCSWrapper\GitCli\Resource implements \Arbit\VCSWrapper\File, \Arbit\VCSWrapper\Blameable, \Arbit\VCSWrapper\Diffable
 {
     /**
      * Regular expression used to extract data from a git blame line.
@@ -94,12 +96,12 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        if (($blame = vcsCache::get($this->path, $version, 'blame')) === false) {
+        if (($blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame')) === false) {
             // Refetch the basic blamermation, and cache it.
-            $process = new vcsGitCliProcess();
+            $process = new \Arbit\VCSWrapper\GitCli\Process();
             $process->workingDirectory($this->root);
 
             // Execute command
@@ -111,13 +113,13 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
             foreach ($contents as $nr => $line) {
                 if (preg_match(self::BLAME_REGEXP, $line, $match)) {
                     $match['line'] = isset($match['line']) ? $match['line'] : null;
-                    $blame[] = new vcsBlameStruct($match['line'], $match['version'], $match['author'], strtotime($match['date']));
+                    $blame[] = new \Arbit\VCSWrapper\Blame($match['line'], $match['version'], $match['author'], strtotime($match['date']));
                 } else {
-                    throw new vcsRuntimeException("Could not parse line: $line");
+                    throw new \RuntimeException("Could not parse line: $line");
                 }
             }
 
-            vcsCache::cache($this->path, $version, 'blame', $blame);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
@@ -132,27 +134,27 @@ class vcsGitCliFile extends vcsGitCliResource implements vcsFile, vcsBlameable, 
      *
      * @param string $version
      * @param string $current
-     * @return vcsResource
+     * @return \Arbit\VCSWrapper\Resource
      */
     public function getDiff($version, $current = null)
     {
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
         $current = ($current === null) ? $this->getVersionString() : $current;
 
-        if (($diff = vcsCache::get($this->path, $version, 'diff')) === false) {
+        if (($diff = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'diff')) === false) {
             // Refetch the basic content information, and cache it.
-            $process = new vcsGitCliProcess();
+            $process = new \Arbit\VCSWrapper\GitCli\Process();
             $process->workingDirectory($this->root);
             $process->argument('diff')->argument('--no-ext-diff');
             $process->argument($version . '..' . $current)->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path))->execute();
 
             // Parse resulting unified diff
-            $parser = new vcsUnifiedDiffParser();
+            $parser = new \Arbit\VCSWrapper\Diff\Unified();
             $diff   = $parser->parseString($process->stdoutOutput);
-            vcsCache::cache($this->path, $version, 'diff', $diff);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'diff', $diff);
         }
 
         return $diff;

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Archive;
+
 /**
  * Directory implementation for archive wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage ArchiveWrapper
  * @version $Revision$
  */
-class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
+class Directory extends \Arbit\VCSWrapper\Archive\Resource implements \Arbit\VCSWrapper\Directory
 {
     /**
      * Array with children resources of the directory, used for the iterator.
@@ -43,9 +45,9 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
      * Initialize resources array
      *
      * Initilaize the array containing all child elements of the current
-     * directly as vcsArchiveResource objects.
+     * directly as \Arbit\VCSWrapper\Archive\Resource objects.
      *
-     * @return array(vcsArchiveResource)
+     * @return array(\Arbit\VCSWrapper\Archive\Resource)
      */
     protected function initializeResouces()
     {
@@ -62,8 +64,8 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
             }
 
             $this->resources[] = (is_dir($this->root . $this->path . $path) ?
-                new vcsArchiveDirectory($this->root, $this->path . $path . '/') :
-                new vcsArchiveFile($this->root, $this->path . $path)
+                new \Arbit\VCSWrapper\Archive\Directory($this->root, $this->path . $path . '/') :
+                new \Arbit\VCSWrapper\Archive\File($this->root, $this->path . $path)
             );
         }
         $contents->close();
@@ -164,6 +166,6 @@ class vcsArchiveDirectory extends vcsArchiveResource implements vcsDirectory
             $this->initializeResouces();
         }
 
-        return current($this->resources) instanceof vcsDirectory;
+        return current($this->resources) instanceof \Arbit\VCSWrapper\Directory;
     }
 }

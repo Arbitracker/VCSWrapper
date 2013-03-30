@@ -6,59 +6,53 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the CVS Cli wrapper
- */
-class vcsCvsCliFileTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\CvsCli;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the CVS Cli wrapper
+ */
+class FileTest extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testGetVersionString()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals( '1.2', $file->getVersionString() );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertEquals( '1.3', $file->getVersionString() );
     }
 
     public function testGetVersions()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertSame( array( '1.1', '1.2' ), $file->getVersions()  );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertSame( array( '1.1', '1.2', '1.3' ), $file->getVersions()  );
     }
 
     public function testCompareVersions()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals( 0, $file->compareVersions( '1.1', '1.1' ) );
         $this->assertLessThan( 0, $file->compareVersions( '1.1', '1.2' ) );
@@ -67,53 +61,53 @@ class vcsCvsCliFileTests extends vcsTestCase
 
     public function testGetAuthor()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals( 'manu', $file->getAuthor() );
     }
 
     public function testGetAuthorWithVersion()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals( 'manu', $file->getAuthor( '1.1' ) );
     }
 
     public function testGetAuthorWithInvalidVersion()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
-        $this->setExpectedException('vcsNoSuchVersionException');
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
+        $this->setExpectedException('\UnexpectedValueException');
         $file->getAuthor( '1.10' );
     }
 
     public function testGetLog()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             array(
-                '1.1' => new vcsLogEntry(
+                '1.1' => new \Arbit\VCSWrapper\LogEntry(
                     '1.1',
                     'manu',
                     '- Added file in subdir',
                     1227507833
                 ),
-                '1.2' => new vcsLogEntry(
+                '1.2' => new \Arbit\VCSWrapper\LogEntry(
                     '1.2',
                     'manu',
                     '- A',
                     1227804262
                 ),
-                '1.3' => new vcsLogEntry(
+                '1.3' => new \Arbit\VCSWrapper\LogEntry(
                     '1.3',
                     'manu',
                     '- Test file modified.',
@@ -126,12 +120,12 @@ class vcsCvsCliFileTests extends vcsTestCase
 
     public function testGetLogEntry()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals(
-            new vcsLogEntry(
+            new \Arbit\VCSWrapper\LogEntry(
                 '1.2',
                 'manu',
                 '- Added another line to file',
@@ -143,74 +137,74 @@ class vcsCvsCliFileTests extends vcsTestCase
 
     public function testGetUnknownLogEntry()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
 
-        $this->setExpectedException( 'vcsNoSuchVersionException' );
+        $this->setExpectedException( '\UnexpectedValueException' );
 
         $file->getLogEntry( "no_such_version" );
     }
 
     public function testGetFileContents()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file1' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file1' );
         $this->assertEquals( "Another test file\n", $file->getContents() );
     }
 
     public function testGetFileMimeType()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file1' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file1' );
         $this->assertEquals( 'application/octet-stream', $file->getMimeType() );
     }
 
     public function testGetFileVersionedFileContents()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertEquals( "Some test contents\n", $file->getVersionedContent( '1.1' ) );
     }
 
     public function testGetFileContentsInvalidVersion()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/file' );
-        $this->setExpectedException( 'vcsNoSuchVersionException' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
+        $this->setExpectedException( '\UnexpectedValueException' );
         $file->getVersionedContent( 'no_such_version' );
     }
 
     public function testGetFileBlame()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertEquals(
             array(
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Some test contents',
                     '1.1',
                     'manu',
                     1227481200
                 ),
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'More test contents',
                     '1.2',
                     'manu',
                     1227740400
                 ),
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'And another test line',
                     '1.3',
                     'manu',
@@ -223,13 +217,13 @@ class vcsCvsCliFileTests extends vcsTestCase
 
     public function testGetFileBlameWithVersion()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertEquals(
             array(
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Some test contents',
                     '1.1',
                     'manu',
@@ -242,30 +236,30 @@ class vcsCvsCliFileTests extends vcsTestCase
 
     public function testGetFileBlameWithInvalidVersion()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
-        $this->setExpectedException( 'vcsNoSuchVersionException' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
+        $this->setExpectedException( '\UnexpectedValueException' );
         $file->blame( 'no_such_version' );
     }
 
     public function testGetFileDiff()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $file = new vcsCvsCliFile( $this->tempDir, '/dir1/file' );
+        $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $diff = $file->getDiff( '1.1' );
 
         $this->assertEquals(
             array(
-                new vcsDiffChunk(
+                new \Arbit\VCSWrapper\Diff\CollectionChunk(
                     1, 1, 1, 3,
                     array(
-                        new vcsDiffLine( 3, 'Some test contents' ),
-                        new vcsDiffLine( 1, 'More test contents' ),
-                        new vcsDiffLine( 1, 'And another test line' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 3, 'Some test contents' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 1, 'More test contents' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 1, 'And another test line' ),
                     )
                 ),
             ),

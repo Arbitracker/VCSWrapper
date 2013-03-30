@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\GitCli;
+
 /**
  * Git executable wrapper for system process class
  *
@@ -30,7 +32,7 @@
  * @subpackage GitCliWrapper
  * @version $Revision$
  */
-class vcsGitCliProcess extends \SystemProcess\SystemProcess
+class Process extends \SystemProcess\SystemProcess
 {
     /**
      * Static property containg information, if the version of the git CLI
@@ -74,13 +76,13 @@ class vcsGitCliProcess extends \SystemProcess\SystemProcess
         $process->argument('--version')->execute();
 
         if (!preg_match('(\\d+(?:\.\\d+)+)', $process->stdoutOutput, $match)) {
-            throw new vcsRuntimeException('Could not determine GIT version.');
+            throw new \RuntimeException('Could not determine GIT version.');
         }
 
         if (version_compare($match[0], '1.6', '>=')) {
             return self::$checked = true;
         }
 
-        throw new vcsRuntimeException('Git is required in a minimum version of 1.6.');
+        throw new \RuntimeException('Git is required in a minimum version of 1.6.');
     }
 }

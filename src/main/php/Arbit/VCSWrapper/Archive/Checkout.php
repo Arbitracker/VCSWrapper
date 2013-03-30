@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Archive;
+
 /**
  * Handler for archive based "checkouts"
  *
@@ -30,7 +32,7 @@
  * @subpackage ArchiveWrapper
  * @version $Revision$
  */
-abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsCheckout
+abstract class Checkout extends \Arbit\VCSWrapper\Archive\Directory implements \Arbit\VCSWrapper\Checkout
 {
     /**
      * Construct repository with repository root path
@@ -70,7 +72,7 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
      * Get an item from the checkout, specified by its local path. If no item
      * with the specified path exists an exception is thrown.
      *
-     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * Method either returns a \Arbit\VCSWrapper\Checkout, a \Arbit\VCSWrapper\Directory or a \Arbit\VCSWrapper\File
      * instance, depending on the given path.
      *
      * @param string $path
@@ -83,7 +85,7 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
         if (($fullPath === false) ||
              (strpos($fullPath, $this->root) !== 0))
         {
-            throw new vcsFileNotFoundException($path);
+            throw new \RuntimeException("Could not find $path");
         }
 
         switch (true) {
@@ -91,10 +93,10 @@ abstract class vcsArchiveCheckout extends vcsArchiveDirectory implements vcsChec
                 return $this;
 
             case is_dir($fullPath):
-                return new vcsArchiveDirectory($this->root, $path);
+                return new \Arbit\VCSWrapper\Archive\Directory($this->root, $path);
 
             default:
-                return new vcsArchiveFile($this->root, $path);
+                return new \Arbit\VCSWrapper\Archive\File($this->root, $path);
         }
     }
 }

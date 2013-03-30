@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Cache;
+
 /**
  * Cache metadata handler base class
  *
@@ -33,7 +35,7 @@
  * @subpackage Cache
  * @version $Revision$
  */
-abstract class vcsCacheMetaData
+abstract class MetaData
 {
     /**
      * Root of cache storage

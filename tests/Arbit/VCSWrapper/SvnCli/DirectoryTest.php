@@ -6,36 +6,30 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsSvnCliDirectoryTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\SvnCli;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class DirectoryTest extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testIterateRootDirContents()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
 
-        $dir = new vcsSvnCliDirectory( $this->tempDir, '/' );
+        $dir = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/' );
 
         $files = array();
         foreach ( $dir as $file ) {
@@ -56,10 +50,10 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
 
     public function testRecursiveIterator()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
 
-        $dir      = new vcsSvnCliDirectory( $this->tempDir, '/' );
+        $dir      = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
@@ -82,10 +76,10 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
 
     public function testIterateSubDirContents()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
 
-        $dir = new vcsSvnCliDirectory( $this->tempDir, '/dir1/' );
+        $dir = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/dir1/' );
 
         $files = array();
         foreach ( $dir as $file ) {
@@ -102,9 +96,9 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
 
     public function testGetDirectoryDiff()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $dir = new vcsSvnCliDirectory( $this->tempDir, '/dir1/' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $dir = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/dir1/' );
 
         $diff = $dir->getDiff( 2 );
 
@@ -118,10 +112,10 @@ class vcsSvnCliDirectoryTests extends vcsTestCase
         );
         $this->assertEquals(
             array(
-                new vcsDiffChunk(
+                new \Arbit\VCSWrapper\Diff\CollectionChunk(
                     0, 1, 1, 1,
                     array(
-                        new vcsDiffLine( 1, 'Some test contents' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 1, 'Some test contents' ),
                     )
                 ),
             ),

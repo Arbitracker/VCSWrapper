@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Base class for files in the VCS wrapper.
  *
@@ -31,7 +33,7 @@
  * class should be extended with interfaces annotating the VCS features beside
  * basic file iteration.
  */
-interface vcsFile
+interface File
 {
     /**
      * Get file contents

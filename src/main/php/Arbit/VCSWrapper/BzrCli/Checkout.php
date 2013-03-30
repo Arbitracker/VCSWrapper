@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\BzrCli;
+
 /**
  * Handler for Bzr repositories
  *
@@ -30,7 +32,7 @@
  * @subpackage BzrCliWrapper
  * @version $Revision$
  */
-class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
+class Checkout extends \Arbit\VCSWrapper\BzrCli\Directory implements \Arbit\VCSWrapper\Checkout
 {
     /**
      * Construct repository with repository root path
@@ -65,7 +67,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
 
         if (is_dir($this->root)) {
             if (count(glob($this->root . '/*'))) {
-                throw new vcsCheckoutFailedException($url);
+                throw new \Arbit\VCSWrapper\CheckoutFailedException($url);
             }
 
             rmdir($this->root);
@@ -74,7 +76,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
         // Fix incorrect windows checkout URLs
         $url = preg_replace('(^file://([A-Za-z]):)', 'file:///\\1:', $url);
 
-        $process = new vcsBzrCliProcess();
+        $process = new \Arbit\VCSWrapper\BzrCli\Process();
         $process->nonZeroExitCodeException = true;
         $process->argument('checkout');
         $process->argument(str_replace('\\', '/', $url));
@@ -103,13 +105,13 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        $process = new vcsBzrCliProcess();
+        $process = new \Arbit\VCSWrapper\BzrCli\Process();
         $process->workingDirectory($this->root);
         $process->argument('update');
         $process->execute();
 
         if ($version !== null) {
-            $process = new vcsBzrCliProcess();
+            $process = new \Arbit\VCSWrapper\BzrCli\Process();
             $process->workingDirectory($this->root);
             $process->argument('revert')->argument('-r' . $version);
             $process->execute();
@@ -126,7 +128,7 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
      * Get an item from the checkout, specified by its local path. If no item
      * with the specified path exists an exception is thrown.
      *
-     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * Method either returns a \Arbit\VCSWrapper\Checkout, a \Arbit\VCSWrapper\Directory or a \Arbit\VCSWrapper\File
      * instance, depending on the given path.
      *
      * @param string $path
@@ -139,13 +141,13 @@ class vcsBzrCliCheckout extends vcsBzrCliDirectory implements vcsCheckout
         if (($fullPath === false) ||
              (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException($path);
+            throw new \RuntimeException("File not found: $path.");
         }
 
         if ($path === '/') {
             return $this;
         }
 
-        return is_dir($fullPath) ? new vcsBzrCliDirectory($this->root, $path) : new vcsBzrCliFile($this->root, $path);
+        return is_dir($fullPath) ? new \Arbit\VCSWrapper\BzrCli\Directory($this->root, $path) : new \Arbit\VCSWrapper\BzrCli\File($this->root, $path);
     }
 }

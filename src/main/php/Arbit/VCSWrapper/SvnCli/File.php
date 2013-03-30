@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\SvnCli;
+
 /**
  * File implementation vor SVN Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage SvnCliWrapper
  * @version $Revision$
  */
-class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, vcsFetchable
+class File extends \Arbit\VCSWrapper\SvnCli\Resource implements \Arbit\VCSWrapper\File, \Arbit\VCSWrapper\Blameable, \Arbit\VCSWrapper\Fetchable
 {
     /**
      * Get file contents
@@ -95,12 +97,12 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        if (($blame = vcsCache::get($this->path, $version, 'blame')) === false) {
+        if (($blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame')) === false) {
             // Refetch the basic blamermation, and cache it.
-            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+            $process = new \Arbit\VCSWrapper\SvnCli\Process('svn', $this->username, $this->password);
             $process->argument('--xml');
 
             // Execute command
@@ -116,7 +118,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
             $blame = array();
             $contents = preg_split('(\r\n|\r|\n)', $this->getVersionedContent($version));
             foreach ($xml->target[0]->entry as $nr => $entry) {
-                $blame[] = new vcsBlameStruct(
+                $blame[] = new \Arbit\VCSWrapper\Blame(
                     $contents[$nr],
                     $entry->commit[0]['revision'],
                     $entry->commit[0]->author,
@@ -124,7 +126,7 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
                 );
             }
 
-            vcsCache::cache($this->path, $version, 'blame', $blame);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
@@ -141,17 +143,17 @@ class vcsSvnCliFile extends vcsSvnCliResource implements vcsFile, vcsBlameable, 
     public function getVersionedContent($version)
     {
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        if (($content = vcsCache::get($this->path, $version, 'content')) === false) {
+        if (($content = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'content')) === false) {
             // Refetch the basic content information, and cache it.
-            $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+            $process = new \Arbit\VCSWrapper\SvnCli\Process('svn', $this->username, $this->password);
             $process->argument('-r' . $version);
 
             // Execute command
             $return = $process->argument('cat')->argument(new \SystemProcess\Argument\PathArgument($this->root . $this->path))->execute();
-            vcsCache::cache($this->path, $version, 'content', $content = $process->stdoutOutput);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'content', $content = $process->stdoutOutput);
         }
 
         return $content;

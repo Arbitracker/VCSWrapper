@@ -23,13 +23,15 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Interface for resources with available user information
  *
  * This interface should be implemented by resources which have information
  * about the authors which changed / created the contents available.
  */
-interface vcsAuthored extends vcsVersioned
+interface Authored extends \Arbit\VCSWrapper\Versioned
 {
     /**
      * Get author

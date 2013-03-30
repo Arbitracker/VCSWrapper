@@ -6,36 +6,30 @@
  * @license GPLv3
  */
 
+namespace Arbit\VCSWrapper\HgCli;
+
+use \Arbit\VCSWrapper\TestCase;
+
 /**
  * @group mercurial
- * Tests for the SQLite cache meta data handler
+ * Test for the SQLite cache meta data handler
  */
-class vcsHgCliFileTests extends vcsTestCase
+class FileTest extends TestCase
 {
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
-
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testGetVersionString()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             "b8ec741c8de1e60c5fedd98c350e3569c46ed630",
@@ -45,9 +39,9 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetVersions()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             array(
@@ -60,9 +54,9 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetAuthor()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             't.tom',
@@ -72,9 +66,9 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetAuthorOldVersion()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             't.tom',
@@ -84,28 +78,28 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetAuthorInvalidVersion()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getAuthor( 'invalid' );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetLog()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             array(
-                '9923e3bfe735ad54d67c38351400097e25aadabd' => new vcsLogEntry(
+                '9923e3bfe735ad54d67c38351400097e25aadabd' => new \Arbit\VCSWrapper\LogEntry(
                     "9923e3bfe735ad54d67c38351400097e25aadabd", "t.tom", "- Added a first test file", 1263330480
                 ),
-                'b8ec741c8de1e60c5fedd98c350e3569c46ed630' => new vcsLogEntry(
+                'b8ec741c8de1e60c5fedd98c350e3569c46ed630' => new \Arbit\VCSWrapper\LogEntry(
                     "b8ec741c8de1e60c5fedd98c350e3569c46ed630", "t.tom", "- Modified file", 1263330660
                 ),
             ),
@@ -115,12 +109,12 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetLogEntry()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
-            new vcsLogEntry(
+            new \Arbit\VCSWrapper\LogEntry(
                     "b8ec741c8de1e60c5fedd98c350e3569c46ed630", "t.tom", "- Modified file", 1263330660
             ),
             $file->getLogEntry( "b8ec741c8de1e60c5fedd98c350e3569c46ed630" )
@@ -129,21 +123,21 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetUnknownLogEntry()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getLogEntry( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileContents()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "Some other test file\n",
@@ -153,9 +147,9 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetFileMimeType()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "application/octet-stream",
@@ -165,19 +159,19 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetFileBlame()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             array(
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Some test file',
                     '9923e3bfe735ad54d67c38351400097e25aadabd',
                     't.tom',
                     1263330521
                 ),
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Another line in the file',
                     'b8ec741c8de1e60c5fedd98c350e3569c46ed630',
                     't.tom',
@@ -190,31 +184,31 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetFileBlameInvalidVersion()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         try {
             $file->blame( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileDiff()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "9923e3bfe735ad54d67c38351400097e25aadabd" );
 
         $this->assertEquals(
             array(
-                new vcsDiffChunk(
+                new \Arbit\VCSWrapper\Diff\CollectionChunk(
                     1, 1, 1, 2,
                     array(
-                        new vcsDiffLine( 3, 'Some test file' ),
-                        new vcsDiffLine( 1, 'Another line in the file' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 3, 'Some test file' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 1, 'Another line in the file' ),
                     )
                 ),
             ),
@@ -224,13 +218,13 @@ class vcsHgCliFileTests extends vcsTestCase
 
     public function testGetFileDiffUnknownRevision()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
-        $file = new vcsHgCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $file = new \Arbit\VCSWrapper\HgCli\File( $this->tempDir, '/file' );
 
         try {
             $diff = $file->getDiff( "1" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 }

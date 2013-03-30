@@ -6,11 +6,15 @@
  * @license GPLv3
  */
 
+namespace Arbit\VCSWrapper\BzrCli;
+
+use \Arbit\VCSWrapper\TestCase;
+
 /**
  * @group bazaar
- * Tests for the SQLite cache meta data handler
+ * Test for the SQLite cache meta data handler
  */
-class vcsBzrCliFileTests extends vcsTestCase
+class FileTest extends TestCase
 {
     /**
      * Default system timezone.
@@ -19,23 +23,13 @@ class vcsBzrCliFileTests extends vcsTestCase
      */
     private $timezone = null;
 
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
-
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
 
         // Store default timezone
         $this->timezone = ini_get( 'date.timezone' );
@@ -54,9 +48,9 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetVersionString()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             "2",
@@ -66,9 +60,9 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetVersions()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             array(
@@ -81,9 +75,9 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetAuthor()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             'Richard Bateman <taxilian@gmail.com>',
@@ -93,9 +87,9 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetAuthorOldVersion()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             'richard <richard@shaoden>',
@@ -105,30 +99,30 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetAuthorInvalidVersion()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getAuthor( 'invalid' );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetLog()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $log = $file->getLog();
 
         $this->assertEquals(
             array(
-                "1" => new vcsLogEntry(
+                "1" => new \Arbit\VCSWrapper\LogEntry(
                     "1", "richard <richard@shaoden>", "Initial commit", 1276559935
                     ),
-                "2" => new vcsLogEntry(
+                "2" => new \Arbit\VCSWrapper\LogEntry(
                     "2", "Richard Bateman <taxilian@gmail.com>", "Second commit", 1276563712
                     ),
             ),
@@ -138,12 +132,12 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetLogEntry()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
-            new vcsLogEntry(
+            new \Arbit\VCSWrapper\LogEntry(
                     "1", "richard <richard@shaoden>", "Initial commit", 1276559935
             ),
             $file->getLogEntry( "1" )
@@ -152,21 +146,21 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetUnknownLogEntry()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getLogEntry( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileContents()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "Some other test file\n",
@@ -176,9 +170,9 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetFileMimeType()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "application/octet-stream",
@@ -188,25 +182,25 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetFileBlame()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             array(
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Some test file',
                     "1",
                     'richard@shaoden',
                     1276495200
                 ),
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Another line in the file',
                     "1",
                     'richard@shaoden',
                     1276495200
                 ),
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     "Added a new line",
                     "2",
                     "taxilian@gmail.com",
@@ -219,32 +213,32 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetFileBlameInvalidVersion()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         try {
             $file->blame( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileDiff()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "1", "2" );
 
         $this->assertEquals(
             array(
-                new vcsDiffChunk(
+                new \Arbit\VCSWrapper\Diff\CollectionChunk(
                     1, 2, 1, 3,
                     array(
-                        new vcsDiffLine( 3, 'Some test file' ),
-                        new vcsDiffLine( 3, "Another line in the file" ),
-                        new vcsDiffLine( 1, 'Added a new line' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 3, 'Some test file' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 3, "Another line in the file" ),
+                        new \Arbit\VCSWrapper\Diff\Line( 1, 'Added a new line' ),
                     )
                 ),
             ),
@@ -254,13 +248,13 @@ class vcsBzrCliFileTests extends vcsTestCase
 
     public function testGetFileDiffUnknownRevision()
     {
-        $repository = new vcsBzrCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/bzr' ) );
-        $file = new vcsBzrCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/bzr' ) );
+        $file = new \Arbit\VCSWrapper\BzrCli\File( $this->tempDir, '/file' );
 
         try {
             $diff = $file->getDiff( "8" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 }

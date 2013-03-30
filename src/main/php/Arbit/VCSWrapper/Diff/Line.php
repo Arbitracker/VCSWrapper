@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Diff;
+
 /**
  * Basic struct containing a diff line
  *
@@ -30,7 +32,7 @@
  * @subpackage Diff
  * @version $Revision$
  */
-class vcsDiffLine extends vcsBaseStruct
+class Line extends \Arbit\VCSWrapper\Struct
 {
     /**
      * Array containing the structs properties.
@@ -62,7 +64,7 @@ class vcsDiffLine extends vcsBaseStruct
      *
      * @param int $type
      * @param string $content
-     * @return vcsDiffLine
+     * @return \Arbit\VCSWrapper\Diff\Line
      */
     public function __construct($type = self::UNCHANGED, $content = null)
     {
@@ -82,6 +84,6 @@ class vcsDiffLine extends vcsBaseStruct
      */
     public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state($properties, $class);
+        return \Arbit\VCSWrapper\Struct::__set_state($properties, $class);
     }
 }

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Base class for directories in the VCS wrapper.
  *
@@ -35,6 +37,6 @@
  * overwritten, but by default the Iterator iterates over the $ressources
  * array.
  */
-interface vcsDirectory extends RecursiveIterator
+interface Directory extends \RecursiveIterator
 {
 }

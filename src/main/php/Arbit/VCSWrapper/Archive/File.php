@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Archive;
+
 /**
  * File implementation vor archive wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage ArchiveWrapper
  * @version $Revision$
  */
-class vcsArchiveFile extends vcsArchiveResource implements vcsFile
+class File extends \Arbit\VCSWrapper\Archive\Resource implements \Arbit\VCSWrapper\File
 {
     /**
      * Get file contents

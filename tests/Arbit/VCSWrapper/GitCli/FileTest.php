@@ -6,35 +6,29 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsGitCliFileTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\GitCli;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class FileTest extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testGetVersionString()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             "2037a8d0efd4e51a4dd84161837f8865cf7d34b1",
@@ -44,9 +38,9 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetVersions()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             array(
@@ -59,9 +53,9 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetAuthor()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             'kore',
@@ -71,9 +65,9 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetAuthorOldVersion()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             'kore',
@@ -83,28 +77,28 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetAuthorInvalidVersion()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getAuthor( 'invalid' );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetLog()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             array(
-                '43fb423f4ee079af2f3cba4e07eb8b10f4476815' => new vcsLogEntry(
+                '43fb423f4ee079af2f3cba4e07eb8b10f4476815' => new \Arbit\VCSWrapper\LogEntry(
                     "43fb423f4ee079af2f3cba4e07eb8b10f4476815", "kore", "- Added a first test file\n", 1226920616
                 ),
-                '2037a8d0efd4e51a4dd84161837f8865cf7d34b1' => new vcsLogEntry(
+                '2037a8d0efd4e51a4dd84161837f8865cf7d34b1' => new \Arbit\VCSWrapper\LogEntry(
                     "2037a8d0efd4e51a4dd84161837f8865cf7d34b1", "kore", "- Modified file\n", 1226921232
                 ),
             ),
@@ -114,12 +108,12 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetLogEntry()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
-            new vcsLogEntry(
+            new \Arbit\VCSWrapper\LogEntry(
                     "2037a8d0efd4e51a4dd84161837f8865cf7d34b1", "kore", "- Modified file\n", 1226921232
             ),
             $file->getLogEntry( "2037a8d0efd4e51a4dd84161837f8865cf7d34b1" )
@@ -128,21 +122,21 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetUnknownLogEntry()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getLogEntry( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileContents()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "Some other test file\n",
@@ -152,9 +146,9 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetFileMimeType()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "application/octet-stream",
@@ -164,19 +158,19 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetFileBlame()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             array(
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Some test file',
                     '43fb423f4ee079af2f3cba4e07eb8b10f447681',
                     'kore',
                     1226920616
                 ),
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Another line in the file',
                     '2037a8d0efd4e51a4dd84161837f8865cf7d34b1',
                     'kore',
@@ -189,31 +183,31 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetFileBlameInvalidVersion()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
             $file->blame( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileDiff()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "43fb423f4ee079af2f3cba4e07eb8b10f4476815" );
 
         $this->assertEquals(
             array(
-                new vcsDiffChunk(
+                new \Arbit\VCSWrapper\Diff\CollectionChunk(
                     1, 1, 1, 2,
                     array(
-                        new vcsDiffLine( 3, 'Some test file' ),
-                        new vcsDiffLine( 1, 'Another line in the file' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 3, 'Some test file' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 1, 'Another line in the file' ),
                     )
                 ),
             ),
@@ -223,13 +217,13 @@ class vcsGitCliFileTests extends vcsTestCase
 
     public function testGetFileDiffUnknownRevision()
     {
-        $repository = new vcsGitCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/git' ) );
-        $file = new vcsGitCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
             $diff = $file->getDiff( "1" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 }

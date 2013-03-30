@@ -6,24 +6,18 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsFileSystemCacheMetaDataTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\Cache\MetaData;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class FileSystemTest extends TestCase
+{
     public function testStoreCreationDate()
     {
-        $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );
+        $cacheMetaData = new \Arbit\VCSWrapper\Cache\MetaData\FileSystem( $this->tempDir );
 
         file_put_contents( $this->tempDir . ( $path = '/foo' ), '0123456789' );
         $cacheMetaData->created( $path, 10 );
@@ -31,7 +25,7 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
 
     public function testReCreateCacheEntry()
     {
-        $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );
+        $cacheMetaData = new \Arbit\VCSWrapper\Cache\MetaData\FileSystem( $this->tempDir );
 
         file_put_contents( $this->tempDir . ( $path = '/foo' ), '0123456789' );
         $cacheMetaData->created( $path, 123 );
@@ -40,7 +34,7 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
 
     public function testUpdateAccessTime()
     {
-        $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );
+        $cacheMetaData = new \Arbit\VCSWrapper\Cache\MetaData\FileSystem( $this->tempDir );
 
         file_put_contents( $this->tempDir . ( $path = '/foo' ), '0123456789' );
         $cacheMetaData->created( $path, 10 );
@@ -49,7 +43,7 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
 
     public function testClearCache()
     {
-        $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );
+        $cacheMetaData = new \Arbit\VCSWrapper\Cache\MetaData\FileSystem( $this->tempDir );
 
         file_put_contents( $this->tempDir . ( $path = '/foo' ), '0123456789' );
         $cacheMetaData->created( $path, 10 );
@@ -64,7 +58,7 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
 
     public function testClearOnlyFirstFile()
     {
-        $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );
+        $cacheMetaData = new \Arbit\VCSWrapper\Cache\MetaData\FileSystem( $this->tempDir );
 
         file_put_contents( $this->tempDir . ( $path1 = '/foo1' ), '0123456789' );
         $cacheMetaData->created( $path1, 10, 1 );
@@ -95,7 +89,7 @@ class vcsFileSystemCacheMetaDataTests extends vcsTestCase
 
     public function testUpdateAccessTimePurge()
     {
-        $cacheMetaData = new vcsCacheFileSystemMetaData( $this->tempDir );
+        $cacheMetaData = new \Arbit\VCSWrapper\Cache\MetaData\FileSystem( $this->tempDir );
 
         file_put_contents( $this->tempDir . ( $path1 = '/foo1' ), '0123456789' );
         $cacheMetaData->created( $path1, 10, 1 );

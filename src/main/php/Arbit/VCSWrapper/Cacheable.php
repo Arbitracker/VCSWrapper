@@ -23,17 +23,19 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /**
  * Interface indicating that an object can be cached. To be cacheable the
  * implementing class needs the to implement __set_state method.
  */
-interface arbitCacheable
+interface Cacheable
 {
     /**
      * Recreate struct exported by var_export()
      *
      * @param array $properties
-     * @return arbitCacheable
+     * @return \Arbit\VCSWrapper\Cacheable
      */
     public static function __set_state(array $properties);
 }

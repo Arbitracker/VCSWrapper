@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\CvsCli;
+
 /**
  * Directory implementation vor CVS Cli wrapper
  *
@@ -30,12 +32,12 @@
  * @subpackage CvsCliWrapper
  * @version $Revision$
  */
-class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
+class Directory extends \Arbit\VCSWrapper\Resource implements \Arbit\VCSWrapper\Directory
 {
     /**
      * Array with children resources of the directory, used for the iterator.
      *
-     * @var array(vcsCvsCliResource) $resources
+     * @var array(\Arbit\VCSWrapper\CvsCli\Resource) $resources
      */
     protected $resources = null;
 
@@ -112,7 +114,7 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
     /**
      * Returns the children for this instance.
      *
-     * @return vcsDirectory
+     * @return \Arbit\VCSWrapper\Directory
      */
     public function getChildren()
     {
@@ -134,16 +136,16 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
             $this->initializeResouces();
         }
 
-        return current($this->resources) instanceof vcsDirectory;
+        return current($this->resources) instanceof \Arbit\VCSWrapper\Directory;
     }
 
     /**
      * Initialize resources array
      *
      * Initilaize the array containing all child elements of the current
-     * directly as vcsCvsCliResource objects.
+     * directly as \Arbit\VCSWrapper\CvsCli\Resource objects.
      *
-     * @return array(vcsCvsCliResource)
+     * @return array(\Arbit\VCSWrapper\CvsCli\Resource)
      */
     protected function initializeResouces()
     {
@@ -163,9 +165,9 @@ class vcsCvsCliDirectory extends vcsResource implements vcsDirectory
 
             $resource = null;
             if ($fileInfo->isDir() === true) {
-                $resource = new vcsCvsCliDirectory($this->root, $this->path . $fileName . '/');
+                $resource = new \Arbit\VCSWrapper\CvsCli\Directory($this->root, $this->path . $fileName . '/');
             } else {
-                $resource = new vcsCvsCliFile($this->root, $this->path . $fileName);
+                $resource = new \Arbit\VCSWrapper\CvsCli\File($this->root, $this->path . $fileName);
             }
             $this->resources[] = $resource;
         }

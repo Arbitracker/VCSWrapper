@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\SvnCli;
+
 /**
  * Svn executable wrapper for system process class
  *
@@ -30,7 +32,7 @@
  * @subpackage SvnCliWrapper
  * @version $Revision$
  */
-class vcsSvnCliProcess extends \SystemProcess\SystemProcess
+class Process extends \SystemProcess\SystemProcess
 {
     /**
      * Class constructor taking the executable

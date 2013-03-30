@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Interface for resources which support blaming of files
  *
@@ -30,7 +32,7 @@
  * line of a file for a specified version. If the VCS spports this fo
  * resources, this interface should be implemented.
  */
-interface vcsBlameable extends vcsAuthored
+interface Blameable extends \Arbit\VCSWrapper\Authored
 {
     /**
      * Get blame information for resource

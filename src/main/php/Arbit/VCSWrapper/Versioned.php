@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Interface for versioned resources.
  *
@@ -30,7 +32,7 @@
  * the version control system. It allows access to the current version of a
  * resource and also to contents in later versions of a resource.
  */
-interface vcsVersioned
+interface Versioned
 {
     /**
      * Get version string

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Interface for resources with a log available.
  *
@@ -30,13 +32,13 @@
  * the version control system. It allows access to the current version of a
  * resource and also to contents in later versions of a resource.
  */
-interface vcsLogged extends vcsVersioned
+interface Logged extends \Arbit\VCSWrapper\Versioned
 {
     /**
      * Get full revision log
      *
      * Return the full revision log for the given resource. The revision log
-     * should be returned as an array of vcsLogEntry objects.
+     * should be returned as an array of \Arbit\VCSWrapper\LogEntry objects.
      *
      * @return array
      */
@@ -48,7 +50,7 @@ interface vcsLogged extends vcsVersioned
      * Get the revision log entry for the spcified version.
      *
      * @param string $version
-     * @return vcsLogEntry
+     * @return \Arbit\VCSWrapper\LogEntry
      */
     public function getLogEntry($version);
 }

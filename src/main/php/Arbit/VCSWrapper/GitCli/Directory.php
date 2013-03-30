@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\GitCli;
+
 /**
  * Directory implementation vor Git Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage GitCliWrapper
  * @version $Revision$
  */
-class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
+class Directory extends \Arbit\VCSWrapper\GitCli\Resource implements \Arbit\VCSWrapper\Directory
 {
     /**
      * Array with children resources of the directory, used for the iterator.
@@ -43,9 +45,9 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
      * Initialize resources array
      *
      * Initilaize the array containing all child elements of the current
-     * directly as vcsGitCliResource objects.
+     * directly as \Arbit\VCSWrapper\GitCli\Resource objects.
      *
-     * @return array(vcsGitCliResource)
+     * @return array(\Arbit\VCSWrapper\GitCli\Resource)
      */
     protected function initializeResouces()
     {
@@ -64,8 +66,8 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
             }
 
             $this->resources[] = (is_dir($this->root . $this->path . $path) ?
-                new vcsGitCliDirectory($this->root, $this->path . $path . '/') :
-                new vcsGitCliFile($this->root, $this->path . $path)
+                new \Arbit\VCSWrapper\GitCli\Directory($this->root, $this->path . $path . '/') :
+                new \Arbit\VCSWrapper\GitCli\File($this->root, $this->path . $path)
             );
         }
         $contents->close();
@@ -144,7 +146,7 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
     /**
      * Returns the children for this instance.
      *
-     * @return vcsDirectory
+     * @return \Arbit\VCSWrapper\Directory
      */
     public function getChildren()
     {
@@ -166,6 +168,6 @@ class vcsGitCliDirectory extends vcsGitCliResource implements vcsDirectory
             $this->initializeResouces();
         }
 
-        return current($this->resources) instanceof vcsDirectory;
+        return current($this->resources) instanceof \Arbit\VCSWrapper\Directory;
     }
 }

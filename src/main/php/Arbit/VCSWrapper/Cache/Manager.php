@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Cache;
+
 /**
  * Cache handler for VCS meta data
  *
@@ -42,7 +44,7 @@
  * @subpackage Cache
  * @version $Revision$
  */
-class vcsCache
+class Manager
 {
     /**
      * Cache path, used to store the actual cache contents
@@ -123,9 +125,9 @@ class vcsCache
         if (false && extension_loaded('sqlite3')) {
             // SQLite metadata cache handler disabled for now, since it has
             // lock issues.
-            self::$metaDataHandler = new vcsCacheSqliteMetaData(self::$path);
+            self::$metaDataHandler = new MetaData\FileSystem(self::$path);
         } else {
-            self::$metaDataHandler = new vcsCacheFileSystemMetaData(self::$path);
+            self::$metaDataHandler = new MetaData\Sqlite(self::$path);
         }
     }
 
@@ -162,7 +164,7 @@ class vcsCache
     public static function get($resource, $version, $key)
     {
         if (self::$path === null) {
-            throw new vcsCacheNotInitializedException();
+            throw new \RuntimeException("Cache not initilized.");
         }
 
         $cacheFile = self::getFileName($resource, $version, $key);
@@ -190,14 +192,14 @@ class vcsCache
     public static function cache($resource, $version, $key, $value)
     {
         if (self::$path === null) {
-            throw new vcsCacheNotInitializedException();
+            throw new \RuntimeException("Cache not initilized.");
         }
 
         if (!is_scalar($value) &&
             !is_array($value) &&
-            (!$value instanceof arbitCacheable) &&
+            (!$value instanceof \Arbit\VCSWrapper\Cacheable) &&
             (!$value instanceof \Arbit\Xml\Document)) {
-            throw new vcsNotCacheableException($value);
+            throw new \RuntimeException("Item not cacheable.");
         }
 
         $cacheFile = self::getFileName($resource, $version, $key);
@@ -225,7 +227,7 @@ class vcsCache
     public static function forceCleanup()
     {
         if (self::$path === null) {
-            throw new vcsCacheNotInitializedException();
+            throw new \RuntimeException("Cache not initilized.");
         }
 
         self::$metaDataHandler->cleanup(self::$size, self::$cleanupRate);

@@ -23,13 +23,15 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Interface for versioned resources which can be fetched from earlier versions
  *
  * This implemented should be implemented by VCS for resources, which can be
  * fetched in earlier revisions then the current revision.
  */
-interface vcsFetchable extends vcsVersioned
+interface Fetchable extends \Arbit\VCSWrapper\Versioned
 {
     /**
      * Get content for version

@@ -23,6 +23,10 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Cache\MetaData;
+
+use Arbit\VCSWrapper\Cache\MetaData;
+
 /**
  * SQLite Cache metadata handler.
  *
@@ -30,7 +34,7 @@
  * @subpackage Cache
  * @version $Revision$
  */
-class vcsCacheSqliteMetaData extends vcsCacheMetaData
+class Sqlite extends MetaData
 {
     /**
      * Database connection
@@ -58,7 +62,7 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
 
             // Create the table with appropriate indexes, if the table does not
             // yet exist
-            $db = new SQLite3($dbFile);
+            $db = new \SQLite3($dbFile);
             $db->query('CREATE TABLE metadata (
                 path TEXT PRIMARY KEY,
                 size NUMERIC,
@@ -68,7 +72,7 @@ class vcsCacheSqliteMetaData extends vcsCacheMetaData
             $db->query('CREATE INDEX accessed ON metadata (accessed)');
         }
 
-        $this->db = new SQLite3($dbFile);
+        $this->db = new \SQLite3($dbFile);
     }
 
     /**

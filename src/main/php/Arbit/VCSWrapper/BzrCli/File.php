@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\BzrCli;
+
 /**
  * File implementation vor Bazaar Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage BzrCliWrapper
  * @version $Revision$
  */
-class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, vcsDiffable
+class File extends \Arbit\VCSWrapper\BzrCli\Resource implements \Arbit\VCSWrapper\File, \Arbit\VCSWrapper\Blameable, \Arbit\VCSWrapper\Diffable
 {
     /**
      * Get file contents
@@ -89,15 +91,15 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        $blame = vcsCache::get($this->path, $version, 'blame');
+        $blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame');
         if ($blame === false) {
             $shortHashCache = array();
 
             // Refetch the basic blamermation, and cache it.
-            $process = new vcsBzrCliProcess();
+            $process = new \Arbit\VCSWrapper\BzrCli\Process();
             $process->workingDirectory($this->root);
 
             // Execute command
@@ -116,7 +118,7 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
                 // Convert returned lines into diff structures
                 foreach ($xmlDoc->entry AS $line) {
 
-                    $blame[] = new vcsBlameStruct(
+                    $blame[] = new \Arbit\VCSWrapper\Blame(
                         $line,
                         $line['revno'],
                         $line['author'],
@@ -127,7 +129,7 @@ class vcsBzrCliFile extends vcsBzrCliResource implements vcsFile, vcsBlameable, 
                 return false;
             }
 
-            vcsCache::cache($this->path, $version, 'blame', $blame);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;

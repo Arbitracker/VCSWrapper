@@ -6,21 +6,15 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsSqliteCacheMetaDataTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\Cache\MetaData;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class SqliteTest extends TestCase
+{
     public function setUp()
     {
         if ( !extension_loaded( 'sqlite3' ) ) {
@@ -32,7 +26,7 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 
     public function testStoreCreationDate()
     {
-        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );
+        $cacheMetaData = new Sqlite( $this->tempDir );
 
         touch( $this->tempDir . ( $path = '/foo' ) );
         $cacheMetaData->created( $path, 123 );
@@ -40,7 +34,7 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 
     public function testCreateCacheInNonexistingDir()
     {
-        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir . 'cache/' );
+        $cacheMetaData = new Sqlite( $this->tempDir . 'cache/' );
 
         touch( $this->tempDir . ( $path = '/foo' ) );
         $cacheMetaData->created( $path, 123 );
@@ -48,7 +42,7 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 
     public function testReCreateCacheEntry()
     {
-        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );
+        $cacheMetaData = new Sqlite( $this->tempDir );
 
         touch( $this->tempDir . ( $path = '/foo' ) );
         $cacheMetaData->created( $path, 123 );
@@ -57,7 +51,7 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 
     public function testUpdateAccessTime()
     {
-        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );
+        $cacheMetaData = new Sqlite( $this->tempDir );
 
         touch( $this->tempDir . ( $path = '/foo' ) );
         $cacheMetaData->created( $path, 123 );
@@ -66,7 +60,7 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 
     public function testClearCache()
     {
-        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );
+        $cacheMetaData = new Sqlite( $this->tempDir );
 
         touch( $this->tempDir . ( $path = '/foo' ) );
         $cacheMetaData->created( $path, 123 );
@@ -81,7 +75,7 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 
     public function testClearOnlyFirstFile()
     {
-        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );
+        $cacheMetaData = new Sqlite( $this->tempDir );
 
         touch( $this->tempDir . ( $path1 = '/foo1' ) );
         $cacheMetaData->created( $path1, 10, 1 );
@@ -110,7 +104,7 @@ class vcsSqliteCacheMetaDataTests extends vcsTestCase
 
     public function testUpdateAccessTimePurge()
     {
-        $cacheMetaData = new vcsCacheSqliteMetaData( $this->tempDir );
+        $cacheMetaData = new Sqlite( $this->tempDir );
 
         touch( $this->tempDir . ( $path1 = '/foo1' ) );
         $cacheMetaData->created( $path1, 10, 1 );

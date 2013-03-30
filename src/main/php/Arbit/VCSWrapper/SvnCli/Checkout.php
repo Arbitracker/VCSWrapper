@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\SvnCli;
+
 /**
  * Handler for SVN repositories
  *
@@ -30,7 +32,7 @@
  * @subpackage SvnCliWrapper
  * @version $Revision$
  */
-class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
+class Checkout extends \Arbit\VCSWrapper\SvnCli\Directory implements \Arbit\VCSWrapper\Checkout
 {
     /**
      * Construct repository with repository root path
@@ -67,7 +69,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         // Fix incorrect windows checkout URLs
         $url = preg_replace('(^file://([A-Za-z]):)', 'file:///\\1:', $url);
 
-        $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+        $process = new \Arbit\VCSWrapper\SvnCli\Process('svn', $this->username, $this->password);
         $return = $process->argument('checkout')->argument(str_replace('\\', '/', $url))->argument(new \SystemProcess\Argument\PathArgument($this->root))->execute();
 
         // Cache basic revision information for checkout and update
@@ -92,7 +94,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        $process = new vcsSvnCliProcess('svn', $this->username, $this->password);
+        $process = new \Arbit\VCSWrapper\SvnCli\Process('svn', $this->username, $this->password);
 
         if ($version !== null) {
             $process->argument('-r' . $version);
@@ -111,7 +113,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
      * Get an item from the checkout, specified by its local path. If no item
      * with the specified path exists an exception is thrown.
      *
-     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * Method either returns a \Arbit\VCSWrapper\Checkout, a \Arbit\VCSWrapper\Directory or a \Arbit\VCSWrapper\File
      * instance, depending on the given path.
      *
      * @param string $path
@@ -124,7 +126,7 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
         if (($fullPath === false) ||
              (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException($path);
+            throw new \Arbit\VCSWrapper\FileNotFoundException($path);
         }
 
         switch (true) {
@@ -132,10 +134,10 @@ class vcsSvnCliCheckout extends vcsSvnCliDirectory implements vcsCheckout
                 return $this;
 
             case is_dir($fullPath):
-                return new vcsSvnCliDirectory($this->root, $path, $this->username, $this->password);
+                return new \Arbit\VCSWrapper\SvnCli\Directory($this->root, $path, $this->username, $this->password);
 
             default:
-                return new vcsSvnCliFile($this->root, $path, $this->username, $this->password);
+                return new \Arbit\VCSWrapper\SvnCli\File($this->root, $path, $this->username, $this->password);
         }
     }
 }

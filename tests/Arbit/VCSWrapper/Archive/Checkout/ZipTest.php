@@ -6,21 +6,15 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsZipArchiveCheckoutTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\Archive\Checkout;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class ZipTest extends TestCase
+{
     public function setUp()
     {
         if ( !class_exists( 'ZipArchive' ) ) {
@@ -31,35 +25,35 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testInitializeInvalidCheckout()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
 
         try {
             $repository->initialize( 'file:///hopefully/not/existing/svn/repo' );
-            $this->fail( 'Expected vcsNoSuchFileException.' );
-        } catch ( vcsNoSuchFileException $e ) { /* Expected */ }
+            $this->fail( 'Expected \RuntimeException.' );
+        } catch ( \RuntimeException $e ) { /* Expected */ }
 
     }
 
     public function testInitializeInvalidArchive()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
 
         try {
             $repository->initialize( __FILE__ );
-            $this->fail( 'Expected vcsInvalidZipArchiveException.' );
-        } catch ( vcsInvalidZipArchiveException $e ) { /* Expected */ }
+            $this->fail( 'Expected \RuntimeException.' );
+        } catch ( \RuntimeException $e ) { /* Expected */ }
 
     }
 
     public function testInitializeCheckout()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( __DIR__ . '/../../../../data/archive.zip' );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -69,8 +63,8 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
 
     public function testUpdateCheckout()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../../data/archive.zip' ) );
 
         $this->assertFalse( $repository->update(), "There are never updates available for archive checkouts." );
 
@@ -82,8 +76,8 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
 
     public function testIterateCheckoutContents()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../../data/archive.zip' ) );
 
         $files = array();
         foreach ( $repository as $file ) {
@@ -103,8 +97,8 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
 
     public function testGetCheckout()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../../data/archive.zip' ) );
 
         $this->assertSame(
             $repository->get(),
@@ -117,36 +111,36 @@ class vcsZipArchiveCheckoutTests extends vcsTestCase
         );
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testGetInvalid()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../../data/archive.zip' ) );
 
-        try {
-            $repository->get( '/../' );
-            $this->fail( 'Expected vcsFileNotFoundException.' );
-        } catch ( vcsFileNotFoundException $e ) { /* Expected */ }
+        $repository->get( '/../' );
     }
 
     public function testGetDirectory()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../../data/archive.zip' ) );
 
         $this->assertEquals(
             $repository->get( '/dir1' ),
-            new vcsArchiveDirectory( $this->tempDir, '/dir1' )
+            new \Arbit\VCSWrapper\Archive\Directory( $this->tempDir, '/dir1' )
         );
     }
 
     public function testGetFile()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../../data/archive.zip' ) );
 
         $this->assertEquals(
             $repository->get( '/file' ),
-            new vcsArchiveFile( $this->tempDir, '/file' )
+            new \Arbit\VCSWrapper\Archive\File( $this->tempDir, '/file' )
         );
     }
 }

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Cache\MetaData;
+
 /**
  * File system Cache metadata handler.
  *
@@ -30,7 +32,7 @@
  * @subpackage Cache
  * @version $Revision$
  */
-class vcsCacheFileSystemMetaData extends vcsCacheMetaData
+class FileSystem extends \Arbit\VCSWrapper\Cache\MetaData
 {
     /**
      * Filename of file, which stores the overall cache size.
@@ -128,8 +130,8 @@ class vcsCacheFileSystemMetaData extends vcsCacheMetaData
         // Cache size exceeds limit, so we build a sorted list of all files in
         // the cache - may take quite some time.
         clearstatcache();
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($this->root, RecursiveDirectoryIterator::CURRENT_AS_FILEINFO)
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($this->root, \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO)
         );
 
         $ctimes   = array();

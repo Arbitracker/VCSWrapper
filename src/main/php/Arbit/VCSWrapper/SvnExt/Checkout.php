@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\SvnExt;
+
 /**
  * Handler for SVN repositories
  *
@@ -30,7 +32,7 @@
  * @subpackage SvnExtWrapper
  * @version $Revision$
  */
-class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
+class Checkout extends \Arbit\VCSWrapper\SvnExt\Directory implements \Arbit\VCSWrapper\Checkout
 {
     /**
      * Construct repository with repository root path
@@ -72,7 +74,7 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
                // To get the current revision number we need to also call update
              ($this->currentVersion = (string) svn_update($this->root)) === false)
         {
-            throw new vcsCheckoutFailedException($url);
+            throw new \Arbit\VCSWrapper\CheckoutFailedException($url);
         }
 
     }
@@ -110,7 +112,7 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
      * Get an item from the checkout, specified by its local path. If no item
      * with the specified path exists an exception is thrown.
      *
-     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * Method either returns a \Arbit\VCSWrapper\Checkout, a \Arbit\VCSWrapper\Directory or a \Arbit\VCSWrapper\File
      * instance, depending on the given path.
      *
      * @param string $path
@@ -123,7 +125,7 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
         if (($fullPath === false) ||
              (strpos($fullPath, $this->root) !== 0))
         {
-            throw new vcsFileNotFoundException($path);
+            throw new \Arbit\VCSWrapper\FileNotFoundException($path);
         }
 
         switch (true) {
@@ -131,10 +133,10 @@ class vcsSvnExtCheckout extends vcsSvnExtDirectory implements vcsCheckout
                 return $this;
 
             case is_dir($fullPath):
-                return new vcsSvnExtDirectory($this->root, $path);
+                return new \Arbit\VCSWrapper\SvnExt\Directory($this->root, $path);
 
             default:
-                return new vcsSvnExtFile($this->root, $path);
+                return new \Arbit\VCSWrapper\SvnExt\File($this->root, $path);
         }
     }
 }

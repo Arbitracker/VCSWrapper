@@ -6,11 +6,13 @@
  * @license GPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /**
  * Base test case for cache tests, handling the creation and removel of
  * temporary test directories.
  */
-class vcsTestCase extends PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * Temporary directory for cache contents

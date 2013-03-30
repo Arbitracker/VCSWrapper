@@ -6,37 +6,31 @@
  * @license GPLv3
  */
 
+namespace Arbit\VCSWrapper\HgCli;
+
+use \Arbit\VCSWrapper\TestCase;
+
 /**
  * @group mercurial
- * Tests for the SQLite cache meta data handler
+ * Test for the SQLite cache meta data handler
  */
-class vcsHgCliDirectoryTests extends vcsTestCase
+class DirectoryTest extends TestCase
 {
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
-
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testIterateRootDirContents()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
 
-        $dir = new vcsHgCliDirectory( $this->tempDir, '/' );
+        $dir = new \Arbit\VCSWrapper\HgCli\Directory( $this->tempDir, '/' );
 
         $files = array();
         foreach ( $dir as $file ) {
@@ -56,10 +50,10 @@ class vcsHgCliDirectoryTests extends vcsTestCase
 
     public function testRecursiveIterator()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
 
-        $dir      = new vcsHgCliDirectory( $this->tempDir, '/' );
+        $dir      = new \Arbit\VCSWrapper\HgCli\Directory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
@@ -82,10 +76,10 @@ class vcsHgCliDirectoryTests extends vcsTestCase
 
     public function testIterateSubDirContents()
     {
-        $repository = new vcsHgCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/hg' ) );
+        $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
 
-        $dir = new vcsHgCliDirectory( $this->tempDir, '/dir1/' );
+        $dir = new \Arbit\VCSWrapper\HgCli\Directory( $this->tempDir, '/dir1/' );
 
         $files = array();
         foreach ( $dir as $file ) {

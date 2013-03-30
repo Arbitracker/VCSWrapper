@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\HgCli;
+
 /**
  * Directory implementation vor Mercurial Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage MercurialCliWrapper
  * @version $Revision$
  */
-class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
+class Directory extends \Arbit\VCSWrapper\HgCli\Resource implements \Arbit\VCSWrapper\Directory
 {
     /**
      * Store the resources of this directory
@@ -43,9 +45,9 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
      * Initialize the resources array.
      *
      * Initilaize the array containing all child elements of the current
-     * directly as vcsHgCliResource objects.
+     * directly as \Arbit\VCSWrapper\HgCli\Resource objects.
      *
-     * @return array(vcsHgCliResource)
+     * @return array(\Arbit\VCSWrapper\HgCli\Resource)
      */
     protected function initializeResouces()
     {
@@ -62,8 +64,8 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
             }
 
             $this->resources[] = (is_dir($this->root . $this->path . $path) ?
-                new vcsHgCliDirectory($this->root, $this->path . $path . '/') :
-                new vcsHgCliFile($this->root, $this->path . $path)
+                new \Arbit\VCSWrapper\HgCli\Directory($this->root, $this->path . $path . '/') :
+                new \Arbit\VCSWrapper\HgCli\File($this->root, $this->path . $path)
             );
         }
 
@@ -133,7 +135,7 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     /**
      * Returns the children for this instance.
      *
-     * @return vcsDirectory
+     * @return \Arbit\VCSWrapper\Directory
      */
     public function getChildren()
     {
@@ -151,6 +153,6 @@ class vcsHgCliDirectory extends vcsHgCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return current($this->resources) instanceof vcsDirectory;
+        return current($this->resources) instanceof \Arbit\VCSWrapper\Directory;
     }
 }

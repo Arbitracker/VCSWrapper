@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\GitCli;
+
 /**
  * Handler for Git repositories
  *
@@ -30,7 +32,7 @@
  * @subpackage GitCliWrapper
  * @version $Revision$
  */
-class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
+class Checkout extends \Arbit\VCSWrapper\GitCli\Directory implements \Arbit\VCSWrapper\Checkout
 {
     /**
      * Construct repository with repository root path
@@ -61,13 +63,13 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
     {
         if (is_dir($this->root)) {
             if (count(glob($this->root . '/*'))) {
-                throw new vcsCheckoutFailedException($url);
+                throw new \Arbit\VCSWrapper\CheckoutFailedException($url);
             }
 
             rmdir($this->root);
         }
 
-        $process = new vcsGitCliProcess();
+        $process = new \Arbit\VCSWrapper\GitCli\Process();
         $return = $process->argument('clone')->argument($url)->argument(new \SystemProcess\Argument\PathArgument($this->root))->execute();
 
         // On windows GIT does not exit with a non-zero exit code on false
@@ -106,12 +108,12 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
         $oldVersion = $this->getVersionString();
 
         if ($version === null) {
-            $process = new vcsGitCliProcess();
+            $process = new \Arbit\VCSWrapper\GitCli\Process();
             $process->workingDirectory($this->root);
             $process->argument('pull')->argument('origin')->argument('master');
             $process->execute();
         } else {
-            $process = new vcsGitCliProcess();
+            $process = new \Arbit\VCSWrapper\GitCli\Process();
             $process->workingDirectory($this->root);
             $process->argument('checkout')->argument($version);
             $process->execute();
@@ -128,7 +130,7 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
      * Get an item from the checkout, specified by its local path. If no item
      * with the specified path exists an exception is thrown.
      *
-     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * Method either returns a \Arbit\VCSWrapper\Checkout, a \Arbit\VCSWrapper\Directory or a \Arbit\VCSWrapper\File
      * instance, depending on the given path.
      *
      * @param string $path
@@ -141,7 +143,7 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
         if (($fullPath === false) ||
              (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException($path);
+            throw new \Arbit\VCSWrapper\FileNotFoundException($path);
         }
 
         switch (true) {
@@ -149,10 +151,10 @@ class vcsGitCliCheckout extends vcsGitCliDirectory implements vcsCheckout
                 return $this;
 
             case is_dir($fullPath):
-                return new vcsGitCliDirectory($this->root, $path);
+                return new \Arbit\VCSWrapper\GitCli\Directory($this->root, $path);
 
             default:
-                return new vcsGitCliFile($this->root, $path);
+                return new \Arbit\VCSWrapper\GitCli\File($this->root, $path);
         }
     }
 }

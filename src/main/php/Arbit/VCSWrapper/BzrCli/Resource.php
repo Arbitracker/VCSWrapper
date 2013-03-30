@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\BzrCli;
+
 /**
  * Resource implementation vor Bzr Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage BzrCliWrapper
  * @version $Revision$
  **/
-abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vcsAuthored, vcsLogged, vcsDiffable
+abstract class Resource extends \Arbit\VCSWrapper\Resource implements \Arbit\VCSWrapper\Versioned, \Arbit\VCSWrapper\Authored, \Arbit\VCSWrapper\Logged, \Arbit\VCSWrapper\Diffable
 {
     /**
      * Current version of the given resource
@@ -45,12 +47,12 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      * Get the base information, like version, author, etc for the current
      * resource in the current version.
      *
-     * @return vcsLogEntry
+     * @return \Arbit\VCSWrapper\LogEntry
      */
     protected function getResourceInfo()
     {
         if ($this->currentVersion !== null) {
-            $info = vcsCache::get($this->path, $this->currentVersion, 'info');
+            $info = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $this->currentVersion, 'info');
         }
 
         if ($this->currentVersion === null ||
@@ -60,7 +62,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
 
             // Fecth for specified version, if set
             $info = $this->currentVersion !== null ? $log[$this->currentVersion] : end($log);
-            vcsCache::cache($this->path, $this->currentVersion = (string) $info->version, 'info', $info);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $this->currentVersion = (string) $info->version, 'info', $info);
         }
 
         return $info;
@@ -73,10 +75,10 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      */
     protected function getResourceLog()
     {
-        $log = vcsCache::get($this->path, $this->currentVersion, 'log');
+        $log = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $this->currentVersion, 'log');
         if ($log === false) {
             // Refetch the basic logrmation, and cache it.
-            $process = new vcsBzrCliProcess();
+            $process = new \Arbit\VCSWrapper\BzrCli\Process();
             $process->workingDirectory($this->root);
 
             // Execute log command
@@ -93,7 +95,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
             $process->execute();
 
             // Parse commit log
-            $xmlDoc = new SimpleXMLElement($process->stdoutOutput);
+            $xmlDoc = new \SimpleXMLElement($process->stdoutOutput);
 
             $lineCount  = count($xmlDoc->log);
             $log        = array();
@@ -104,14 +106,14 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
                 $date = strtotime($entry->timestamp);
                 $desc = $entry->message;
 
-                $newEntry = new vcsLogEntry($revno, $author, $desc, $date);
+                $newEntry = new \Arbit\VCSWrapper\LogEntry($revno, $author, $desc, $date);
                 $log[(string) $revno] = $newEntry;
             }
             $last = end($log);
 
             $this->currentVersion = (string) $last->version;
             // Cache extracted data
-            vcsCache::cache($this->path, $this->currentVersion, 'log', $log);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $this->currentVersion, 'log', $log);
         }
 
         return $log;
@@ -195,7 +197,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
         $log = $this->getResourceLog();
 
         if (!isset($log[$version])) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
         return $log[$version]->author;
@@ -222,7 +224,7 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
         $log = $this->getResourceLog();
 
         if (!isset($log[$version])) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
         }
 
         return $log[$version];
@@ -232,18 +234,18 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
      *
      * @param string $version
      * @param string $current
-     * @return vcsDiff
+     * @return \Arbit\VCSWrapper\Diff\Collection
      */
     public function getDiff($version, $current = null)
     {
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        $diff = vcsCache::get($this->path, $version, 'diff');
+        $diff = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'diff');
         if ($diff === false) {
             // Refetch the basic content information, and cache it.
-            $process = new vcsBzrCliProcess();
+            $process = new \Arbit\VCSWrapper\BzrCli\Process();
             $process->workingDirectory($this->root);
             $process->argument('diff');
 
@@ -257,9 +259,9 @@ abstract class vcsBzrCliResource extends vcsResource implements vcsVersioned, vc
             $process->execute();
 
             // Parse resulting unified diff
-            $parser = new vcsUnifiedDiffParser();
+            $parser = new \Arbit\VCSWrapper\Diff\Unified();
             $diff   = $parser->parseString($process->stdoutOutput);
-            vcsCache::cache($this->path, $version, 'diff', $diff);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'diff', $diff);
         }
 
         return $diff;

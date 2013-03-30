@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\SvnExt;
+
 /**
  * File implementation vor SVN Ext wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage SvnExtWrapper
  * @version $Revision$
  */
-class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, vcsFetchable
+class File extends \Arbit\VCSWrapper\SvnExt\Resource implements \Arbit\VCSWrapper\File, \Arbit\VCSWrapper\Blameable, \Arbit\VCSWrapper\Fetchable
 {
     /**
      * Get file contents
@@ -95,10 +97,10 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        if (($blame = vcsCache::get($this->path, $version, 'blame')) === false) {
+        if (($blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame')) === false) {
             // Silence warning about binary files, and just use the return
             // value. There is no good way to know this beforehand. The
             // mime-type might be an indicator, but the list of possible
@@ -108,7 +110,7 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
             if (($blame = $svnBlame) !== false) {
                 $blame = array();
                 foreach ($svnBlame as $entry) {
-                    $blame[] = new vcsBlameStruct(
+                    $blame[] = new \Arbit\VCSWrapper\Blame(
                         $entry['line'],
                         $entry['rev'],
                         $entry['author'],
@@ -117,7 +119,7 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
                 }
             }
 
-            vcsCache::cache($this->path, $version, 'blame', $blame);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
@@ -134,13 +136,13 @@ class vcsSvnExtFile extends vcsSvnExtResource implements vcsFile, vcsBlameable, 
     public function getVersionedContent($version)
     {
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        if (($content = vcsCache::get($this->path, $version, 'content')) === false) {
+        if (($content = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'content')) === false) {
             // Execute command
             $content = svn_cat($this->root . $this->path, $version);
-            vcsCache::cache($this->path, $version, 'content', $content);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'content', $content);
         }
 
         return $content;

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /**
  * Base class for resources in the VCS wrapper.
  *
@@ -33,7 +35,7 @@
  * @subpackage Core
  * @version $Revision$
  */
-abstract class vcsResource
+abstract class Resource
 {
     /**
      * Path to the repository root / checkout.

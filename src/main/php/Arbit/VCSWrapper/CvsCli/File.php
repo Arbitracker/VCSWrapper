@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\CvsCli;
+
 /**
  * File implementation vor CVS Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage CvsCliWrapper
  * @version $Revision$
  */
-class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, vcsFetchable, vcsDiffable
+class File extends \Arbit\VCSWrapper\CvsCli\Resource implements \Arbit\VCSWrapper\File, \Arbit\VCSWrapper\Blameable, \Arbit\VCSWrapper\Fetchable, \Arbit\VCSWrapper\Diffable
 {
     /**
      * Get file contents
@@ -90,18 +92,18 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
 
         $versions = $this->getVersions();
         if (!in_array($version, $versions, true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        if (($blame = vcsCache::get($this->path, $version, 'blame')) !== false) {
+        if (($blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame')) !== false) {
             return $blame;
         }
 
         // Refetch the basic blamermation, and cache it.
-        $process = new vcsCvsCliProcess();
+        $process = new \Arbit\VCSWrapper\CvsCli\Process();
         $process
             ->workingDirectory($this->root)
-            ->redirect(vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT)
+            ->redirect(\Arbit\VCSWrapper\CvsCli\Process::STDERR, \Arbit\VCSWrapper\CvsCli\Process::STDOUT)
             ->argument('annotate')
             ->argument('-r')
             ->argument($version)
@@ -122,7 +124,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
 
             preg_match($regexp, $line, $match);
 
-            $blame[] = new vcsBlameStruct(
+            $blame[] = new \Arbit\VCSWrapper\Blame(
                 trim($match['content']),
                 trim($match['revision']),
                 trim($match['author']),
@@ -130,7 +132,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
             );
         }
 
-        vcsCache::cache($this->path, $version, 'blame', $blame);
+        \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'blame', $blame);
 
         return $blame;
     }
@@ -147,15 +149,15 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
     {
         $versions = $this->getVersions();
         if (!in_array($version, $versions, true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        if (($content = vcsCache::get($this->path, $version, 'content')) === false) {
+        if (($content = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'content')) === false) {
             // Refetch the basic content information, and cache it.
-            $process = new vcsCvsCliProcess();
+            $process = new \Arbit\VCSWrapper\CvsCli\Process();
             $process
                 ->workingDirectory($this->root)
-                ->redirect(vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT)
+                ->redirect(\Arbit\VCSWrapper\CvsCli\Process::STDERR, \Arbit\VCSWrapper\CvsCli\Process::STDOUT)
                 ->argument('update')
                 ->argument('-p')
                 ->argument('-r')
@@ -165,7 +167,7 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
 
             $output  = $process->stdoutOutput;
             $content = ltrim(substr($output, strpos($output, '***************') + 15));
-            vcsCache::cache($this->path, $version, 'content', $content);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'content', $content);
         }
 
         return $content;
@@ -180,24 +182,24 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
      *
      * @param string $version
      * @param string $current
-     * @return vcsResource
+     * @return \Arbit\VCSWrapper\Resource
      */
     public function getDiff($version, $current = null)
     {
         $current = ($current === null) ? $this->getVersionString() : $current;
 
-        if (($diff = vcsCache::get($this->path, $version, 'diff')) !== false) {
+        if (($diff = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'diff')) !== false) {
             return $diff;
         }
 
         // Refetch the basic content information, and cache it.
-        $process = new vcsCvsCliProcess();
+        $process = new \Arbit\VCSWrapper\CvsCli\Process();
         // WTF: Why is there a non zero exit code?
         $process->nonZeroExitCodeException = false;
         // Configure process instance
         $process
             ->workingDirectory($this->root)
-            ->redirect(vcsCvsCliProcess::STDERR, vcsCvsCliProcess::STDOUT)
+            ->redirect(\Arbit\VCSWrapper\CvsCli\Process::STDERR, \Arbit\VCSWrapper\CvsCli\Process::STDOUT)
             ->argument('diff')
             ->argument('-u')
             ->argument('-r')
@@ -207,9 +209,9 @@ class vcsCvsCliFile extends vcsCvsCliResource implements vcsFile, vcsBlameable, 
             ->argument('.' . $this->path)
             ->execute();
 
-        $parser = new vcsUnifiedDiffParser();
+        $parser = new \Arbit\VCSWrapper\Diff\Unified();
         $diff   = $parser->parseString($process->stdoutOutput);
-        vcsCache::cache($this->path, $version, 'diff', $diff);
+        \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'diff', $diff);
 
         return $diff;
     }

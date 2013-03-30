@@ -6,21 +6,15 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsArchiveFileTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\Archive;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class FileTest extends TestCase
+{
     public function setUp()
     {
         if ( !class_exists( 'ZipArchive' ) ) {
@@ -31,14 +25,14 @@ class vcsArchiveFileTests extends vcsTestCase
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testGetFileContents()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
-        $file = new vcsArchiveFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../data/archive.zip' ) );
+        $file = new \Arbit\VCSWrapper\Archive\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "Some test contents\n",
@@ -48,9 +42,9 @@ class vcsArchiveFileTests extends vcsTestCase
 
     public function testGetFileMimeType()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
-        $file = new vcsArchiveFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../data/archive.zip' ) );
+        $file = new \Arbit\VCSWrapper\Archive\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "application/octet-stream",
@@ -60,9 +54,9 @@ class vcsArchiveFileTests extends vcsTestCase
 
     public function testGetLocalFilePath()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
-        $file = new vcsArchiveFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../data/archive.zip' ) );
+        $file = new \Arbit\VCSWrapper\Archive\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             $this->tempDir . '/dir1/file',

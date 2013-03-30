@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Diff;
+
 /**
  * Basic struct containing a diff chunk
  *
@@ -30,7 +32,7 @@
  * @subpackage Diff
  * @version $Revision$
  */
-class vcsDiffChunk extends vcsBaseStruct
+class Chunk extends \Arbit\VCSWrapper\Struct
 {
     /**
      * Array containing the structs properties.

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\BzrCli;
+
 /**
  * Directory implementation vor Bazaar Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage BzrCliWrapper
  * @version $Revision$
  */
-class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
+class Directory extends \Arbit\VCSWrapper\BzrCli\Resource implements \Arbit\VCSWrapper\Directory
 {
     /**
      * Store the resources of this directory
@@ -43,9 +45,9 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
      * Initialize the resources array.
      *
      * Initilaize the array containing all child elements of the current
-     * directly as vcsBzrCliResource objects.
+     * directly as \Arbit\VCSWrapper\BzrCli\Resource objects.
      *
-     * @return array(vcsBzrCliResource)
+     * @return array(\Arbit\VCSWrapper\BzrCli\Resource)
      */
     protected function initializeResouces()
     {
@@ -62,8 +64,8 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
             }
 
             $this->resources[] = (is_dir($this->root . $this->path . $path) ?
-                new vcsBzrCliDirectory($this->root, $this->path . $path . '/') :
-                new vcsBzrCliFile($this->root, $this->path . $path)
+                new \Arbit\VCSWrapper\BzrCli\Directory($this->root, $this->path . $path . '/') :
+                new \Arbit\VCSWrapper\BzrCli\File($this->root, $this->path . $path)
             );
         }
 
@@ -133,7 +135,7 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     /**
      * Returns the children for this instance.
      *
-     * @return vcsDirectory
+     * @return \Arbit\VCSWrapper\Directory
      */
     public function getChildren()
     {
@@ -151,6 +153,6 @@ class vcsBzrCliDirectory extends vcsBzrCliResource implements vcsDirectory
     {
         $this->initializeResouces();
 
-        return current($this->resources) instanceof vcsDirectory;
+        return current($this->resources) instanceof \Arbit\VCSWrapper\Directory;
     }
 }

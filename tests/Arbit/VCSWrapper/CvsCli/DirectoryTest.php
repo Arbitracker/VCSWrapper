@@ -6,36 +6,30 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the CVS Cli wrapper
- */
-class vcsCvsCliDirectoryTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\CvsCli;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the CVS Cli wrapper
+ */
+class DirectoryTest extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testIterateRootDirContents()
     {
-        $repository = new vcsCvsCliCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $repository = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $dir = new vcsCvsCliDirectory( $this->tempDir, '/' );
+        $dir = new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/' );
 
         $files = array();
         foreach ( $dir as $file ) {
@@ -57,10 +51,10 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
 
     public function testRecursiveIterator()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $dir      = new vcsCvsCliDirectory( $this->tempDir, '/' );
+        $dir      = new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
@@ -85,10 +79,10 @@ class vcsCvsCliDirectoryTests extends vcsTestCase
 
     public function testIterateSubDirContents()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
-        $dir = new vcsCvsCliDirectory( $this->tempDir, '/dir1/' );
+        $dir = new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/dir1/' );
 
         $files = array();
         foreach ( $dir as $file ) {

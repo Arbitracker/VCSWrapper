@@ -6,21 +6,15 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsArchiveDirectoryTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\Archive;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class DirectoryTest extends TestCase
+{
     public function setUp()
     {
         if ( !class_exists( 'ZipArchive' ) ) {
@@ -31,15 +25,15 @@ class vcsArchiveDirectoryTests extends vcsTestCase
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testIterateRootDirContents()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( __DIR__ . '/../../../data/archive.zip' );
 
-        $dir = new vcsArchiveDirectory( $this->tempDir, '/' );
+        $dir = new \Arbit\VCSWrapper\Archive\Directory( $this->tempDir, '/' );
 
         $files = array();
         foreach ( $dir as $file ) {
@@ -59,11 +53,11 @@ class vcsArchiveDirectoryTests extends vcsTestCase
 
     public function testRecursiveIterator()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../data/archive.zip' ) );
 
-        $dir      = new vcsArchiveDirectory( $this->tempDir, '/' );
-        $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
+        $dir      = new \Arbit\VCSWrapper\Archive\Directory( $this->tempDir, '/' );
+        $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
         foreach ( $iterator as $file ) {
@@ -84,10 +78,10 @@ class vcsArchiveDirectoryTests extends vcsTestCase
 
     public function testIterateSubDirContents()
     {
-        $repository = new vcsZipArchiveCheckout( $this->tempDir );
-        $repository->initialize( realpath( dirname( __FILE__ ) . '/../data/archive.zip' ) );
+        $repository = new \Arbit\VCSWrapper\Archive\Checkout\Zip( $this->tempDir );
+        $repository->initialize( realpath( __DIR__ . '/../../../data/archive.zip' ) );
 
-        $dir = new vcsArchiveDirectory( $this->tempDir, '/dir1/' );
+        $dir = new \Arbit\VCSWrapper\Archive\Directory( $this->tempDir, '/dir1/' );
 
         $files = array();
         foreach ( $dir as $file ) {

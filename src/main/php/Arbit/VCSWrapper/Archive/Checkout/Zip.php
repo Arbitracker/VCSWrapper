@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Archive\Checkout;
+
 /**
  * Handler for ZIP archive based "checkouts"
  *
@@ -30,7 +32,7 @@
  * @subpackage ArchiveWrapper
  * @version $Revision$
  */
-class vcsZipArchiveCheckout extends vcsArchiveCheckout
+class Zip extends \Arbit\VCSWrapper\Archive\Checkout
 {
     /**
      * Initialize repository
@@ -46,14 +48,14 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
     public function initialize($url, $user = null, $password = null)
     {
         if (!is_file($url) || !is_readable($url)) {
-            throw new vcsNoSuchFileException($url);
+            throw new \RuntimeException("Cannot initialize repository from $url");
         }
 
         // Try to extract given zip archive
-        $archive = new ZipArchive();
+        $archive = new \ZipArchive();
         $return  = $archive->open($url);
         if ($return !== true) {
-            throw new vcsInvalidZipArchiveException($url, $return);
+            throw new \RuntimeException($url, $return);
         }
 
         // Extract, if archive has been opened successfully
@@ -77,10 +79,10 @@ class vcsZipArchiveCheckout extends vcsArchiveCheckout
      * Often all files in an archive can be found in some subdirectory. We want
      * to detect which subdirectory this is to move all files to the root.
      *
-     * @param ZipArchive $archive
+     * @param \ZipArchive $archive
      * @return string
      */
-    protected function findRepositoryRoot(ZipArchive $archive)
+    protected function findRepositoryRoot(\ZipArchive $archive)
     {
         // Find root directory in zip file.
         $count    = $archive->numFiles;

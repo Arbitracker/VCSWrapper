@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\HgCli;
+
 /**
  * Handler for Hg repositories
  *
@@ -30,7 +32,7 @@
  * @subpackage HgCliWrapper
  * @version $Revision$
  */
-class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
+class Checkout extends \Arbit\VCSWrapper\HgCli\Directory implements \Arbit\VCSWrapper\Checkout
 {
     /**
      * Construct repository with repository root path
@@ -65,7 +67,7 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
 
         if (is_dir($this->root)) {
             if (count(glob($this->root . '/*'))) {
-                throw new vcsCheckoutFailedException($url);
+                throw new \Arbit\VCSWrapper\CheckoutFailedException($url);
             }
 
             rmdir($this->root);
@@ -74,7 +76,7 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
         // Fix incorrect windows checkout URLs
         $url = preg_replace('(^file://([A-Za-z]):)', 'file:///\\1:', $url);
 
-        $process = new vcsHgCliProcess();
+        $process = new \Arbit\VCSWrapper\HgCli\Process();
         $process->argument('clone');
         $process->argument(str_replace('\\', '/', $url));
         $process->argument(new \SystemProcess\Argument\PathArgument($this->root));
@@ -102,12 +104,12 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
         // Remember version before update try
         $oldVersion = $this->getVersionString();
 
-        $process = new vcsHgCliProcess();
+        $process = new \Arbit\VCSWrapper\HgCli\Process();
         $process->workingDirectory($this->root);
         $process->argument('pull')->argument('default');
         $process->execute();
 
-        $process = new vcsHgCliProcess();
+        $process = new \Arbit\VCSWrapper\HgCli\Process();
         $process->workingDirectory($this->root);
         $process->argument('update');
         if ($version) {
@@ -126,7 +128,7 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
      * Get an item from the checkout, specified by its local path. If no item
      * with the specified path exists an exception is thrown.
      *
-     * Method either returns a vcsCheckout, a vcsDirectory or a vcsFile
+     * Method either returns a \Arbit\VCSWrapper\Checkout, a \Arbit\VCSWrapper\Directory or a \Arbit\VCSWrapper\File
      * instance, depending on the given path.
      *
      * @param string $path
@@ -139,13 +141,13 @@ class vcsHgCliCheckout extends vcsHgCliDirectory implements vcsCheckout
         if (($fullPath === false) ||
              (strpos(str_replace('\\', '/', $fullPath), str_replace('\\', '/', $this->root)) !== 0))
         {
-            throw new vcsFileNotFoundException($path);
+            throw new \Arbit\VCSWrapper\FileNotFoundException($path);
         }
 
         if ($path === '/') {
             return $this;
         }
 
-        return is_dir($fullPath) ? new vcsHgCliDirectory($this->root, $path) : new vcsHgCliFile($this->root, $path);
+        return is_dir($fullPath) ? new \Arbit\VCSWrapper\HgCli\Directory($this->root, $path) : new \Arbit\VCSWrapper\HgCli\File($this->root, $path);
     }
 }

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\HgCli;
+
 /**
  * File implementation vor Mercurial Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage MercurialCliWrapper
  * @version $Revision$
  */
-class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vcsDiffable
+class File extends \Arbit\VCSWrapper\HgCli\Resource implements \Arbit\VCSWrapper\File, \Arbit\VCSWrapper\Blameable, \Arbit\VCSWrapper\Diffable
 {
     /**
      * Regexp to parse a mercurial blame line.
@@ -98,15 +100,15 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
         $version = ($version === null) ? $this->getVersionString() : $version;
 
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        $blame = vcsCache::get($this->path, $version, 'blame');
+        $blame = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'blame');
         if ($blame === false) {
             $shortHashCache = array();
 
             // Refetch the basic blamermation, and cache it.
-            $process = new vcsHgCliProcess();
+            $process = new \Arbit\VCSWrapper\HgCli\Process();
             $process->workingDirectory($this->root);
 
             // Execute command
@@ -124,7 +126,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                 }
 
                 if (preg_match(self::BLAME_REGEXP, $line, $match) === 0) {
-                    throw new vcsRuntimeException("Could not parse line: $line");
+                    throw new \RuntimeException("Could not parse line: $line");
                 }
 
                 $user       = $match['user'];
@@ -135,7 +137,7 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
 
                 if (!isset($shortHashCache[ $shortHash ])) {
                     // get the long revision from the short revision number
-                    $process = new vcsHgCliProcess();
+                    $process = new \Arbit\VCSWrapper\HgCli\Process();
                     $process->workingDirectory($this->root);
                     $process->argument('id');
                     $process->argument('--debug');
@@ -163,10 +165,10 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
                     $alias = $user;
                 }
 
-                $blame[] = new vcsBlameStruct($line, $revision, $alias, strtotime($date));
+                $blame[] = new \Arbit\VCSWrapper\Blame($line, $revision, $alias, strtotime($date));
             }
 
-            vcsCache::cache($this->path, $version, 'blame', $blame);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'blame', $blame);
         }
 
         return $blame;
@@ -181,18 +183,18 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
      *
      * @param string $version
      * @param string $current
-     * @return vcsResource
+     * @return \Arbit\VCSWrapper\Resource
      */
     public function getDiff($version, $current = null)
     {
         if (!in_array($version, $this->getVersions(), true)) {
-            throw new vcsNoSuchVersionException($this->path, $version);
+            throw new \UnexpectedValueException($this->path, $version);
         }
 
-        $diff = vcsCache::get($this->path, $version, 'diff');
+        $diff = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'diff');
         if ($diff === false) {
             // Refetch the basic content information, and cache it.
-            $process = new vcsHgCliProcess();
+            $process = new \Arbit\VCSWrapper\HgCli\Process();
             $process->workingDirectory($this->root);
             $process->argument('diff');
             if ($current !== null) {
@@ -203,9 +205,9 @@ class vcsHgCliFile extends vcsHgCliResource implements vcsFile, vcsBlameable, vc
             $process->execute();
 
             // Parse resulting unified diff
-            $parser = new vcsUnifiedDiffParser();
+            $parser = new \Arbit\VCSWrapper\Diff\Unified();
             $diff   = $parser->parseString($process->stdoutOutput);
-            vcsCache::cache($this->path, $version, 'diff', $diff);
+            \Arbit\VCSWrapper\Cache\Manager::cache($this->path, $version, 'diff', $diff);
         }
 
         return $diff;

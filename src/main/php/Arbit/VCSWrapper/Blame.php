@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /**
  * VCS wrapper abstracted log entry
  *
@@ -30,7 +32,7 @@
  * @subpackage Core
  * @version $Revision$
  */
-class vcsBlameStruct extends vcsBaseStruct
+class Blame extends \Arbit\VCSWrapper\Struct
 {
     /**
      * Array containing the structs properties.
@@ -69,10 +71,10 @@ class vcsBlameStruct extends vcsBaseStruct
      * @ignore
      * @param array $properties
      * @param string $class
-     * @return vcsBlameStruct
+     * @return \Arbit\VCSWrapper\Blame
      */
     public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state($properties, $class);
+        return \Arbit\VCSWrapper\Struct::__set_state($properties, $class);
     }
 }

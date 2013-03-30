@@ -6,21 +6,15 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the CVS cli wrapper checkout implementation.
- */
-class vcsCvsCliCheckoutTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\CvsCli;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the CVS cli wrapper checkout implementation.
+ */
+class CheckoutTest extends TestCase
+{
     /**
      * Initializes the the meta data cache used by the CVS wrapper.
      */
@@ -30,12 +24,12 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
         // Create a cache, required for all CVS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testInitializeInvalidCheckout()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
         try {
             $checkout->initialize( '/hopefully/not/existing/cvs#repo' );
             $this->fail( 'Expected \SystemProcess\NonZeroExitCodeException.' );
@@ -44,8 +38,8 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
     public function testInitializeCheckout()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -55,8 +49,8 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
     public function testInitializeCheckoutWithVersion()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#1.2' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs#1.2' );
 
         $this->assertFileExists( $this->tempDir . '/file' );
         $this->assertFileExists( $this->tempDir . '/dir1/file' );
@@ -65,8 +59,8 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
     public function testUpdateCheckout()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
 
         $this->assertFalse( $checkout->update(), "Repository should already be on latest revision." );
 
@@ -79,29 +73,29 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
     public function testUpdateCheckoutWithUpdate()
     {
         // Create a repository copy
-        $dataDir = realpath( dirname( __FILE__ ) . '/../data/cvs' );
+        $dataDir = realpath( __DIR__ . '/../../../../data/cvs' );
         $repoDir = $this->createTempDir() . '/cvs';
 
         self::copyRecursive( $dataDir, $repoDir );
 
         // Create a clean checkout of the cloned repository
-        $checkin = new vcsCvsCliCheckout( $this->tempDir . '/in' );
+        $checkin = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir . '/in' );
         $checkin->initialize( $repoDir . '#cvs' );
 
-        $checkout = new vcsCvsCliCheckout( $this->tempDir . '/out' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir . '/out' );
         $checkout->initialize( $repoDir . '#cvs' );
 
         // Manually add a new file
         file_put_contents( $this->tempDir . '/in/foo.txt', 'Foobar Bar Foo' );
 
         // Add file to repository
-        $add = new vcsCvsCliProcess();
+        $add = new \Arbit\VCSWrapper\CvsCli\Process();
         $add->workingDirectory( $this->tempDir . '/in' )
             ->argument( 'add' )
             ->argument( 'foo.txt' )
             ->execute();
 
-        $commit = new vcsCvsCliProcess();
+        $commit = new \Arbit\VCSWrapper\CvsCli\Process();
         $commit->workingDirectory( $this->tempDir . '/in' )
                ->argument( 'commit' )
                ->argument( '-m' )
@@ -118,8 +112,8 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
     public function testUpdateCheckoutToOldVersion()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs' );
         $this->assertFileExists( $this->tempDir . '/dir1/file', 'Expected file "/dir1/file" in checkout.' );
 
         $checkout->update( '1.0' );
@@ -128,8 +122,8 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
     public function testUpdateCheckoutFromTagToHead()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs#milestone' );
 
         $this->assertFileNotExists( $this->tempDir . '/dir1/file1', 'Expected file "/dir1/file1" not in checkout.' );
         $checkout->update( 'HEAD' );
@@ -138,8 +132,8 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
     public function testGetCheckout()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs#milestone' );
 
         $this->assertSame(
             $checkout->get(),
@@ -154,34 +148,34 @@ class vcsCvsCliCheckoutTests extends vcsTestCase
 
     public function testGetInvalid()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs#milestone' );
 
         try {
             $checkout->get( '/../' );
-            $this->fail( 'Expected vcsFileNotFoundException.' );
-        } catch ( vcsFileNotFoundException $e ) { /* Expected */ }
+            $this->fail( 'Expected \Arbit\VCSWrapper\FileNotFoundException.' );
+        } catch ( \Arbit\VCSWrapper\FileNotFoundException $e ) { /* Expected */ }
     }
 
     public function testGetDirectory()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs#milestone' );
 
         $this->assertEquals(
             $checkout->get( '/dir1' ),
-            new vcsCvsCliDirectory( $this->tempDir, '/dir1' )
+            new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/dir1' )
         );
     }
 
     public function testGetFile()
     {
-        $checkout = new vcsCvsCliCheckout( $this->tempDir );
-        $checkout->initialize( realpath( dirname( __FILE__ ) . '/../data/cvs' ) . '#cvs#milestone' );
+        $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
+        $checkout->initialize( realpath( __DIR__ . '/../../../../data/cvs' ) . '#cvs#milestone' );
 
         $this->assertEquals(
             $checkout->get( '/file' ),
-            new vcsCvsCliFile( $this->tempDir, '/file' )
+            new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' )
         );
     }
 }

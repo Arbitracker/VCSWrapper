@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /**
  * Basic struct class with optional value validation when the __set method gets
  * overwritten in the child classes.
@@ -31,7 +33,7 @@
  * @subpackage Core
  * @version $Revision$
  */
-class vcsBaseStruct implements arbitCacheable
+class Struct implements \Arbit\VCSWrapper\Cacheable
 {
     /**
      * Array containing the structs properties.
@@ -101,7 +103,7 @@ class vcsBaseStruct implements arbitCacheable
      * @ignore
      * @param array $properties
      * @param string $class
-     * @return vcsBaseStruct
+     * @return \Arbit\VCSWrapper\Struct
      */
     public static function __set_state(array $properties, $class = __CLASS__)
     {

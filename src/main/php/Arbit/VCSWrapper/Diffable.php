@@ -23,13 +23,15 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /*
  * Interface for versioned resources which can be diffed with other versions
  *
  * This interface should be implemented for VCS by resources which can compute
  * a diff between different versions of the given VCS.
  */
-interface vcsDiffable extends vcsVersioned
+interface Diffable extends Versioned
 {
     /**
      * Get diff

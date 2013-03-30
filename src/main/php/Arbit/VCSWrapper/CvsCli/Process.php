@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\CvsCli;
+
 /**
  * This is a CVS executable wrapper for the system process class.
  *
@@ -30,7 +32,7 @@
  * @subpackage CvsCliWrapper
  * @version $Revision$
  */
-class vcsCvsCliProcess extends \SystemProcess\SystemProcess
+class Process extends \SystemProcess\SystemProcess
 {
     /**
      * Class constructor taking the executable

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Archive;
+
 /**
  * A resource base class in the archive wrapper
  *
@@ -30,6 +32,6 @@
  * @subpackage ArchiveWrapper
  * @version $Revision$
  */
-abstract class vcsArchiveResource extends vcsResource
+abstract class Resource extends \Arbit\VCSWrapper\Resource
 {
 }

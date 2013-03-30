@@ -18,6 +18,8 @@
         "vendor-dir": "src/library"
     },
     "autoload":    {
-        "classmap": ["src/main/php/"]
+        "psr-0": {
+            "Arbit\\VCSWrapper": "src/main/php/"
+        }
     }
 }

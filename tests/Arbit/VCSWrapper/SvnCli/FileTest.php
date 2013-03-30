@@ -6,35 +6,29 @@
  * @license GPLv3
  */
 
-/**
- * Tests for the SQLite cache meta data handler
- */
-class vcsSvnCliFileTests extends vcsTestCase
-{
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
+namespace Arbit\VCSWrapper\SvnCli;
 
+use \Arbit\VCSWrapper\TestCase;
+
+/**
+ * Test for the SQLite cache meta data handler
+ */
+class FileTest extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
 
         // Create a cache, required for all VCS wrappers to store metadata
         // information
-        vcsCache::initialize( $this->createTempDir() );
+        \Arbit\VCSWrapper\Cache\Manager::initialize( $this->createTempDir() );
     }
 
     public function testGetVersionString()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             "5",
@@ -44,9 +38,9 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetVersions()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
             array( "1", "5" ),
@@ -56,9 +50,9 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetAuthor()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             'kore',
@@ -68,9 +62,9 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetAuthorOldVersion()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             'kore',
@@ -80,31 +74,31 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetAuthorInvalidVersion()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getAuthor( 'invalid' );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetLog()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             array(
-                1 => new vcsLogEntry(
+                1 => new \Arbit\VCSWrapper\LogEntry(
                     '1',
                     'kore',
                     "- Added test file\n",
                     1226412609
                 ),
-                5 => new vcsLogEntry(
+                5 => new \Arbit\VCSWrapper\LogEntry(
                     '5',
                     'kore',
                     "- Added another line to file\n",
@@ -117,12 +111,12 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetLogEntry()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
-            new vcsLogEntry(
+            new \Arbit\VCSWrapper\LogEntry(
                 '1',
                 'kore',
                 "- Added test file\n",
@@ -134,21 +128,21 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetUnknownLogEntry()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getLogEntry( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileContents()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "Some test contents\n",
@@ -158,9 +152,9 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetFileMimeType()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/dir1/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
             "application/octet-stream",
@@ -170,9 +164,9 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetFileVersionedFileContents()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             "Some test file\n",
@@ -182,31 +176,31 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetFileContentsInvalidVersion()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         try {
             $file->getVersionedContent( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileBlame()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
             array(
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'Some test file',
                     '1',
                     'kore',
                     1226412609
                 ),
-                new vcsBlameStruct(
+                new \Arbit\VCSWrapper\Blame(
                     'A second line, in a later revision',
                     '5',
                     'kore',
@@ -219,9 +213,9 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetBinaryFileBlame()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/binary' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/binary' );
 
         $this->assertEquals(
             false,
@@ -231,21 +225,21 @@ class vcsSvnCliFileTests extends vcsTestCase
 
     public function testGetFileBlameInvalidVersion()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         try {
             $file->blame( "no_such_version" );
-            $this->fail( 'Expected vcsNoSuchVersionException.' );
-        } catch ( vcsNoSuchVersionException $e ) { /* Expected */ }
+            $this->fail( 'Expected \UnexpectedValueException.' );
+        } catch ( \UnexpectedValueException $e ) { /* Expected */ }
     }
 
     public function testGetFileDiff()
     {
-        $repository = new vcsSvnCliCheckout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( dirname( __FILE__ ) . '/../data/svn' ) );
-        $file = new vcsSvnCliFile( $this->tempDir, '/file' );
+        $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/svn' ) );
+        $file = new \Arbit\VCSWrapper\SvnCli\File( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( 1 );
 
@@ -260,11 +254,11 @@ class vcsSvnCliFileTests extends vcsTestCase
         );
         $this->assertEquals(
             array(
-                new vcsDiffChunk(
+                new \Arbit\VCSWrapper\Diff\CollectionChunk(
                     1, 1, 1, 2,
                     array(
-                        new vcsDiffLine( 3, 'Some test file' ),
-                        new vcsDiffLine( 1, 'A second line, in a later revision' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 3, 'Some test file' ),
+                        new \Arbit\VCSWrapper\Diff\Line( 1, 'A second line, in a later revision' ),
                     )
                 ),
             ),

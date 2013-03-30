@@ -6,22 +6,16 @@
  * @license GPLv3
  */
 
+namespace Arbit\VCSWrapper\GitCli;
+
+use \Arbit\VCSWrapper\TestCase;
+
 /**
- * Tests for the regular expression used to extract data from git's blame
+ * Test for the regular expression used to extract data from git's blame
  * output.
  */
-class vcsGitCliBlameRegexpTests extends vcsTestCase
+class BlameRegexpTest extends TestCase
 {
-    /**
-     * Return test suite
-     *
-     * @return PHPUnit_Framework_TestSuite
-     */
-    public static function suite()
-    {
-        return new PHPUnit_Framework_TestSuite( __CLASS__ );
-    }
-
     /**
      * Performs the regular
      *
@@ -32,7 +26,7 @@ class vcsGitCliBlameRegexpTests extends vcsTestCase
      */
     public function testRegexpMatchesBlameLine( $blameLine )
     {
-        self::assertGreaterThan( 0, preg_match( vcsGitCliFile::BLAME_REGEXP, $blameLine, $match ) );
+        self::assertGreaterThan( 0, preg_match( File::BLAME_REGEXP, $blameLine, $match ) );
     }
 
     /**

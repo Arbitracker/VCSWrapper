@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper;
+
 /**
  * Abstract base class for diff parsers
  *
@@ -30,27 +32,27 @@
  * @subpackage Diff
  * @version $Revision$
  */
-abstract class vcsDiffParser
+abstract class Diff
 {
     /**
      * Parse diff string
      *
-     * Parse the diff, given as a string, into a vcsDiff objects. The different
+     * Parse the diff, given as a string, into a \Arbit\VCSWrapper\Diff\Collection objects. The different
      * diff objects are returned in an array.
      *
      * @param string $string
-     * @return array(vcsDiff)
+     * @return array(\Arbit\VCSWrapper\Diff\Collection)
      */
     abstract public function parseString($string);
 
     /**
      * Parse diff file
      *
-     * Parse the diff, given as a file name, into a vcsDiff objects. The
+     * Parse the diff, given as a file name, into a \Arbit\VCSWrapper\Diff\Collection objects. The
      * different diff objects are returned in an array.
      *
      * @param string $file
-     * @return array(vcsDiff)
+     * @return array(\Arbit\VCSWrapper\Diff\Collection)
      */
     public function parseFile($file)
     {

@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\Diff;
+
 /**
  * Basic struct containing all diff chunks for one file
  *
@@ -30,7 +32,7 @@
  * @subpackage Diff
  * @version $Revision$
  */
-class vcsDiff extends vcsBaseStruct
+class Collection extends \Arbit\VCSWrapper\Struct
 {
     /**
      * Array containing the structs properties.
@@ -66,10 +68,10 @@ class vcsDiff extends vcsBaseStruct
      * @ignore
      * @param array $properties
      * @param string $class
-     * @return vcsDiff
+     * @return \Arbit\VCSWrapper\Diff\Collection
      */
     public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state($properties, $class);
+        return \Arbit\VCSWrapper\Struct::__set_state($properties, $class);
     }
 }

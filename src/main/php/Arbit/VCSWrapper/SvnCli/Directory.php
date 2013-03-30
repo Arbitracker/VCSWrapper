@@ -23,6 +23,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
  */
 
+namespace Arbit\VCSWrapper\SvnCli;
+
 /**
  * Directory implementation vor SVN Cli wrapper
  *
@@ -30,7 +32,7 @@
  * @subpackage SvnCliWrapper
  * @version $Revision$
  */
-class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
+class Directory extends \Arbit\VCSWrapper\SvnCli\Resource implements \Arbit\VCSWrapper\Directory
 {
     /**
      * Array with children resources of the directory, used for the iterator.
@@ -43,9 +45,9 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
      * Initialize resources array
      *
      * Initilaize the array containing all child elements of the current
-     * directly as vcsSvnCliResource objects.
+     * directly as \Arbit\VCSWrapper\SvnCli\Resource objects.
      *
-     * @return array(vcsSvnCliResource)
+     * @return array(\Arbit\VCSWrapper\SvnCli\Resource)
      */
     protected function initializeResouces()
     {
@@ -64,8 +66,8 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
             }
 
             $this->resources[] = (is_dir($this->root . $this->path . $path) ?
-                new vcsSvnCliDirectory($this->root, $this->path . $path . '/', $this->username, $this->password) :
-                new vcsSvnCliFile($this->root, $this->path . $path, $this->username, $this->password)
+                new \Arbit\VCSWrapper\SvnCli\Directory($this->root, $this->path . $path . '/', $this->username, $this->password) :
+                new \Arbit\VCSWrapper\SvnCli\File($this->root, $this->path . $path, $this->username, $this->password)
             );
         }
         $contents->close();
@@ -144,7 +146,7 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
     /**
      * Returns the children for this instance.
      *
-     * @return vcsDirectory
+     * @return \Arbit\VCSWrapper\Directory
      */
     public function getChildren()
     {
@@ -166,6 +168,6 @@ class vcsSvnCliDirectory extends vcsSvnCliResource implements vcsDirectory
             $this->initializeResouces();
         }
 
-        return current($this->resources) instanceof vcsDirectory;
+        return current($this->resources) instanceof \Arbit\VCSWrapper\Directory;
     }
 }
