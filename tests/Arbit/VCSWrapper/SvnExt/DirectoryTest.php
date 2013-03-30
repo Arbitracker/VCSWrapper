@@ -58,7 +58,7 @@ class DirectoryTest extends TestCase
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
 
         $dir      = new \Arbit\VCSWrapper\SvnExt\Directory( $this->tempDir, '/' );
-        $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
+        $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
         foreach ( $iterator as $file ) {
@@ -116,7 +116,7 @@ class DirectoryTest extends TestCase
         );
         $this->assertEquals(
             array(
-                new \Arbit\VCSWrapper\Diff\CollectionChunk(
+                new \Arbit\VCSWrapper\Diff\Chunk(
                     0, 1, 1, 1,
                     array(
                         new \Arbit\VCSWrapper\Diff\Line( 1, 'Some test contents' ),

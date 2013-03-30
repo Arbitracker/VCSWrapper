@@ -55,7 +55,7 @@ class DirectoryTest extends TestCase
         $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
 
         $dir      = new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/' );
-        $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
+        $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
         foreach ( $iterator as $file ) {

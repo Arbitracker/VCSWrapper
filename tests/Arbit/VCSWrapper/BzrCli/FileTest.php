@@ -233,7 +233,7 @@ class FileTest extends TestCase
 
         $this->assertEquals(
             array(
-                new \Arbit\VCSWrapper\Diff\CollectionChunk(
+                new \Arbit\VCSWrapper\Diff\Chunk(
                     1, 2, 1, 3,
                     array(
                         new \Arbit\VCSWrapper\Diff\Line( 3, 'Some test file' ),

@@ -53,7 +53,7 @@ class DirectoryTest extends TestCase
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
 
         $dir      = new \Arbit\VCSWrapper\GitCli\Directory( $this->tempDir, '/' );
-        $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
+        $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
         foreach ( $iterator as $file ) {

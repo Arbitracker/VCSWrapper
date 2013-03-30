@@ -54,7 +54,7 @@ class DirectoryTest extends TestCase
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $dir      = new \Arbit\VCSWrapper\HgCli\Directory( $this->tempDir, '/' );
-        $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
+        $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
 
         $files = array();
         foreach ( $iterator as $file ) {
