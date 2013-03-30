@@ -78,6 +78,6 @@ class Chunk extends \Arbit\VCSWrapper\Struct
      */
     public static function __set_state(array $properties, $class = __CLASS__)
     {
-        return vcsBaseStruct::__set_state($properties, $class);
+        return \Arbit\VCSWrapper\Struct::__set_state($properties, $class);
     }
 }

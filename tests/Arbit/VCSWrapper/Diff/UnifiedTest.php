@@ -26,7 +26,7 @@ class UnifiedTest extends TestCase
     {
         if ( self::$diffs !== null ) return $diffs;
 
-        $files = glob( __DIR__ . '/../../../data/diff/unified/s_*.diff' );
+        $files = glob( __DIR__ . '/_fixtures/s_*.diff' );
         foreach ( $files as $file ) {
             self::$diffs[] = array(
                 $file,
