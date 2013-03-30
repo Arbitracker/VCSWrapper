@@ -105,7 +105,7 @@ class Unified extends \Arbit\VCSWrapper\Diff
                 }
             }
 
-            $chunk = new \Arbit\VCSWrapper\Diff\CollectionChunk(
+            $chunk = new \Arbit\VCSWrapper\Diff\Chunk(
                 $match['start'],
                 (isset($match['startrange']) ? max(1, $match['startrange']) : 1),
                 $match['end'],

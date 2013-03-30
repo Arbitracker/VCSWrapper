@@ -153,7 +153,7 @@ class Directory extends \Arbit\VCSWrapper\Resource implements \Arbit\VCSWrapper\
 
         // Build resources array, without constructing the objects yet, for
         // lazy construction of the object tree.
-        $directory = new DirectoryIterator($this->root . $this->path);
+        $directory = new \DirectoryIterator($this->root . $this->path);
         foreach ($directory as $fileInfo) {
             $fileName = $fileInfo->getFilename();
             if (($fileName === '.') ||
