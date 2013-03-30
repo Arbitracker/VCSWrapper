@@ -223,15 +223,15 @@ class CheckoutTest extends TestCase
         );
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testGetInvalid()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
         $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
 
-        try {
-            $repository->get( '/../' );
-            $this->fail( 'Expected \Arbit\VCSWrapper\FileNotFoundException.' );
-        } catch ( \Arbit\VCSWrapper\FileNotFoundException $e ) { /* Expected */ }
+        $repository->get( '/../' );
     }
 
     public function testGetDirectory()

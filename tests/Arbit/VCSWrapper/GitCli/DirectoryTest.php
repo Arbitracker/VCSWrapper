@@ -27,7 +27,7 @@ class DirectoryTest extends TestCase
     public function testIterateRootDirContents()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
 
         $dir = new \Arbit\VCSWrapper\GitCli\Directory( $this->tempDir, '/' );
 
@@ -50,7 +50,7 @@ class DirectoryTest extends TestCase
     public function testRecursiveIterator()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
 
         $dir      = new \Arbit\VCSWrapper\GitCli\Directory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
@@ -76,7 +76,7 @@ class DirectoryTest extends TestCase
     public function testIterateSubDirContents()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
 
         $dir = new \Arbit\VCSWrapper\GitCli\Directory( $this->tempDir, '/dir1/' );
 

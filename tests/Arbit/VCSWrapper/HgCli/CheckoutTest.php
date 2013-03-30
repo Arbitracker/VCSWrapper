@@ -39,7 +39,7 @@ class CheckoutTest extends TestCase
     public function testInitializeCheckout()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -50,7 +50,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckout()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertFalse( $repository->update(), "Repository should already be on latest revision." );
 
@@ -63,7 +63,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckoutWithUpdate()
     {
         $repDir = $this->createTempDir() . '/hg';
-        self::copyRecursive( realpath( __DIR__ . '/../../../../data/hg' ), $repDir );
+        self::copyRecursive( realpath( __DIR__ . '/../../../data/hg' ), $repDir );
 
         // Copy the repository to not chnage the test reference repository
         $checkin = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir . '/ci' );
@@ -96,7 +96,7 @@ class CheckoutTest extends TestCase
     public function testGetVersionString()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertSame(
             "b8ec741c8de1e60c5fedd98c350e3569c46ed630",
@@ -107,7 +107,7 @@ class CheckoutTest extends TestCase
     public function testGetVersions()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertSame(
             array(
@@ -125,7 +125,7 @@ class CheckoutTest extends TestCase
 #        $this->markTestSkipped( 'Downgrade seems not to remove files from checkout.' );
 
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
         $this->assertTrue(
             file_exists( $this->tempDir . '/dir1/file' ),
             'Expected file "/dir1/file" in checkout.'
@@ -142,7 +142,7 @@ class CheckoutTest extends TestCase
     public function testCompareVersions()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertTrue(
             $repository->compareVersions( "04cae3af7ea2c880d7f70fab0583476dfc31e7ae", "b8ec741c8de1e60c5fedd98c350e3569c46ed630" ) < 0
@@ -160,7 +160,7 @@ class CheckoutTest extends TestCase
     public function testGetAuthor()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertEquals(
             't.tom',
@@ -171,7 +171,7 @@ class CheckoutTest extends TestCase
     public function testGetLog()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertEquals(
             array(
@@ -195,7 +195,7 @@ class CheckoutTest extends TestCase
     public function testGetLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertEquals(
             new \Arbit\VCSWrapper\LogEntry(
@@ -208,7 +208,7 @@ class CheckoutTest extends TestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         try {
             $repository->getLogEntry( "no_such_version" );
@@ -219,7 +219,7 @@ class CheckoutTest extends TestCase
     public function testIterateCheckoutContents()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $files = array();
         foreach ( $repository as $file ) {
@@ -240,7 +240,7 @@ class CheckoutTest extends TestCase
     public function testGetCheckout()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertSame(
             $repository->get(),
@@ -256,18 +256,18 @@ class CheckoutTest extends TestCase
     public function testGetInvalid()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         try {
             $repository->get( '/../' );
-            $this->fail( 'Expected \Arbit\VCSWrapper\FileNotFoundException.' );
-        } catch ( \Arbit\VCSWrapper\FileNotFoundException $e ) { /* Expected */ }
+            $this->fail( 'Expected \RuntimeException.' );
+        } catch ( \RuntimeException $e ) { /* Expected */ }
     }
 
     public function testGetDirectory()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertEquals(
             $repository->get( '/dir1' ),
@@ -278,7 +278,7 @@ class CheckoutTest extends TestCase
     public function testGetFile()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $this->assertEquals(
             $repository->get( '/file' ),

@@ -28,7 +28,7 @@ class DirectoryTest extends TestCase
     public function testIterateRootDirContents()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $dir = new \Arbit\VCSWrapper\HgCli\Directory( $this->tempDir, '/' );
 
@@ -51,7 +51,7 @@ class DirectoryTest extends TestCase
     public function testRecursiveIterator()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $dir      = new \Arbit\VCSWrapper\HgCli\Directory( $this->tempDir, '/' );
         $iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::SELF_FIRST );
@@ -77,7 +77,7 @@ class DirectoryTest extends TestCase
     public function testIterateSubDirContents()
     {
         $repository = new \Arbit\VCSWrapper\HgCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/hg' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/hg' ) );
 
         $dir = new \Arbit\VCSWrapper\HgCli\Directory( $this->tempDir, '/dir1/' );
 

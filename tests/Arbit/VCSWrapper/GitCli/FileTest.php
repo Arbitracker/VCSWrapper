@@ -27,7 +27,7 @@ class FileTest extends TestCase
     public function testGetVersionString()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -39,7 +39,7 @@ class FileTest extends TestCase
     public function testGetVersions()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -54,7 +54,7 @@ class FileTest extends TestCase
     public function testGetAuthor()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -66,7 +66,7 @@ class FileTest extends TestCase
     public function testGetAuthorOldVersion()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -78,7 +78,7 @@ class FileTest extends TestCase
     public function testGetAuthorInvalidVersion()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
@@ -90,7 +90,7 @@ class FileTest extends TestCase
     public function testGetLog()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -109,7 +109,7 @@ class FileTest extends TestCase
     public function testGetLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -123,7 +123,7 @@ class FileTest extends TestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
@@ -135,7 +135,7 @@ class FileTest extends TestCase
     public function testGetFileContents()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -147,7 +147,7 @@ class FileTest extends TestCase
     public function testGetFileMimeType()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -159,7 +159,7 @@ class FileTest extends TestCase
     public function testGetFileBlame()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -184,7 +184,7 @@ class FileTest extends TestCase
     public function testGetFileBlameInvalidVersion()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
@@ -196,7 +196,7 @@ class FileTest extends TestCase
     public function testGetFileDiff()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( "43fb423f4ee079af2f3cba4e07eb8b10f4476815" );
@@ -218,7 +218,7 @@ class FileTest extends TestCase
     public function testGetFileDiffUnknownRevision()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../../data/git' ) );
+        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
         $file = new \Arbit\VCSWrapper\GitCli\File( $this->tempDir, '/file' );
 
         try {
