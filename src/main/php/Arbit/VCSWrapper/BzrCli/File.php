@@ -113,7 +113,7 @@ class File extends \Arbit\VCSWrapper\BzrCli\Resource implements \Arbit\VCSWrappe
             $blame = array();
             libxml_use_internal_errors(true);
             try {
-                $xmlDoc = new SimpleXMLElement($process->stdoutOutput);
+                $xmlDoc = new \SimpleXMLElement($process->stdoutOutput);
 
                 // Convert returned lines into diff structures
                 foreach ($xmlDoc->entry AS $line) {
