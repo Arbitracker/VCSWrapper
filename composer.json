@@ -1,5 +1,5 @@
 {
-    "name":        "Arbit/VCSWrapper",
+    "name":        "arbit/vcs-wrapper",
     "description": "VCS wrapper is a PHP abstraction layer for version control systems.",
     "minimum-stability": "dev",
     "version":     "0.1-dev",
@@ -11,8 +11,8 @@
         "url":  "https://github.com/Arbitracker/system-process"
     } ],
     "require":      {
-        "Arbit/XML": "*",
-        "Arbit/SystemProcess": "*"
+        "arbit/xml": "*",
+        "arbit/system-process": "*"
     },
     "config":       {
         "vendor-dir": "src/library"
