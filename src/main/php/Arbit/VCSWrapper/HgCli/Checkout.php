@@ -67,7 +67,7 @@ class Checkout extends \Arbit\VCSWrapper\HgCli\Directory implements \Arbit\VCSWr
 
         if (is_dir($this->root)) {
             if (count(glob($this->root . '/*'))) {
-                throw new \Arbit\VCSWrapper\CheckoutFailedException($url);
+                throw new \RuntimeException("Checkout of $url failed");
             }
 
             rmdir($this->root);

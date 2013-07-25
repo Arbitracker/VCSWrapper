@@ -63,7 +63,7 @@ class Checkout extends \Arbit\VCSWrapper\GitCli\Directory implements \Arbit\VCSW
     {
         if (is_dir($this->root)) {
             if (count(glob($this->root . '/*'))) {
-                throw new \Arbit\VCSWrapper\CheckoutFailedException($url);
+                throw new \RuntimeException("Checkout of $url failed");
             }
 
             rmdir($this->root);

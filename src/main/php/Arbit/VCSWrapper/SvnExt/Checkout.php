@@ -74,7 +74,7 @@ class Checkout extends \Arbit\VCSWrapper\SvnExt\Directory implements \Arbit\VCSW
                // To get the current revision number we need to also call update
              ($this->currentVersion = (string) svn_update($this->root)) === false)
         {
-            throw new \Arbit\VCSWrapper\CheckoutFailedException($url);
+            throw new \RuntimeException("Checkout of $url failed");
         }
 
     }
