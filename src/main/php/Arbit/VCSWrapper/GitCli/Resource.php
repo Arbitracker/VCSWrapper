@@ -267,10 +267,6 @@ abstract class Resource extends \Arbit\VCSWrapper\Resource implements \Arbit\VCS
      */
     public function getDiff($version, $current = null)
     {
-        if (!in_array($version, $this->getVersions(), true)) {
-            throw new \UnexpectedValueException("Invalid log entry $version for {$this->path}.");
-        }
-
         $current = ($current === null) ? $this->getVersionString() : $current;
 
         if (($diff = \Arbit\VCSWrapper\Cache\Manager::get($this->path, $version, 'diff')) === false) {
