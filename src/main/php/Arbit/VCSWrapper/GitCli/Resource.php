@@ -273,7 +273,7 @@ abstract class Resource extends \Arbit\VCSWrapper\Resource implements \Arbit\VCS
             // Refetch the basic content information, and cache it.
             $process = new \Arbit\VCSWrapper\GitCli\Process();
             $process->workingDirectory($this->root);
-            $process->argument('diff')->argument('--no-ext-diff');
+            $process->argument('diff')->argument('--no-ext-diff')->argument('--');
             $process->argument($version . '..' . $current)->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path))->execute();
 
             // Parse resulting unified diff
