@@ -8,12 +8,10 @@
 
 namespace Arbit\VCSWrapper\SvnExt;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the SQLite cache meta data handler
  */
-class FileTest extends TestCase
+class FileTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -31,7 +29,7 @@ class FileTest extends TestCase
     public function testGetVersionString()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -43,7 +41,7 @@ class FileTest extends TestCase
     public function testGetVersions()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertSame(
@@ -55,7 +53,7 @@ class FileTest extends TestCase
     public function testGetAuthor()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -67,7 +65,7 @@ class FileTest extends TestCase
     public function testGetAuthorOldVersion()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -79,7 +77,7 @@ class FileTest extends TestCase
     public function testGetAuthorInvalidVersion()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         try {
@@ -91,7 +89,7 @@ class FileTest extends TestCase
     public function testGetLog()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -116,7 +114,7 @@ class FileTest extends TestCase
     public function testGetLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -133,7 +131,7 @@ class FileTest extends TestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         try {
@@ -145,7 +143,7 @@ class FileTest extends TestCase
     public function testGetFileContents()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -157,7 +155,7 @@ class FileTest extends TestCase
     public function testGetFileMimeType()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -169,7 +167,7 @@ class FileTest extends TestCase
     public function testGetFileVersionedFileContents()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -181,7 +179,7 @@ class FileTest extends TestCase
     public function testGetFileContentsInvalidVersion()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         try {
@@ -193,7 +191,7 @@ class FileTest extends TestCase
     public function testGetFileBlame()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $this->assertEquals(
@@ -218,7 +216,7 @@ class FileTest extends TestCase
     public function testGetBinaryFileBlame()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/binary' );
 
         $this->assertEquals(
@@ -230,7 +228,7 @@ class FileTest extends TestCase
     public function testGetFileBlameInvalidVersion()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         try {
@@ -242,7 +240,7 @@ class FileTest extends TestCase
     public function testGetFileDiff()
     {
         $repository = new \Arbit\VCSWrapper\SvnExt\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\SvnExt\File( $this->tempDir, '/file' );
 
         $diff = $file->getDiff( 1 );

@@ -8,12 +8,10 @@
 
 namespace Arbit\VCSWrapper\SvnCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the SQLite cache meta data handler
  */
-class DirectoryTest extends TestCase
+class DirectoryTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -27,7 +25,7 @@ class DirectoryTest extends TestCase
     public function testIterateRootDirContents()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $dir = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/' );
 
@@ -51,7 +49,7 @@ class DirectoryTest extends TestCase
     public function testRecursiveIterator()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $dir      = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/' );
         $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
@@ -77,7 +75,7 @@ class DirectoryTest extends TestCase
     public function testIterateSubDirContents()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $dir = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/dir1/' );
 
@@ -97,7 +95,7 @@ class DirectoryTest extends TestCase
     public function testGetDirectoryDiff()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $dir = new \Arbit\VCSWrapper\SvnCli\Directory( $this->tempDir, '/dir1/' );
 
         $diff = $dir->getDiff( 2 );

@@ -8,12 +8,10 @@
 
 namespace Arbit\VCSWrapper\CvsCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the CVS Cli wrapper
  */
-class FileTest extends TestCase
+class FileTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -27,7 +25,7 @@ class FileTest extends TestCase
     public function testGetVersionString()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals( '1.2', $file->getVersionString() );
@@ -39,7 +37,7 @@ class FileTest extends TestCase
     public function testGetVersions()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertSame( array( '1.1', '1.2' ), $file->getVersions()  );
@@ -51,7 +49,7 @@ class FileTest extends TestCase
     public function testCompareVersions()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
 
         $this->assertEquals( 0, $file->compareVersions( '1.1', '1.1' ) );
@@ -62,7 +60,7 @@ class FileTest extends TestCase
     public function testGetAuthor()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals( 'manu', $file->getAuthor() );
@@ -71,7 +69,7 @@ class FileTest extends TestCase
     public function testGetAuthorWithVersion()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals( 'manu', $file->getAuthor( '1.1' ) );
@@ -80,7 +78,7 @@ class FileTest extends TestCase
     public function testGetAuthorWithInvalidVersion()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->setExpectedException('\UnexpectedValueException');
@@ -90,7 +88,7 @@ class FileTest extends TestCase
     public function testGetLog()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
 
         $this->assertEquals(
@@ -121,7 +119,7 @@ class FileTest extends TestCase
     public function testGetLogEntry()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->assertEquals(
@@ -138,7 +136,7 @@ class FileTest extends TestCase
     public function testGetUnknownLogEntry()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
 
@@ -150,7 +148,7 @@ class FileTest extends TestCase
     public function testGetFileContents()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file1' );
         $this->assertEquals( "Another test file\n", $file->getContents() );
@@ -159,7 +157,7 @@ class FileTest extends TestCase
     public function testGetFileMimeType()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file1' );
         $this->assertEquals( 'application/octet-stream', $file->getMimeType() );
@@ -168,7 +166,7 @@ class FileTest extends TestCase
     public function testGetFileVersionedFileContents()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertEquals( "Some test contents\n", $file->getVersionedContent( '1.1' ) );
@@ -177,7 +175,7 @@ class FileTest extends TestCase
     public function testGetFileContentsInvalidVersion()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/file' );
         $this->setExpectedException( '\UnexpectedValueException' );
@@ -187,7 +185,7 @@ class FileTest extends TestCase
     public function testGetFileBlame()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertEquals(
@@ -218,7 +216,7 @@ class FileTest extends TestCase
     public function testGetFileBlameWithVersion()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->assertEquals(
@@ -237,7 +235,7 @@ class FileTest extends TestCase
     public function testGetFileBlameWithInvalidVersion()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $this->setExpectedException( '\UnexpectedValueException' );
@@ -247,7 +245,7 @@ class FileTest extends TestCase
     public function testGetFileDiff()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $file = new \Arbit\VCSWrapper\CvsCli\File( $this->tempDir, '/dir1/file' );
         $diff = $file->getDiff( '1.1' );

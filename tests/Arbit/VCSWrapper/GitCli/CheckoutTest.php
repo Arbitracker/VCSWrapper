@@ -8,12 +8,10 @@
 
 namespace Arbit\VCSWrapper\GitCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the SQLite cache meta data handler
  */
-class CheckoutTest extends TestCase
+class CheckoutTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -38,7 +36,7 @@ class CheckoutTest extends TestCase
     public function testInitializeCheckout()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -49,7 +47,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckout()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertFalse( $repository->update(), "Repository should already be on latest revision." );
 
@@ -64,7 +62,7 @@ class CheckoutTest extends TestCase
         $this->markTestSkipped( 'Git does not allow the necessary commit anymore by default - thus we can\'t test this properly.' );
 
         $repDir = $this->createTempDir() . '/git';
-        self::copyRecursive( realpath( __DIR__ . '/../../../data/git' ), $repDir );
+        self::copyRecursive( realpath( __DIR__ . '/../../../../../tmp/git' ), $repDir );
 
         // Copy the repository to not chnage the test reference repository
         $checkin = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir . '/ci' );
@@ -97,7 +95,7 @@ class CheckoutTest extends TestCase
     public function testGetVersionString()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             "2037a8d0efd4e51a4dd84161837f8865cf7d34b1",
@@ -108,7 +106,7 @@ class CheckoutTest extends TestCase
     public function testGetVersions()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             array(
@@ -126,7 +124,7 @@ class CheckoutTest extends TestCase
         $this->markTestSkipped( 'Downgrade seems not to remove files from checkout.' );
 
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
         $this->assertTrue(
             file_exists( $this->tempDir . '/dir1/file' ),
             'Expected file "/dir1/file" in checkout.'
@@ -143,7 +141,7 @@ class CheckoutTest extends TestCase
     public function testCompareVersions()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertTrue(
             $repository->compareVersions( "16d59ca5905f40aba24d0efb6fc5f0d82ab65fbf", "2037a8d0efd4e51a4dd84161837f8865cf7d34b1" ) < 0
@@ -161,7 +159,7 @@ class CheckoutTest extends TestCase
     public function testGetAuthor()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             'kore',
@@ -172,7 +170,7 @@ class CheckoutTest extends TestCase
     public function testGetLog()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             array(
@@ -196,7 +194,7 @@ class CheckoutTest extends TestCase
     public function testGetLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             new \Arbit\VCSWrapper\LogEntry(
@@ -209,7 +207,7 @@ class CheckoutTest extends TestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         try {
             $repository->getLogEntry( "no_such_version" );
@@ -220,7 +218,7 @@ class CheckoutTest extends TestCase
     public function testIterateCheckoutContents()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $files = array();
         foreach ( $repository as $file ) {
@@ -241,7 +239,7 @@ class CheckoutTest extends TestCase
     public function testGetCheckout()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             $repository->get(),
@@ -257,7 +255,7 @@ class CheckoutTest extends TestCase
     public function testGetInvalid()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         try {
             $repository->get( '/../' );
@@ -268,7 +266,7 @@ class CheckoutTest extends TestCase
     public function testGetDirectory()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             $repository->get( '/dir1' ),
@@ -279,7 +277,7 @@ class CheckoutTest extends TestCase
     public function testGetFile()
     {
         $repository = new \Arbit\VCSWrapper\GitCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/git' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             $repository->get( '/file' ),

@@ -8,12 +8,10 @@
 
 namespace Arbit\VCSWrapper\CvsCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the CVS Cli wrapper
  */
-class DirectoryTest extends TestCase
+class DirectoryTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -27,7 +25,7 @@ class DirectoryTest extends TestCase
     public function testIterateRootDirContents()
     {
         $repository = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $repository->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $repository->initialize( $this->getRepository() );
 
         $dir = new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/' );
 
@@ -52,7 +50,7 @@ class DirectoryTest extends TestCase
     public function testRecursiveIterator()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $dir      = new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/' );
         $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
@@ -80,7 +78,7 @@ class DirectoryTest extends TestCase
     public function testIterateSubDirContents()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $dir = new \Arbit\VCSWrapper\CvsCli\Directory( $this->tempDir, '/dir1/' );
 

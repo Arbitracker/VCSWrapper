@@ -131,7 +131,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      * @param string $dir
      * @return void
      */
-    protected function removeRecursively( $dir )
+    protected static function removeRecursively( $dir )
     {
         $directory = dir( $dir );
         while ( ( $path = $directory->read() ) !== false ) {
@@ -143,7 +143,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             $path = $dir . '/' . $path;
 
             if ( is_dir( $path ) ) {
-                $this->removeRecursively( $path );
+                self::removeRecursively( $path );
             } else {
                 unlink( $path );
             }
