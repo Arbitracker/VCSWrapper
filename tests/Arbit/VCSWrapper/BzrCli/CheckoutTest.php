@@ -75,10 +75,12 @@ class CheckoutTest extends TestCase
         // Manually execute update in repository
         file_put_contents( $this->tempDir . '/ci/another', 'Some test contents' );
         $bzr = new \Arbit\VCSWrapper\BzrCli\Process();
+        $bzr->nonZeroExitCodeException = true;
         $bzr->workingDirectory( $this->tempDir . '/ci' );
         $bzr->argument( 'add' )->argument( 'another' )->execute();
 
         $bzr = new \Arbit\VCSWrapper\BzrCli\Process();
+        $bzr->nonZeroExitCodeException = true;
         $bzr->workingDirectory( $this->tempDir . '/ci' );
         $bzr->argument( 'commit' )->argument( 'another' )->argument( '-m' )->argument( 'Test commit.' )->execute();
 
