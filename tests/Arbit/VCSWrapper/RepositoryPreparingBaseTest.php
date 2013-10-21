@@ -61,6 +61,11 @@ class RepositoryPreparingBaseTest extends TestCase
 
     protected function getRepository()
     {
-        return 'file://' . self::$repositoryTempDir . '/' . static::getVcsIdentifier();
+        return 'file://' . $this->getRepositoryPath();
+    }
+
+    protected function getRepositoryPath()
+    {
+        return self::$repositoryTempDir . '/' . static::getVcsIdentifier();
     }
 }

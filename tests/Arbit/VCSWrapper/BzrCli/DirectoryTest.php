@@ -8,13 +8,11 @@
 
 namespace Arbit\VCSWrapper\BzrCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * @group bazaar
  * Test for the SQLite cache meta data handler
  */
-class DirectoryTest extends TestCase
+class DirectoryTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -28,7 +26,7 @@ class DirectoryTest extends TestCase
     public function testIterateRootDirContents()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $dir = new \Arbit\VCSWrapper\BzrCli\Directory( $this->tempDir, '/' );
 
@@ -51,7 +49,7 @@ class DirectoryTest extends TestCase
     public function testRecursiveIterator()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $dir      = new \Arbit\VCSWrapper\BzrCli\Directory( $this->tempDir, '/' );
         $iterator = new \RecursiveIteratorIterator( $dir, \RecursiveIteratorIterator::SELF_FIRST );
@@ -77,7 +75,7 @@ class DirectoryTest extends TestCase
     public function testIterateSubDirContents()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $dir = new \Arbit\VCSWrapper\BzrCli\Directory( $this->tempDir, '/dir1/' );
 

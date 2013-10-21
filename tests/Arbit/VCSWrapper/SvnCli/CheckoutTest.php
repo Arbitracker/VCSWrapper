@@ -8,12 +8,10 @@
 
 namespace Arbit\VCSWrapper\SvnCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the SVN Cli checkout/repository wrapper
  */
-class CheckoutTest extends TestCase
+class CheckoutTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -38,7 +36,7 @@ class CheckoutTest extends TestCase
     public function testInitializeCheckout()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -49,7 +47,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckout()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertFalse( $repository->update(), "Repository should already be on latest revision." );
 
@@ -63,7 +61,7 @@ class CheckoutTest extends TestCase
     {
         // Copy the repository to not chnage the test reference repository
         $repDir = $this->createTempDir() . '/svn';
-        self::copyRecursive( realpath( __DIR__ . '/../../../data/svn' ), $repDir );
+        self::copyRecursive( $this->getRepositoryPath(), $repDir );
 
         // Create two repositories one for the checkin one for the test checkout
         $checkin = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir . '/ci' );
@@ -89,7 +87,7 @@ class CheckoutTest extends TestCase
     public function testGetVersionString()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             "6",
@@ -100,7 +98,7 @@ class CheckoutTest extends TestCase
     public function testGetVersions()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             array( "1", "2", "3", "4", "5", "6" ),
@@ -111,7 +109,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckoutToOldVersion()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
             'Expected file "/file" in checkout.'
@@ -128,7 +126,7 @@ class CheckoutTest extends TestCase
     public function testCompareVersions()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertTrue(
             $repository->compareVersions( "1", "2" ) < 0
@@ -146,7 +144,7 @@ class CheckoutTest extends TestCase
     public function testGetAuthor()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             'kore',
@@ -157,7 +155,7 @@ class CheckoutTest extends TestCase
     public function testGetLog()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             array(
@@ -205,7 +203,7 @@ class CheckoutTest extends TestCase
     public function testGetLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             new \Arbit\VCSWrapper\LogEntry(
@@ -221,7 +219,7 @@ class CheckoutTest extends TestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         try {
             $repository->getLogEntry( "no_such_version" );
@@ -232,7 +230,7 @@ class CheckoutTest extends TestCase
     public function testIterateCheckoutContents()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $files = array();
         foreach ( $repository as $file ) {
@@ -254,7 +252,7 @@ class CheckoutTest extends TestCase
     public function testGetCheckout()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             $repository->get(),
@@ -270,7 +268,7 @@ class CheckoutTest extends TestCase
     public function testGetInvalid()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         try {
             $repository->get( '/../' );
@@ -281,7 +279,7 @@ class CheckoutTest extends TestCase
     public function testGetDirectory()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             $repository->get( '/dir1' ),
@@ -292,7 +290,7 @@ class CheckoutTest extends TestCase
     public function testGetFile()
     {
         $repository = new \Arbit\VCSWrapper\SvnCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/svn' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             $repository->get( '/file' ),

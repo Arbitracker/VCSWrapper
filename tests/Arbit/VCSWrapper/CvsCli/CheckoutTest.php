@@ -8,12 +8,10 @@
 
 namespace Arbit\VCSWrapper\CvsCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the CVS cli wrapper checkout implementation.
  */
-class CheckoutTest extends TestCase
+class CheckoutTest extends RepositoryBaseTest
 {
     /**
      * Initializes the the meta data cache used by the CVS wrapper.
@@ -39,7 +37,7 @@ class CheckoutTest extends TestCase
     public function testInitializeCheckout()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -50,7 +48,7 @@ class CheckoutTest extends TestCase
     public function testInitializeCheckoutWithVersion()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs#1.2' );
+        $checkout->initialize( $this->getRepository() . '#1.2' );
 
         $this->assertFileExists( $this->tempDir . '/file' );
         $this->assertFileExists( $this->tempDir . '/dir1/file' );
@@ -60,7 +58,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckout()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
 
         $this->assertFalse( $checkout->update(), "Repository should already be on latest revision." );
 
@@ -73,7 +71,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckoutWithUpdate()
     {
         // Create a repository copy
-        $dataDir = realpath( __DIR__ . '/../../../data/cvs' );
+        $dataDir = $this->getRepositoryPath();
         $repoDir = $this->createTempDir() . '/cvs';
 
         self::copyRecursive( $dataDir, $repoDir );
@@ -113,7 +111,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckoutToOldVersion()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs' );
+        $checkout->initialize( $this->getRepository() );
         $this->assertFileExists( $this->tempDir . '/dir1/file', 'Expected file "/dir1/file" in checkout.' );
 
         $checkout->update( '1.0' );
@@ -123,7 +121,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckoutFromTagToHead()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs#milestone' );
+        $checkout->initialize( $this->getRepository() . '#milestone' );
 
         $this->assertFileNotExists( $this->tempDir . '/dir1/file1', 'Expected file "/dir1/file1" not in checkout.' );
         $checkout->update( 'HEAD' );
@@ -133,7 +131,7 @@ class CheckoutTest extends TestCase
     public function testGetCheckout()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs#milestone' );
+        $checkout->initialize( $this->getRepository() . '#milestone' );
 
         $this->assertSame(
             $checkout->get(),
@@ -149,7 +147,7 @@ class CheckoutTest extends TestCase
     public function testGetInvalid()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs#milestone' );
+        $checkout->initialize( $this->getRepository() . '#milestone' );
 
         try {
             $checkout->get( '/../' );
@@ -160,7 +158,7 @@ class CheckoutTest extends TestCase
     public function testGetDirectory()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs#milestone' );
+        $checkout->initialize( $this->getRepository() . '#milestone' );
 
         $this->assertEquals(
             $checkout->get( '/dir1' ),
@@ -171,7 +169,7 @@ class CheckoutTest extends TestCase
     public function testGetFile()
     {
         $checkout = new \Arbit\VCSWrapper\CvsCli\Checkout( $this->tempDir );
-        $checkout->initialize( realpath( __DIR__ . '/../../../data/cvs' ) . '#cvs#milestone' );
+        $checkout->initialize( $this->getRepository() . '#milestone' );
 
         $this->assertEquals(
             $checkout->get( '/file' ),

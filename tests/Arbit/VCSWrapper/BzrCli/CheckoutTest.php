@@ -8,13 +8,11 @@
 
 namespace Arbit\VCSWrapper\BzrCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * @group bazaar
  * Test for the SQLite cache meta data handler
  */
-class CheckoutTest extends TestCase
+class CheckoutTest extends RepositoryBaseTest
 {
     public function setUp()
     {
@@ -39,7 +37,7 @@ class CheckoutTest extends TestCase
     public function testInitializeCheckout()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertTrue(
             file_exists( $this->tempDir . '/file' ),
@@ -50,7 +48,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckout()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertFalse( $repository->update(), "Repository should already be on latest revision." );
 
@@ -63,7 +61,7 @@ class CheckoutTest extends TestCase
     public function testUpdateCheckoutWithUpdate()
     {
         $repDir = $this->createTempDir() . '/bzr';
-        self::copyRecursive( realpath( __DIR__ . '/../../../data/bzr' ), $repDir );
+        self::copyRecursive( $this->getRepositoryPath(), $repDir );
 
         // Copy the repository to not change the test reference repository
         $checkin = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir . '/ci' );
@@ -94,7 +92,7 @@ class CheckoutTest extends TestCase
     public function testGetVersionString()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             "2",
@@ -105,7 +103,7 @@ class CheckoutTest extends TestCase
     public function testGetVersions()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             array(
@@ -121,7 +119,7 @@ class CheckoutTest extends TestCase
 #        $this->markTestSkipped( 'Downgrade seems not to remove files from checkout.' );
 
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
         $this->assertTrue(
             file_exists( $this->tempDir . '/dir1/file' ),
             'Expected file "/dir1/file" in checkout.'
@@ -138,7 +136,7 @@ class CheckoutTest extends TestCase
     public function testGetAuthor()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             'Richard Bateman <taxilian@gmail.com>',
@@ -149,7 +147,7 @@ class CheckoutTest extends TestCase
     public function testGetLog()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             array(
@@ -167,7 +165,7 @@ class CheckoutTest extends TestCase
     public function testGetLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             new \Arbit\VCSWrapper\LogEntry(
@@ -180,7 +178,7 @@ class CheckoutTest extends TestCase
     public function testGetUnknownLogEntry()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         try {
             $repository->getLogEntry( "no_such_version" );
@@ -191,7 +189,7 @@ class CheckoutTest extends TestCase
     public function testIterateCheckoutContents()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $files = array();
         foreach ( $repository as $file ) {
@@ -212,7 +210,7 @@ class CheckoutTest extends TestCase
     public function testGetCheckout()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertSame(
             $repository->get(),
@@ -231,7 +229,7 @@ class CheckoutTest extends TestCase
     public function testGetInvalid()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $repository->get( '/../' );
     }
@@ -239,7 +237,7 @@ class CheckoutTest extends TestCase
     public function testGetDirectory()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             $repository->get( '/dir1' ),
@@ -250,7 +248,7 @@ class CheckoutTest extends TestCase
     public function testGetFile()
     {
         $repository = new \Arbit\VCSWrapper\BzrCli\Checkout( $this->tempDir );
-        $repository->initialize( 'file://' . realpath( __DIR__ . '/../../../data/bzr' ) );
+        $repository->initialize( $this->getRepository() );
 
         $this->assertEquals(
             $repository->get( '/file' ),
