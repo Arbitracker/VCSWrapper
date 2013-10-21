@@ -11,7 +11,7 @@ namespace Arbit\VCSWrapper\GitCli;
 /**
  * Test for the SQLite cache meta data handler
  */
-class CheckoutTest extends RepositoryPreparingBaseTest
+class CheckoutTest extends RepositoryBaseTest
 {
     public function setUp()
     {

@@ -1,8 +1,6 @@
 <?php
 
-namespace Arbit\VCSWrapper\GitCli;
-
-use \Arbit\VCSWrapper\TestCase;
+namespace Arbit\VCSWrapper;
 
 class RepositoryPreparingBaseTest extends TestCase
 {
@@ -11,6 +9,14 @@ class RepositoryPreparingBaseTest extends TestCase
      * @var string
      */
     private static $repositoryTempDir;
+
+    protected static function getVcsIdentifier()
+    {
+        // Emulate abstract static
+        throw new \RuntimeException(
+            'Missing VCS identifier. Need to override getVcsIdentifier() in test case.'
+        );
+    }
 
     public static function setupBeforeClass()
     {
@@ -23,7 +29,7 @@ class RepositoryPreparingBaseTest extends TestCase
             );
         }
 
-        $uniqueTempDir = sys_get_temp_dir() . '/' . uniqid('vcswrapper_git_repository_');
+        $uniqueTempDir = sys_get_temp_dir() . '/' . uniqid('vcswrapper_test_repository_');
         if ( ! mkdir( $uniqueTempDir ) )
         {
             throw new \RuntimeException(
@@ -31,8 +37,17 @@ class RepositoryPreparingBaseTest extends TestCase
             );
         }
 
+        $vcsIdentifier = static::getVcsIdentifier();
+
+        $zipFile = __DIR__ . '/../../data/' . $vcsIdentifier . '.zip';
+
+        if ( !file_exists( $zipFile ) )
+        {
+            throw new \RuntimeException( "Invalid VCS repository ZIP file: {$zipFile}." );
+        }
+
         $zip = new \ZIPArchive();
-        $zip->open( __DIR__ . '/../../../data/git.zip' );
+        $zip->open( $zipFile );
         $zip->extractTo( $uniqueTempDir );
         $zip->close();
 
@@ -46,6 +61,6 @@ class RepositoryPreparingBaseTest extends TestCase
 
     protected function getRepository()
     {
-        return 'file://' . self::$repositoryTempDir . '/git';
+        return 'file://' . self::$repositoryTempDir . '/' . static::getVcsIdentifier();
     }
 }

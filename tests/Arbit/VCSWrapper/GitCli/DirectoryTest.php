@@ -8,12 +8,11 @@
 
 namespace Arbit\VCSWrapper\GitCli;
 
-use \Arbit\VCSWrapper\TestCase;
-
 /**
  * Test for the SQLite cache meta data handler
  */
-class DirectoryTest extends RepositoryPreparingBaseTest
+class DirectoryTest extends RepositoryBaseTest
+
 {
     public function setUp()
     {
