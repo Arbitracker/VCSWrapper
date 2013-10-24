@@ -89,7 +89,12 @@ abstract class Resource extends \Arbit\VCSWrapper\Resource implements \Arbit\VCS
             }
 
             // Execute log command
-            $process->argument('log')->argument('--pretty=format:%H;%cn;%ct;%s%n%b')->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path))->execute();
+            $process->argument('log')->argument('--pretty=format:%H;%cn;%ct;%s%n%b');
+            if ($this->path !== '/') {
+                // Avoid Git history simplification to kick in when logging root path
+                $process->argument(new \SystemProcess\Argument\PathArgument('.' . $this->path));
+            }
+            $process->execute();
 
             // Parse commit log
             $lines      = preg_split('(\r\n|\r|\n)', $process->stdoutOutput);
